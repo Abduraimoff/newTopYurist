@@ -1,6 +1,14 @@
 # top_yurist
 
-A new Flutter project.
+Top lawyers project
 
-## Getting Started
+## Used libs
 
+To achieve responsive UI
+https://pub.dev/packages/flutter_screenutil
+
+State management:
+Block
+
+http requests:
+Dio
