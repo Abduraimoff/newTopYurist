@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/presentation/Login/login_screen.dart';
+import 'package:top_yurist/utils/colors.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Locales.init(['ru']);
+  await Locales.init(['ru', "en", "uz",]);
   runApp(const MyApp());
 }
 
@@ -15,26 +16,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LocaleBuilder(builder: (locale) =>
-        ScreenUtilInit(
-            designSize: const Size(375, 835),
-            minTextAdapt: true,
-            splitScreenMode: true,
-            builder: (context, child){
-          return MaterialApp(
+         MaterialApp(
             title: 'Top Yurist',
             localizationsDelegates: Locales.delegates,
-            supportedLocales: Locales.supportedLocales,
+            supportedLocales: [Locale.fromSubtags(languageCode: "ru"), Locale.fromSubtags(languageCode: "en"), Locale.fromSubtags(languageCode: 'uz', scriptCode: "Latn"), Locale.fromSubtags(languageCode: "uz", scriptCode: "Cyrl")],
             locale: locale,
             theme: ThemeData(
+              fontFamily: "Aeroport",
               primarySwatch: Colors.blue,
+              textTheme: const TextTheme(headline2: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: AppColors.black))
             ),
-            builder: (ctx, child){
-              ScreenUtil.init(ctx);
-              return const LoginScreen();
-            },
+           home: LoginScreen(),
 
-          );
-        })
+          ),
+
     );
   }
 }
