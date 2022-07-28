@@ -5,5 +5,12 @@
   "notverified": "Not verified",
   "verified": "Verified",
   "i_am_lawyer": "I am lawyer",
-  "i_am_user": "I am user"
+  "i_am_user": "I am user",
+  "verification": "Verification",
+  "reviews": "Reviews",
+  "switch_language": "Switch language",
+  "support_chat": "Support Chat",
+  "push_notifications": "Push Notifications",
+  "log_out": "Log out",
+  "faq": "FAQ"
 }

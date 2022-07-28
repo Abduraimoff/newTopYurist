@@ -5,5 +5,12 @@
   "notverified": "Не верифицирован",
   "verified": "Верифицирован",
   "i_am_lawyer": "Я юрист",
-  "i_am_user": "Я пользователь"
+  "i_am_user": "Я пользователь",
+  "verification": "Верификация",
+  "reviews": "Отзывы",
+  "switch_language": "Смена языка",
+  "support_chat": "Чат с поддержкой",
+  "push_notifications": "Push уведомления",
+  "log_out": "Выйти",
+  "faq": "FAQ"
 }
