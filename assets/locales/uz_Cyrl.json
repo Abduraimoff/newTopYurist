@@ -1,4 +1,9 @@
 {
   "welcome": "Хуш келибсиз",
-  "language": "Узбек"
+  "language": "Узбек",
+  "profile": "Профил",
+  "notverified": "Тасдиқланмаган",
+  "verified": "Тасдиқланган",
+  "i_am_lawyer": "Мен юрист",
+  "i_am_user": "Мен фойдаланувчи"
 }

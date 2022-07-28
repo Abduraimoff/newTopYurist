@@ -1,4 +1,9 @@
 {
   "welcome": "Welcome",
-  "language": "English"
+  "language": "English",
+  "profile": "Profile",
+  "notverified": "Not verified",
+  "verified": "Verified",
+  "i_am_lawyer": "I am lawyer",
+  "i_am_user": "I am user"
 }

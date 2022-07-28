@@ -1,4 +1,9 @@
 {
   "welcome": "Hush kelibsiz",
-  "language": "O`zbek"
+  "language": "O`zbek",
+  "profile": "Profil",
+  "notverified": "Tasdiqlanmagan",
+  "verified": "Tasdiqlangan",
+  "i_am_lawyer": "Men yurist",
+  "i_am_user": "Men foydalanuvchi"
 }
