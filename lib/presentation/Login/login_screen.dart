@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String dropdownValue = 'One';
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               color: AppColors.scaffoldBackground,
               child: DropdownButton(
+
+                icon:  Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SvgPicture.asset('assets/svg/icon_arrow-right.svg'),
+                ),
                 style: Theme.of(context).textTheme.button,
               underline: const SizedBox(),
                 items: const [
