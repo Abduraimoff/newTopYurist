@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -77,13 +78,17 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 48.h,
               width: 343.w,
               child: ElevatedButton(
-                  onPressed: (){},  style: ElevatedButton.styleFrom(primary: const Color.fromRGBO(133, 141, 163, 0.1), elevation: 0, ),child:  LocaleText("i_lawyer", style: Theme.of(context).textTheme.headline3,),),
+                  onPressed: (){
+                    Navigator.of(context).pushNamed(RegisterScreen.registerScreen);
+                  },  style: ElevatedButton.styleFrom(primary: const Color.fromRGBO(133, 141, 163, 0.1), elevation: 0, ),child:  LocaleText("i_lawyer", style: Theme.of(context).textTheme.headline3,),),
             ),
             SizedBox(height: 21.h,),
             SizedBox(
                 height: 48.h,
                 width: 343.w,
-                child: ElevatedButton(onPressed: (){},style: ElevatedButton.styleFrom(primary: const Color.fromRGBO(133, 141, 163, 0.1), elevation: 0, ), child:  LocaleText("i_user", style: Theme.of(context).textTheme.headline3,))),
+                child: ElevatedButton(onPressed: (){
+                  Navigator.of(context).pushNamed(RegisterScreen.registerScreen);
+                },style: ElevatedButton.styleFrom(primary: const Color.fromRGBO(133, 141, 163, 0.1), elevation: 0, ), child:  LocaleText("i_user", style: Theme.of(context).textTheme.headline3,))),
             SizedBox(height: 30.h,)
           ],
         ),

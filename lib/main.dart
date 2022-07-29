@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/presentation/Login/login_screen.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/theme.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         locale: locale,
         theme: MainTheme().themeData,
         home: const LoginScreen(),
+        routes: {
+          RegisterScreen.registerScreen: (context)=> const RegisterScreen(),
+        },
       ),
     );
   }
