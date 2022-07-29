@@ -1,4 +1,16 @@
 {
   "welcome": "Hush kelibsiz",
-  "language": "O`zbek"
+  "language": "O`zbek",
+  "profile": "Profil",
+  "notverified": "Tasdiqlanmagan",
+  "verified": "Tasdiqlangan",
+  "i_am_lawyer": "Men yurist",
+  "i_am_user": "Men foydalanuvchi",
+  "verification": "Tasdiqlash",
+  "reviews": "Sharhlar",
+  "switch_language": "Tilni almashtirish",
+  "support_chat": "Yordam chat",
+  "push_notifications": "Push bildirishnomalar",
+  "log_out": "Chiqish",
+  "faq": "FAQ"
 }
