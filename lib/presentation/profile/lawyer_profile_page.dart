@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
+import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
@@ -176,7 +177,14 @@ class LawyerInfoWidget extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditProfilePage(),
+                          ),
+                        );
+                      },
                       child: SvgPicture.asset(AppIcons.editWithBorder),
                     ),
                   ),
@@ -348,7 +356,7 @@ class _ItemsWidget extends StatelessWidget {
                     ],
                   ),
                   SvgPicture.asset(
-                    AppIcons.arrowRignt,
+                    AppIcons.chevronRignt,
                     color: AppColors.grey,
                     height: 20.h,
                     width: 20.h,
