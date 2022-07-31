@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/Home/home_screen.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/presentation/Login/confirmation_screen.dart';
 import 'package:top_yurist/presentation/Login/login_screen.dart';
+import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/theme.dart';
+
+import 'presentation/profile/lawyer_profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -16,8 +16,9 @@ abstract class AppIcons {
   static const trash = 'assets/icons/trash.svg';
   static const editWithBorder = 'assets/icons/edit_with_border.svg';
   static const warning = 'assets/icons/warning.svg';
-  static const arrowRignt = 'assets/icons/arrow-right.svg';
+  static const chevronRignt = 'assets/icons/arrow-right.svg';
   static const logOut = 'assets/icons/logout.svg';
   static const global = 'assets/icons/global.svg';
   static const messageQuestion = 'assets/icons/message-question.svg';
+  static const chevronLeft = 'assets/icons/chevron_left.svg';
 }
