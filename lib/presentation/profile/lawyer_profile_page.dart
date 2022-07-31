@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
+import 'package:top_yurist/presentation/profile/reviews_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
@@ -330,46 +331,57 @@ class _ItemsWidget extends StatelessWidget {
       required VoidCallback ontap,
       Color? iconColor,
     }) {
-      return SizedBox(
-        height: 50.h,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+      return Stack(
+        children: [
+          SizedBox(
+            height: 50.h,
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            icon,
+                            height: 20.h,
+                            width: 20.h,
+                            color: iconColor ?? AppColors.grey,
+                          ),
+                          SizedBox(width: 12.w),
+                          LocaleText(
+                            title,
+                            style: TextStyle(
+                                fontSize: 16.sp, fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
                       SvgPicture.asset(
-                        icon,
+                        AppIcons.chevronRignt,
+                        color: AppColors.grey,
                         height: 20.h,
                         width: 20.h,
-                        color: iconColor ?? AppColors.grey,
-                      ),
-                      SizedBox(width: 12.w),
-                      LocaleText(
-                        title,
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.w400),
-                      ),
+                      )
                     ],
                   ),
-                  SvgPicture.asset(
-                    AppIcons.chevronRignt,
-                    color: AppColors.grey,
-                    height: 20.h,
-                    width: 20.h,
-                  )
-                ],
-              ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: Divider(height: 0),
+                )
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child: Divider(height: 0),
-            )
-          ],
-        ),
+          ),
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(onTap: ontap),
+            ),
+          )
+        ],
       );
     }
 
@@ -404,7 +416,14 @@ class _ItemsWidget extends StatelessWidget {
                   imetWidget(
                     icon: AppIcons.star,
                     title: "reviews",
-                    ontap: () {},
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ReviewsPage(),
+                        ),
+                      );
+                    },
                   ),
                   imetWidget(
                     icon: AppIcons.global,
