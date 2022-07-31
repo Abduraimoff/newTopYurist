@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
+import 'package:top_yurist/presentation/Home/home_screen.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/presentation/Login/confirmation_screen.dart';
 import 'package:top_yurist/presentation/Login/login_screen.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
                   supportedLocales: Locales.supportedLocales,
                   locale: locale,
                   theme: MainTheme().themeData,
-                  home: const LoginScreen(),
+                  home: const HomeScreen(),
                   routes: {
                     RegisterScreen.registerScreen: (context) =>
                         const RegisterScreen(),
