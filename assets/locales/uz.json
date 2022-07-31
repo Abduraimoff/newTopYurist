@@ -2,7 +2,7 @@
   "welcome": "Hush kelibsiz",
   "language": "O`zbek",
   "profile": "Profil",
-  "notverified": "Tasdiqlanmagan",
+  "notVerified": "Tasdiqlanmagan",
   "verified": "Tasdiqlangan",
   "i_am_lawyer": "Men yurist",
   "i_am_user": "Men foydalanuvchi",
@@ -12,5 +12,7 @@
   "support_chat": "Yordam chat",
   "push_notifications": "Push bildirishnomalar",
   "log_out": "Chiqish",
-  "faq": "FAQ"
+  "faq": "FAQ",
+  "enter": "Kirish",
+  "sent_code_title":"Мы отправили вам СМС с кодом на номер"
 }

@@ -11,7 +11,7 @@ import 'package:top_yurist/presentation/profile/reviews_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
-class LawyerProfilePage extends StatelessWidget {
+  class LawyerProfilePage extends StatelessWidget {
   const LawyerProfilePage({Key? key}) : super(key: key);
 
   @override
