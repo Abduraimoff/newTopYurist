@@ -19,6 +19,10 @@
   "support_chat": "Чат с поддержкой",
   "push_notifications": "Push уведомления",
   "log_out": "Выйти",
-  "faq": "FAQ"
+  "faq": "FAQ",
+  "enter": "Войти",
+  "sent_code_title":"Мы отправили вам СМС с кодом на номер",
+  "next": "Далее",
+  "remain": "Осталось"
 
 }

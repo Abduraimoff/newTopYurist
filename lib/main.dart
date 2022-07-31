@@ -4,6 +4,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
+import 'package:top_yurist/presentation/Login/confirmation_screen.dart';
 import 'package:top_yurist/presentation/Login/login_screen.dart';
 import 'package:top_yurist/utils/theme.dart';
 
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
                   routes: {
                     RegisterScreen.registerScreen: (context) =>
                         const RegisterScreen(),
+                    ConfirmationScreen.routeName: (context) => const ConfirmationScreen(),
                   },
                 )));
   }

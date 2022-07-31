@@ -12,5 +12,8 @@
   "support_chat": "Support Chat",
   "push_notifications": "Push Notifications",
   "log_out": "Log out",
-  "faq": "FAQ"
+  "faq": "FAQ",
+  "enter": "Enter",
+  "sent_code_title":"Мы отправили вам СМС с кодом на номер"
+
 }
