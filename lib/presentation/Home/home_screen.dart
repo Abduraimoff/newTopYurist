@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../profile/lawyer_profile_page.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -27,10 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'Index 2: Favourites screen',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Settings screen',
-      style: optionStyle,
-    ),
+    LawyerProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,13 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.scaffoldBackground,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        centerTitle: false,
-        title:  LocaleText("services", style: Theme.of(context).textTheme.headline2,),
-      ),
+
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
