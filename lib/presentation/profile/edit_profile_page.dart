@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';

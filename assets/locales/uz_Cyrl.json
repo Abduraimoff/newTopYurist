@@ -12,5 +12,9 @@
   "support_chat": "Ёрдам чвт",
   "push_notifications": "Push билдиришнома",
   "log_out": "Чикиш",
-  "faq": "FAQ"
+  "faq": "FAQ",
+  "all": "Ҳаммаси",
+  "resolved": "Хал қилинган",
+  "not_resolved": "Хал қилинмаган",
+  "show_feedback_on_your_profile": "Шархни профилингизда кўрсатиш"
 }

@@ -1,13 +1,10 @@
 {
-"welcome": "Добро пожаловать!",
+  "welcome": "Добро пожаловать!",
   "language": "Русский",
   "i_lawyer": "Я юрист",
   "i_user": "Я пользователь",
   "register": "Авторизация",
   "type_your_number": " Введите ваш номер телефона",
-
-
-
   "profile": "Профиль",
   "notVerified": "Не верифицирован",
   "verified": "Верифицирован",
@@ -21,12 +18,15 @@
   "log_out": "Выйти",
   "faq": "FAQ",
   "enter": "Войти",
-  "sent_code_title":"Мы отправили вам СМС с кодом на номер",
+  "sent_code_title": "Мы отправили вам СМС с кодом на номер",
   "next": "Далее",
   "remain": "Осталось",
   "services": "Услуги",
   "chats": "Чаты",
   "favourites": "Избранное",
-  "setting": "Настройки"
-
+  "setting": "Настройки",
+  "all": "Все",
+  "resolved": "Решено",
+  "not_resolved": "Не решено",
+  "show_feedback_on_your_profile": "Показывать отзыв в вашем профиле"
 }

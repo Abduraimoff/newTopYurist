@@ -14,5 +14,6 @@
   "log_out": "Chiqish",
   "faq": "FAQ",
   "enter": "Kirish",
-  "sent_code_title":"Мы отправили вам СМС с кодом на номер"
+  "sent_code_title": "Мы отправили вам СМС с кодом на номер",
+  "show_feedback_on_your_profile": "Sharxni profilingizda ko'rsatish"
 }

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
 import 'package:top_yurist/presentation/profile/reviews_page.dart';
@@ -213,10 +213,12 @@ class LawyerInfoWidget extends StatelessWidget {
                     amount: state.amountFavorites ?? 0,
                     title: "В избранном",
                   ),
+                  SizedBox(width: 5.w),
                   itemWidget(
                     amount: state.amountSelects ?? 0,
                     title: "Выбраны",
                   ),
+                  SizedBox(width: 5.w),
                   itemWidget(
                     amount: state.amountCOmplates ?? 0,
                     title: "Выполнено",

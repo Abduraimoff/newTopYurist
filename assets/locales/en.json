@@ -14,6 +14,9 @@
   "log_out": "Log out",
   "faq": "FAQ",
   "enter": "Enter",
-  "sent_code_title":"Мы отправили вам СМС с кодом на номер"
-
+  "sent_code_title": "Мы отправили вам СМС с кодом на номер",
+  "all": "All",
+  "resolved": "Resolved",
+  "not_resolved": "Not resolved",
+  "show_feedback_on_your_profile": "Show feedback on your profile"
 }
