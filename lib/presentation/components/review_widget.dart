@@ -79,6 +79,7 @@ class ReviewWidget extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               DateFormat('dd.MM.yyyy').format(review.time),
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
             ),
           ),
           const Divider(),

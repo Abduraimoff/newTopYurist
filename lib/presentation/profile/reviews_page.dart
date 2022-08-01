@@ -69,18 +69,21 @@ class _ReviewTypesWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: 16.w),
         itemBuilder: (context, index) => Stack(
           children: [
-            Chip(
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
-              label: LocaleText(types[index]),
-              backgroundColor: reviewCubit.state.selectedREviewType == index
-                  ? AppColors.blue
-                  : AppColors.grey.withOpacity(0.1),
-              labelStyle: TextStyle(
-                color: reviewCubit.state.selectedREviewType == index
-                    ? Colors.white
-                    : Colors.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
+            SizedBox(
+              height: 40.h,
+              child: Chip(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                label: Center(child: LocaleText(types[index])),
+                backgroundColor: reviewCubit.state.selectedREviewType == index
+                    ? AppColors.blue
+                    : AppColors.grey.withOpacity(0.1),
+                labelStyle: TextStyle(
+                  color: reviewCubit.state.selectedREviewType == index
+                      ? Colors.white
+                      : Colors.black,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             Positioned.fill(
