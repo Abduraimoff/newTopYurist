@@ -11,12 +11,12 @@ import 'package:top_yurist/presentation/profile/reviews_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
-  class LawyerProfilePage extends StatelessWidget {
+class LawyerProfilePage extends StatelessWidget {
   const LawyerProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 870));
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -84,20 +84,28 @@ class LawyerInfoWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '$amount',
-              style: TextStyle(
-                color: AppColors.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: FittedBox(
+                child: Text(
+                  '$amount',
+                  style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
-            Text(
-              title,
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
+            Expanded(
+              child: FittedBox(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: AppColors.grey,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
             ),
           ],
@@ -198,21 +206,23 @@ class LawyerInfoWidget extends StatelessWidget {
               height: 0,
             ),
             SizedBox(height: 16.h),
-            Row(
-              children: [
-                itemWidget(
-                  amount: state.amountFavorites ?? 0,
-                  title: "В избранном",
-                ),
-                itemWidget(
-                  amount: state.amountSelects ?? 0,
-                  title: "Выбраны",
-                ),
-                itemWidget(
-                  amount: state.amountCOmplates ?? 0,
-                  title: "Выполнено",
-                ),
-              ],
+            Expanded(
+              child: Row(
+                children: [
+                  itemWidget(
+                    amount: state.amountFavorites ?? 0,
+                    title: "В избранном",
+                  ),
+                  itemWidget(
+                    amount: state.amountSelects ?? 0,
+                    title: "Выбраны",
+                  ),
+                  itemWidget(
+                    amount: state.amountCOmplates ?? 0,
+                    title: "Выполнено",
+                  ),
+                ],
+              ),
             )
           ],
         ),
@@ -337,40 +347,41 @@ class _ItemsWidget extends StatelessWidget {
             height: 50.h,
             child: Column(
               children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            icon,
-                            height: 20.h,
-                            width: 20.h,
-                            color: iconColor ?? AppColors.grey,
-                          ),
-                          SizedBox(width: 12.w),
-                          LocaleText(
-                            title,
-                            style: TextStyle(
-                                fontSize: 16.sp, fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                      SvgPicture.asset(
-                        AppIcons.chevronRignt,
-                        color: AppColors.grey,
-                        height: 20.h,
-                        width: 20.h,
-                      )
-                    ],
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              icon,
+                              height: 20.h,
+                              width: 20.h,
+                              color: iconColor ?? AppColors.grey,
+                            ),
+                            SizedBox(width: 12.w),
+                            LocaleText(
+                              title,
+                              style: TextStyle(
+                                  fontSize: 16.sp, fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        SvgPicture.asset(
+                          AppIcons.chevronRignt,
+                          color: AppColors.grey,
+                          height: 20.h,
+                          width: 20.h,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16.w),
-                  child: Divider(height: 0),
+                  child: const Divider(height: 0),
                 )
               ],
             ),
