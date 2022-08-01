@@ -52,17 +52,21 @@ class EditProfilePage extends StatelessWidget {
                     // SizedBox(height: 12.h),
                     TextButton(
                       onPressed: () {},
-                      child: const Text(
+                      child: Text(
                         'Добавить фото',
                         style: TextStyle(
                           color: AppColors.blue,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
-                    const Text(
+                    Text(
                       'С фотографией к вам будет больше доверия',
                       style: TextStyle(
                         color: AppColors.grey,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     SizedBox(height: 28.h),
