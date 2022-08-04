@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
                 name: 'Феруз Тахирович',
                 phoneNumber: '+998999999999',
                 image: 'assets/images/lawyer.jpg',
-                isVerified: true,
+                isVerified: false,
                 type: UserType.lawyer,
                 amountFavorites: 4,
                 amountSelects: 5,

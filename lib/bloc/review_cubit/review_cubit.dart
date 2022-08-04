@@ -51,7 +51,6 @@ class ReviewCubit extends Cubit<ReviewState> {
         ),
       ],
     );
-    await Future.delayed(const Duration(seconds: 1));
     emit(newState);
   }
 
