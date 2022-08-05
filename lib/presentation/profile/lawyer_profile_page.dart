@@ -8,6 +8,7 @@ import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
 import 'package:top_yurist/presentation/profile/reviews_page.dart';
+import 'package:top_yurist/presentation/profile/switch_language_page.dart';
 import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
@@ -449,7 +450,14 @@ class _ItemsWidget extends StatelessWidget {
                   imetWidget(
                     icon: AppIcons.global,
                     title: "switch_language",
-                    ontap: () {},
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SwitchLanguagePage(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

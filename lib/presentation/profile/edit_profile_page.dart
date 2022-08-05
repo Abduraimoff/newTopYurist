@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/utils/colors.dart';
+import 'package:top_yurist/utils/decorations.dart';
 import 'package:top_yurist/utils/icons.dart';
 
 class EditProfilePage extends StatelessWidget {
@@ -71,32 +72,14 @@ class EditProfilePage extends StatelessWidget {
                     ),
                     SizedBox(height: 28.h),
                     TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Ф.И.О',
-                        hintStyle: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.grey,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
+                        decoration:
+                            TextFieldDecorations.roundedDecoration(context)
+                                .copyWith(hintText: 'Ф.И.О')),
                     SizedBox(height: 20.h),
                     TextField(
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.grey,
-                        ),
-                        hintText: 'Номер телефона',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
+                        decoration:
+                            TextFieldDecorations.roundedDecoration(context)
+                                .copyWith(hintText: 'Номер телефона')),
                   ],
                 ),
                 ElevatedButton(
