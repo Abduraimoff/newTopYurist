@@ -28,41 +28,43 @@ class ServiceDetail extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 0),
                 indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(50), // Creates border
-                    color:  AppColors.white.withAlpha(0)),
-                labelColor: AppColors.grey,
+                    color: AppColors.white.withAlpha(0)),
+                labelColor: AppColors.white,
                 unselectedLabelColor: AppColors.blue,
                 tabs: [
-              Container(
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(56.sp),
-                // ),
-                height: 40.0,
-                alignment: Alignment.center,
-                child: Text("Новые"),
-              ),
-              Container(
-                // width: double.infinity,
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(56.sp),
-                // ),
-                alignment: Alignment.center,
-                height: 40.0,
-                child: Center(child: Text("Выбранные")),
-              ),
-              Container(
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(56.sp),
-                // ),
-                alignment: Alignment.center,
-                height: 40.0,
-                child: Text("Отказы"),
-              )
-            ]),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    height: 40.0,
+                    alignment: Alignment.center,
+                    child: Text("Новые"),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGrey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    alignment: Alignment.center,
+                    height: 40.0,
+                    child: Center(child: Text("Выбранные")),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGrey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    alignment: Alignment.center,
+                    height: 40.0,
+                    child: Text("Отказы"),
+                  )
+                ]),
             Expanded(
                 child: TabBarView(
               children: [
                 Container(
-                  decoration: BoxDecoration(color: AppColors.grey),
+                  decoration: BoxDecoration(color: AppColors.lightGrey),
                   child: Text("heelo"),
                 ),
                 Icon(Icons.directions_transit),
