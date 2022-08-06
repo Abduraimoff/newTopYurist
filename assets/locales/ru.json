@@ -27,6 +27,12 @@
   "services": "Услуги",
   "chats": "Чаты",
   "favourites": "Избранное",
-  "setting": "Настройки"
+  "setting": "Настройки ",
+  "add_photo": "Добавить фото",
+  "name": "Имя",
+  "surName": "Фамилия",
+  "registration_offer_1": "Регистрируясь, вы принимаете ",
+  "registration_offer_2": "публичную оферту",
+  "select_region_title": "Выберите свой город/область"
 
 }

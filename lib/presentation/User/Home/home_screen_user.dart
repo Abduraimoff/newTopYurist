@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
-import 'package:top_yurist/presentation/Login/login_screen.dart';
-import 'package:top_yurist/presentation/Services/SeriviceScreen.dart';
 import 'package:top_yurist/utils/colors.dart';
 
-import '../profile/lawyer_profile_page.dart';
+import '../Requests/request_screen.dart';
 
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+
+class HomeScreenUser extends StatefulWidget {
+  const HomeScreenUser({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenUser> createState() => _HomeScreenUserState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenUserState extends State<HomeScreenUser> {
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static  final List<Widget> _widgetOptions = <Widget>[
-    ServiceScreen(),
+    CreateRequestScreen(),
     Text(
       'Index 1: Chat Screen',
       style: optionStyle,
@@ -30,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'Index 2: Favourites screen',
       style: optionStyle,
     ),
-    LawyerProfilePage(),
+    Text("Profile Screen")
   ];
 
   void _onItemTapped(int index) {
