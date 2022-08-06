@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
                   supportedLocales: Locales.supportedLocales,
                   locale: locale,
                   theme: MainTheme().themeData,
-                  home: const HomeScreenUser(),
+                  home: const HomeScreen(),
                   routes: {
                     RegisterScreen.registerScreen: (context) =>
                         const RegisterScreen(),
