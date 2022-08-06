@@ -4,6 +4,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:top_yurist/presentation/Login/register_profile.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 class ConfirmationScreen extends StatefulWidget {
@@ -115,7 +116,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> with TickerProv
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Container(
+        child: SizedBox(
           height: 100,
           child: Column(
             children: [
@@ -135,7 +136,9 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> with TickerProv
                 width: double.infinity,
                 height: 48.h,
                 child: FloatingActionButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.of(context).pushNamed(RegisterProfile.routeName);
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
