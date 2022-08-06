@@ -1,15 +1,12 @@
 {
-"welcome": "Добро пожаловать!",
+  "welcome": "Добро пожаловать!",
   "language": "Русский",
   "i_lawyer": "Я юрист",
   "i_user": "Я пользователь",
   "register": "Авторизация",
   "type_your_number": " Введите ваш номер телефона",
-
-
-
   "profile": "Профиль",
-  "notVerified": "Не верифицирован",
+  "notverified": "Не верифицирован",
   "verified": "Верифицирован",
   "i_am_lawyer": "Я юрист",
   "i_am_user": "Я пользователь",
@@ -21,12 +18,19 @@
   "log_out": "Выйти",
   "faq": "FAQ",
   "enter": "Войти",
-  "sent_code_title":"Мы отправили вам СМС с кодом на номер",
+  "sent_code_title": "Мы отправили вам СМС с кодом на номер",
   "next": "Далее",
   "remain": "Осталось",
   "services": "Услуги",
   "chats": "Чаты",
   "favourites": "Избранное",
+  "all": "Все",
+  "resolved": "Решено",
+  "not_resolved": "Не решено",
+  "show_feedback_on_your_profile": "Показывать отзыв в вашем профиле",
+  "favorites": "В избранном",
+  "selected": "Выбраны",
+  "performed": "Выполнено"
   "setting": "Настройки ",
   "add_photo": "Добавить фото",
   "name": "Имя",
@@ -34,5 +38,4 @@
   "registration_offer_1": "Регистрируясь, вы принимаете ",
   "registration_offer_2": "публичную оферту",
   "select_region_title": "Выберите свой город/область"
-
 }
