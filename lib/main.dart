@@ -11,7 +11,7 @@ import 'package:top_yurist/presentation/Login/login_screen.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/theme.dart';
 
-import 'presentation/profile/lawyer_profile_page.dart';
+import 'presentation/profile/user_profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -6,7 +6,7 @@
   "register": "Авторизация",
   "type_your_number": " Введите ваш номер телефона",
   "profile": "Профиль",
-  "notVerified": "Не верифицирован",
+  "notverified": "Не верифицирован",
   "verified": "Верифицирован",
   "i_am_lawyer": "Я юрист",
   "i_am_user": "Я пользователь",
@@ -28,5 +28,8 @@
   "all": "Все",
   "resolved": "Решено",
   "not_resolved": "Не решено",
-  "show_feedback_on_your_profile": "Показывать отзыв в вашем профиле"
+  "show_feedback_on_your_profile": "Показывать отзыв в вашем профиле",
+  "favorites": "В избранном",
+  "selected": "Выбраны",
+  "performed": "Выполнено"
 }

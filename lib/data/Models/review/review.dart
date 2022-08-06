@@ -7,6 +7,8 @@ class Review {
   final String title;
   final DateTime time;
   final bool? isShowOnProfile;
+  final User? lawyer;
+
   Review({
     required this.id,
     required this.user,
@@ -14,6 +16,7 @@ class Review {
     required this.title,
     required this.time,
     this.isShowOnProfile,
+    this.lawyer,
   });
 
   Review copyWith({
@@ -23,6 +26,7 @@ class Review {
     String? title,
     DateTime? time,
     bool? isShowOnProfile,
+    User? lawyer,
   }) {
     return Review(
       id: id ?? this.id,
@@ -31,6 +35,7 @@ class Review {
       title: title ?? this.title,
       time: time ?? this.time,
       isShowOnProfile: isShowOnProfile ?? this.isShowOnProfile,
+      lawyer: lawyer ?? this.lawyer,
     );
   }
 

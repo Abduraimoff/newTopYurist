@@ -13,8 +13,8 @@ import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
-class LawyerProfilePage extends StatelessWidget {
-  const LawyerProfilePage({Key? key}) : super(key: key);
+class UserProfilePage extends StatelessWidget {
+  const UserProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class LawyerProfilePage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20.h),
-              const LawyerInfoWidget(),
+              const UserInfoWidget(),
               SizedBox(height: 16.h),
               const _UserTypeSwitherWidget(),
               SizedBox(height: 20.h),
@@ -76,8 +76,8 @@ class LawyerProfilePage extends StatelessWidget {
   }
 }
 
-class LawyerInfoWidget extends StatelessWidget {
-  const LawyerInfoWidget({Key? key}) : super(key: key);
+class UserInfoWidget extends StatelessWidget {
+  const UserInfoWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class LawyerInfoWidget extends StatelessWidget {
             ),
             Expanded(
               child: FittedBox(
-                child: Text(
+                child: LocaleText(
                   title,
                   style: TextStyle(
                     color: AppColors.grey,
@@ -116,119 +116,140 @@ class LawyerInfoWidget extends StatelessWidget {
     }
 
     return BlocBuilder<ProfileCubit, User>(builder: (context, state) {
-      return Container(
-        width: double.infinity,
-        height: 170.h,
-        padding:
-            EdgeInsets.only(top: 20.h, bottom: 16.h, right: 16.w, left: 16.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.04),
-              offset: Offset(0, 2),
-              blurRadius: 5,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 29.5.h,
-                        backgroundImage: AssetImage(state.image),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.name,
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            state.isVerified
-                                ? LocaleText(
-                                    'verified',
-                                    style: TextStyle(
-                                      color: AppColors.green,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                : LocaleText(
-                                    'notverified',
-                                    style: TextStyle(
-                                      color: AppColors.red,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                          ],
+      return AnimatedSize(
+        duration: const Duration(milliseconds: 300),
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: double.infinity,
+          height: (state.type == UserType.lawyer) ? 170.h : 99.h,
+          padding:
+              EdgeInsets.only(top: 20.h, bottom: 16.h, right: 16.w, left: 16.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.04),
+                offset: Offset(0, 2),
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 29.5.h,
+                          backgroundImage: AssetImage(state.image),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                  width: 20.h,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditProfilePage(),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.name,
+                                style: TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (state.type == UserType.lawyer)
+                                state.isVerified == true
+                                    ? LocaleText(
+                                        'verified',
+                                        style: TextStyle(
+                                          color: AppColors.green,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
+                                    : LocaleText(
+                                        'notverified',
+                                        style: TextStyle(
+                                          color: AppColors.red,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
+                              else
+                                Text(
+                                  state.phoneNumber,
+                                  style: TextStyle(
+                                    color: AppColors.grey,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                            ],
                           ),
-                        );
-                      },
-                      child: SvgPicture.asset(AppIcons.editWithBorder),
+                        )
+                      ],
                     ),
                   ),
-                )
-              ],
-            ),
-            SizedBox(height: 12.h),
-            const Divider(
-              color: AppColors.grey,
-              height: 0,
-            ),
-            SizedBox(height: 16.h),
-            Expanded(
-              child: Row(
-                children: [
-                  itemWidget(
-                    amount: state.amountFavorites ?? 0,
-                    title: "В избранном",
-                  ),
-                  SizedBox(width: 5.w),
-                  itemWidget(
-                    amount: state.amountSelects ?? 0,
-                    title: "Выбраны",
-                  ),
-                  SizedBox(width: 5.w),
-                  itemWidget(
-                    amount: state.amountCOmplates ?? 0,
-                    title: "Выполнено",
-                  ),
+                  SizedBox(
+                    height: 20.h,
+                    width: 20.h,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfilePage(),
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset(AppIcons.editWithBorder),
+                      ),
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
+              if (state.type == UserType.lawyer)
+                Expanded(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 12.h),
+                      const Divider(
+                        color: AppColors.grey,
+                        height: 0,
+                      ),
+                      SizedBox(height: 16.h),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            itemWidget(
+                              amount: state.amountFavorites ?? 0,
+                              title: "favorites",
+                            ),
+                            SizedBox(width: 5.w),
+                            itemWidget(
+                              amount: state.amountSelects ?? 0,
+                              title: "selected",
+                            ),
+                            SizedBox(width: 5.w),
+                            itemWidget(
+                              amount: state.amountCOmplates ?? 0,
+                              title: "performed",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+            ],
+          ),
         ),
       );
     });
@@ -421,20 +442,22 @@ class _ItemsWidget extends StatelessWidget {
               decoration: decoration,
               child: Column(
                 children: [
-                  imetWidget(
-                    icon: AppIcons.warning,
-                    title: "verification",
-                    ontap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const VerificationPage(),
-                        ),
-                      );
-                    },
-                    iconColor:
-                        state.isVerified ? AppColors.grey : AppColors.red,
-                  ),
+                  if (state.type == UserType.lawyer)
+                    imetWidget(
+                      icon: AppIcons.warning,
+                      title: "verification",
+                      ontap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const VerificationPage(),
+                          ),
+                        );
+                      },
+                      iconColor: state.isVerified == true
+                          ? AppColors.grey
+                          : AppColors.red,
+                    ),
                   imetWidget(
                     icon: AppIcons.star,
                     title: "reviews",

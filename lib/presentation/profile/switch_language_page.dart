@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,7 +37,9 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
                   width: 20.h,
                   padding: EdgeInsets.all(2.h),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.blue : AppColors.grey,
+                    color: isSelected
+                        ? AppColors.blue
+                        : AppColors.grey.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: isSelected

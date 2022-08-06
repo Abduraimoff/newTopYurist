@@ -18,5 +18,8 @@
   "all": "All",
   "resolved": "Resolved",
   "not_resolved": "Not resolved",
-  "show_feedback_on_your_profile": "Show feedback on your profile"
+  "show_feedback_on_your_profile": "Show feedback on your profile",
+  "favorites": "Favorites",
+  "selected": "Selected",
+  "performed": "Performed"
 }

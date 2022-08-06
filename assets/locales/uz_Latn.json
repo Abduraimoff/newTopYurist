@@ -16,5 +16,8 @@
   "all": "Hammasi",
   "resolved": "Hal qilingan",
   "not_resolved": "Hal qilinmagan",
-  "show_feedback_on_your_profile": "Sharxni profilingizda ko'rsatish"
+  "show_feedback_on_your_profile": "Sharxni profilingizda ko'rsatish",
+  "favorites": "Sevimlilar",
+  "selected": "Tanlanganlar",
+  "performed": "Bajarilganlar"
 }

@@ -16,5 +16,8 @@
   "all": "Ҳаммаси",
   "resolved": "Хал қилинган",
   "not_resolved": "Хал қилинмаган",
-  "show_feedback_on_your_profile": "Шархни профилингизда кўрсатиш"
+  "show_feedback_on_your_profile": "Шархни профилингизда кўрсатиш",
+  "favorites": "Севимлилар",
+  "selected": "Танланганлар",
+  "performed": "Бажарилганлар"
 }
