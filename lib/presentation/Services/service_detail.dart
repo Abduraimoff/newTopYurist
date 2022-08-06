@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import 'ServiceList/ServiceList.dart';
+
 class ServiceDetail extends StatelessWidget {
   static const String routeName = 'service-detail';
 
@@ -63,10 +65,7 @@ class ServiceDetail extends StatelessWidget {
             Expanded(
                 child: TabBarView(
               children: [
-                Container(
-                  decoration: BoxDecoration(color: AppColors.lightGrey),
-                  child: Text("heelo"),
-                ),
+                ServiceList(),
                 Icon(Icons.directions_transit),
                 Icon(Icons.directions_bike),
               ],
