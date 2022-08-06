@@ -3,6 +3,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/presentation/Login/login_screen.dart';
 import 'package:top_yurist/presentation/Services/SeriviceScreen.dart';
+import 'package:top_yurist/presentation/chat/chat_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 import '../profile/user_profile_page.dart';
@@ -15,16 +16,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static  final List<Widget> _widgetOptions = <Widget>[
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static final List<Widget> _widgetOptions = <Widget>[
     ServiceScreen(),
-    Text(
-      'Index 1: Chat Screen',
-      style: optionStyle,
-    ),
+    ChatsPage(),
     Text(
       'Index 2: Favourites screen',
       style: optionStyle,
@@ -37,8 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
