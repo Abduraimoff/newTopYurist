@@ -133,6 +133,8 @@ class _MessageAreaWidget extends StatelessWidget {
                 SizedBox(height: 15.h),
                 Text(
                   DateFormat('dd.MM.yyyy').format(element.time),
+                  style:
+                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 15.h),
               ],
@@ -169,7 +171,10 @@ class _MessageItemWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(message.content),
+            Text(
+              message.content,
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+            ),
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
@@ -268,7 +273,13 @@ class _MessageFielsWidget extends StatelessWidget {
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
-                  child: SvgPicture.asset(AppIcons.paperclip),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      AppIcons.paperclip,
+                      height: 24.h,
+                      width: 24.h,
+                    ),
+                  ),
                 ),
                 Positioned.fill(
                   child: Material(
