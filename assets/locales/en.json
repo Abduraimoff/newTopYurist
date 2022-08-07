@@ -21,5 +21,7 @@
   "show_feedback_on_your_profile": "Show feedback on your profile",
   "favorites": "Favorites",
   "selected": "Selected",
-  "performed": "Performed"
+  "performed": "Performed",
+  "chats": "Chats",
+  "empty": "Empty"
 }

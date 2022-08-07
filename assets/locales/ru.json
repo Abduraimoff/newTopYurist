@@ -37,5 +37,6 @@
   "surName": "Фамилия",
   "registration_offer_1": "Регистрируясь, вы принимаете ",
   "registration_offer_2": "публичную оферту",
-  "select_region_title": "Выберите свой город/область"
+  "select_region_title": "Выберите свой город/область",
+  "empty": "Пусто"
 }

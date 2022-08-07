@@ -21,12 +21,12 @@ class RequestMainScreen extends StatelessWidget {
             'Запросы',
             style: Theme.of(context).textTheme.headline2?.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 20),
+           SizedBox(height: 20.h),
           Container(
             width: double.infinity,
-            height: 46,
+            height: 46.h,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.sp),
               color:  AppColors.primary.withOpacity(0.10),
             ),
             child: TextButton(
@@ -47,7 +47,7 @@ class RequestMainScreen extends StatelessWidget {
               return Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.sp)),
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding:  EdgeInsets.all(16.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -68,12 +68,12 @@ class RequestMainScreen extends StatelessWidget {
                                     fontSize: 16,
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                 SizedBox(width: 12.w),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 5),
+                                  padding:  EdgeInsets.only(bottom: 5.h),
                                   child: Container(
-                                    width: 16,
-                                    height: 16,
+                                    width: 16.w,
+                                    height: 16.h,
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Color(0xFF1C4FD1),
@@ -93,13 +93,9 @@ class RequestMainScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 4),
-                      const Text(
+                       Text(
                         'Нужна консультация юриста по уголовному праву. Цену можем обговорить лично, примерную стоимость за консультицию и защиту по делу в суде',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          height: 2,
-                        ),
+                        style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.grey),
                       ),
                       const SizedBox(height: 4),
                       Row(
@@ -114,19 +110,21 @@ class RequestMainScreen extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            width: 78,
-                            height: 23,
+
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(52),
                               color: const Color(0xFF2CAD7F).withOpacity(0.1),
                             ),
-                            child: const Center(
-                              child: Text(
-                                'Активный',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: Color(0xff12cad7f),
+                            child:  Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
+                                child: const Text(
+                                  'Опубликован',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    color: Color(0xff12cad7f),
+                                  ),
                                 ),
                               ),
                             ),

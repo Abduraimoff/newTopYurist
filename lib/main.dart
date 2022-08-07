@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
                 amountFavorites: 4,
                 amountSelects: 5,
                 amountCOmplates: 6,
+                id: 4
               ),
             ),
           ),

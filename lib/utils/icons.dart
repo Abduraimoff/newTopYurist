@@ -1,4 +1,4 @@
-abstract class AppIcons {
+class AppIcons {
   static const location = 'assets/icons/location.svg';
   static const call = 'assets/icons/call.svg';
   static const edit = 'assets/icons/edit.svg';
@@ -21,4 +21,6 @@ abstract class AppIcons {
   static const global = 'assets/icons/global.svg';
   static const messageQuestion = 'assets/icons/message-question.svg';
   static const chevronLeft = 'assets/icons/chevron_left.svg';
+  static const paperclip = 'assets/icons/paperclip.svg';
+  static const microphone = 'assets/icons/microphone.svg';
 }

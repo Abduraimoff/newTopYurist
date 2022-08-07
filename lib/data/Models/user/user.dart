@@ -1,6 +1,7 @@
 enum UserType { lawyer, notLawyer }
 
 class User {
+  final int id;
   final String name;
   final String phoneNumber;
   final String image;
@@ -10,6 +11,7 @@ class User {
   final int? amountSelects;
   final int? amountCOmplates;
   User({
+    required this.id,
     required this.name,
     required this.phoneNumber,
     required this.image,
@@ -48,17 +50,18 @@ class User {
   }
 
   User copyWith({
+    int? id,
     String? name,
     String? phoneNumber,
     String? image,
     bool? isVerified,
     UserType? type,
-    bool? isNotificationEnable,
     int? amountFavorites,
     int? amountSelects,
     int? amountCOmplates,
   }) {
     return User(
+      id: id ?? this.id,
       name: name ?? this.name,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       image: image ?? this.image,
