@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:top_yurist/bloc/Cubit/CheckUserRole/user_role_cubit.dart';
+
 import 'package:top_yurist/presentation/Login/lawyer_select_category.dart';
 import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
+
+import '../../bloc/profile_cubit/CheckUserRole/user_role_cubit.dart';
 
 class SelectRegion extends StatefulWidget {
   static const routeName = "Select-region";

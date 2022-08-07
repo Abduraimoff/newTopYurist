@@ -4,18 +4,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
+import 'package:top_yurist/presentation/profile/reviews_page.dart';
+import 'package:top_yurist/presentation/profile/switch_language_page.dart';
+import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
-  class LawyerProfilePage extends StatelessWidget {
-  const LawyerProfilePage({Key? key}) : super(key: key);
+class UserProfilePage extends StatelessWidget {
+  const UserProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 870));
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -50,7 +53,7 @@ import 'package:top_yurist/utils/icons.dart';
                 ],
               ),
               SizedBox(height: 20.h),
-              const LawyerInfoWidget(),
+              const UserInfoWidget(),
               SizedBox(height: 16.h),
               const _UserTypeSwitherWidget(),
               SizedBox(height: 20.h),
@@ -73,8 +76,8 @@ import 'package:top_yurist/utils/icons.dart';
   }
 }
 
-class LawyerInfoWidget extends StatelessWidget {
-  const LawyerInfoWidget({Key? key}) : super(key: key);
+class UserInfoWidget extends StatelessWidget {
+  const UserInfoWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,20 +86,28 @@ class LawyerInfoWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '$amount',
-              style: TextStyle(
-                color: AppColors.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: FittedBox(
+                child: Text(
+                  '$amount',
+                  style: TextStyle(
+                    color: AppColors.black,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
-            Text(
-              title,
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
+            Expanded(
+              child: FittedBox(
+                child: LocaleText(
+                  title,
+                  style: TextStyle(
+                    color: AppColors.grey,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
             ),
           ],
@@ -105,115 +116,140 @@ class LawyerInfoWidget extends StatelessWidget {
     }
 
     return BlocBuilder<ProfileCubit, User>(builder: (context, state) {
-      return Container(
-        width: double.infinity,
-        height: 170.h,
-        padding:
-            EdgeInsets.only(top: 20.h, bottom: 16.h, right: 16.w, left: 16.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.04),
-              offset: Offset(0, 2),
-              blurRadius: 5,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 29.5.h,
-                        backgroundImage: AssetImage(state.image),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.name,
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            state.isVerified
-                                ? LocaleText(
-                                    'verified',
-                                    style: TextStyle(
-                                      color: AppColors.green,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                : LocaleText(
-                                    'notverified',
-                                    style: TextStyle(
-                                      color: AppColors.red,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                          ],
+      return AnimatedSize(
+        duration: const Duration(milliseconds: 300),
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: double.infinity,
+          height: (state.type == UserType.lawyer) ? 170.h : 99.h,
+          padding:
+              EdgeInsets.only(top: 20.h, bottom: 16.h, right: 16.w, left: 16.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.04),
+                offset: Offset(0, 2),
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 29.5.h,
+                          backgroundImage: AssetImage(state.image),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                  width: 20.h,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditProfilePage(),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.name,
+                                style: TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (state.type == UserType.lawyer)
+                                state.isVerified == true
+                                    ? LocaleText(
+                                        'verified',
+                                        style: TextStyle(
+                                          color: AppColors.green,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
+                                    : LocaleText(
+                                        'notverified',
+                                        style: TextStyle(
+                                          color: AppColors.red,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
+                              else
+                                Text(
+                                  state.phoneNumber,
+                                  style: TextStyle(
+                                    color: AppColors.grey,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                            ],
                           ),
-                        );
-                      },
-                      child: SvgPicture.asset(AppIcons.editWithBorder),
+                        )
+                      ],
                     ),
                   ),
+                  SizedBox(
+                    height: 20.h,
+                    width: 20.h,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfilePage(),
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset(AppIcons.editWithBorder),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              if (state.type == UserType.lawyer)
+                Expanded(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 12.h),
+                      const Divider(
+                        color: AppColors.grey,
+                        height: 0,
+                      ),
+                      SizedBox(height: 16.h),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            itemWidget(
+                              amount: state.amountFavorites ?? 0,
+                              title: "favorites",
+                            ),
+                            SizedBox(width: 5.w),
+                            itemWidget(
+                              amount: state.amountSelects ?? 0,
+                              title: "selected",
+                            ),
+                            SizedBox(width: 5.w),
+                            itemWidget(
+                              amount: state.amountCOmplates ?? 0,
+                              title: "performed",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )
-              ],
-            ),
-            SizedBox(height: 12.h),
-            const Divider(
-              color: AppColors.grey,
-              height: 0,
-            ),
-            SizedBox(height: 16.h),
-            Row(
-              children: [
-                itemWidget(
-                  amount: state.amountFavorites ?? 0,
-                  title: "В избранном",
-                ),
-                itemWidget(
-                  amount: state.amountSelects ?? 0,
-                  title: "Выбраны",
-                ),
-                itemWidget(
-                  amount: state.amountCOmplates ?? 0,
-                  title: "Выполнено",
-                ),
-              ],
-            )
-          ],
+            ],
+          ),
         ),
       );
     });
@@ -330,46 +366,58 @@ class _ItemsWidget extends StatelessWidget {
       required VoidCallback ontap,
       Color? iconColor,
     }) {
-      return SizedBox(
-        height: 50.h,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        icon,
-                        height: 20.h,
-                        width: 20.h,
-                        color: iconColor ?? AppColors.grey,
-                      ),
-                      SizedBox(width: 12.w),
-                      LocaleText(
-                        title,
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.w400),
-                      ),
-                    ],
+      return Stack(
+        children: [
+          SizedBox(
+            height: 50.h,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              icon,
+                              height: 20.h,
+                              width: 20.h,
+                              color: iconColor ?? AppColors.grey,
+                            ),
+                            SizedBox(width: 12.w),
+                            LocaleText(
+                              title,
+                              style: TextStyle(
+                                  fontSize: 16.sp, fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        SvgPicture.asset(
+                          AppIcons.chevronRignt,
+                          color: AppColors.grey,
+                          height: 20.h,
+                          width: 20.h,
+                        )
+                      ],
+                    ),
                   ),
-                  SvgPicture.asset(
-                    AppIcons.chevronRignt,
-                    color: AppColors.grey,
-                    height: 20.h,
-                    width: 20.h,
-                  )
-                ],
-              ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Divider(height: 0),
+                )
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child: Divider(height: 0),
-            )
-          ],
-        ),
+          ),
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(onTap: ontap),
+            ),
+          )
+        ],
       );
     }
 
@@ -394,22 +442,45 @@ class _ItemsWidget extends StatelessWidget {
               decoration: decoration,
               child: Column(
                 children: [
-                  imetWidget(
-                    icon: AppIcons.warning,
-                    title: "verification",
-                    ontap: () {},
-                    iconColor:
-                        state.isVerified ? AppColors.grey : AppColors.red,
-                  ),
+                  if (state.type == UserType.lawyer)
+                    imetWidget(
+                      icon: AppIcons.warning,
+                      title: "verification",
+                      ontap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const VerificationPage(),
+                          ),
+                        );
+                      },
+                      iconColor: state.isVerified == true
+                          ? AppColors.grey
+                          : AppColors.red,
+                    ),
                   imetWidget(
                     icon: AppIcons.star,
                     title: "reviews",
-                    ontap: () {},
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ReviewsPage(),
+                        ),
+                      );
+                    },
                   ),
                   imetWidget(
                     icon: AppIcons.global,
                     title: "switch_language",
-                    ontap: () {},
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SwitchLanguagePage(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:top_yurist/bloc/Cubit/CheckUserRole/user_role_cubit.dart';
+
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/utils/colors.dart';
+
+import '../../bloc/profile_cubit/CheckUserRole/user_role_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "login/screen";

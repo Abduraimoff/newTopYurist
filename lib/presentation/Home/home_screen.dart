@@ -5,8 +5,7 @@ import 'package:top_yurist/presentation/Login/login_screen.dart';
 import 'package:top_yurist/presentation/Services/SeriviceScreen.dart';
 import 'package:top_yurist/utils/colors.dart';
 
-import '../profile/lawyer_profile_page.dart';
-
+import '../profile/user_profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "home/screen";
@@ -31,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'Index 2: Favourites screen',
       style: optionStyle,
     ),
-    LawyerProfilePage(),
+    UserProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -45,13 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
-        items:  <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home_rounded),
             label: context.localeString("services"),
@@ -67,17 +65,16 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: context.localeString("setting"),
-
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.grey,
-        unselectedLabelStyle: const TextStyle(fontSize: 12, color: AppColors.grey, fontWeight: FontWeight.w400),
+        unselectedLabelStyle: const TextStyle(
+            fontSize: 12, color: AppColors.grey, fontWeight: FontWeight.w400),
         showUnselectedLabels: true,
         onTap: _onItemTapped,
       ),
     );
   }
 }
-

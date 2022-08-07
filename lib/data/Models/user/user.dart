@@ -4,7 +4,7 @@ class User {
   final String name;
   final String phoneNumber;
   final String image;
-  final bool isVerified;
+  final bool? isVerified;
   final UserType type;
   final int? amountFavorites;
   final int? amountSelects;
@@ -13,11 +13,11 @@ class User {
     required this.name,
     required this.phoneNumber,
     required this.image,
-    required this.isVerified,
+    this.isVerified,
     required this.type,
-    required this.amountFavorites,
-    required this.amountSelects,
-    required this.amountCOmplates,
+    this.amountFavorites,
+    this.amountSelects,
+    this.amountCOmplates,
   });
 
   @override

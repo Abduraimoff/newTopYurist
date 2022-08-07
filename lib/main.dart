@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:top_yurist/bloc/Cubit/CheckUserRole/user_role_cubit.dart';
-import 'package:top_yurist/bloc/cubit/profile_cubit_cubit.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/Home/home_screen.dart';
 import 'package:top_yurist/presentation/Login/lawyer_select_category.dart';
@@ -18,10 +16,8 @@ import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/presentation/User/Requests/create_new_request.dart';
 import 'package:top_yurist/presentation/User/Requests/lawyer_profile_screen.dart';
 import 'package:top_yurist/presentation/User/Requests/request_detail.dart';
-import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/theme.dart';
-
-import 'presentation/profile/lawyer_profile_page.dart';
+import 'bloc/profile_cubit/CheckUserRole/user_role_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +42,7 @@ class MyApp extends StatelessWidget {
                 name: 'Феруз Тахирович',
                 phoneNumber: '+998999999999',
                 image: 'assets/images/lawyer.jpg',
-                isVerified: true,
+                isVerified: false,
                 type: UserType.lawyer,
                 amountFavorites: 4,
                 amountSelects: 5,
@@ -64,8 +60,10 @@ class MyApp extends StatelessWidget {
                   supportedLocales: Locales.supportedLocales,
                   locale: locale,
                   theme: MainTheme().themeData,
+
                   home: const HomeScreenUser(),
                   initialRoute: LoginScreen.routeName,
+
                   routes: {
                     HomeScreenUser.routeName: (context)=> const HomeScreenUser(),
                     RegisterScreen.registerScreen: (context) =>

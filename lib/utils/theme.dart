@@ -4,7 +4,7 @@ import 'colors.dart';
 
 class MainTheme {
   ThemeData themeData = ThemeData(
-      fontFamily: "Aeroport",
+    fontFamily: "Aeroport",
       primarySwatch: Colors.blue,
       textTheme: TextTheme(
           headline2: const TextStyle(
@@ -27,4 +27,5 @@ class MainTheme {
 
             indicator: BoxDecoration(borderRadius: BorderRadius.circular(52), color: AppColors.primary),),
       scaffoldBackgroundColor: AppColors.scaffoldBackground);
+
 }

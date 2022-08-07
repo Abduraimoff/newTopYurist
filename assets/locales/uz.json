@@ -2,7 +2,7 @@
   "welcome": "Hush kelibsiz",
   "language": "O`zbek",
   "profile": "Profil",
-  "notVerified": "Tasdiqlanmagan",
+  "notverified": "Tasdiqlanmagan",
   "verified": "Tasdiqlangan",
   "i_am_lawyer": "Men yurist",
   "i_am_user": "Men foydalanuvchi",
@@ -14,5 +14,12 @@
   "log_out": "Chiqish",
   "faq": "FAQ",
   "enter": "Kirish",
-  "sent_code_title":"Мы отправили вам СМС с кодом на номер"
+  "all": "Hammasi",
+  "resolved": "Hal qilingan",
+  "not_resolved": "Hal qilinmagan",
+  "sent_code_title": "Мы отправили вам СМС с кодом на номер",
+  "show_feedback_on_your_profile": "Sharxni profilingizda ko'rsatish",
+  "favorites": "Sevimlilar",
+  "selected": "Tanlanganlar",
+  "performed": "Bajarilganlar"
 }

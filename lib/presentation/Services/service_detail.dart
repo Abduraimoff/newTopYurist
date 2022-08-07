@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
+import 'package:top_yurist/utils/colors.dart';
 
-import '../../utils/colors.dart';
+import 'ServiceList/ServiceList.dart';
 
 class ServiceDetail extends StatelessWidget {
   static const String routeName = 'service-detail';
@@ -23,37 +24,54 @@ class ServiceDetail extends StatelessWidget {
             style: Theme.of(context).textTheme.headline3,
           ),
         ),
-        body: Column(children: [
-          TabBar(
-            indicatorColor:  AppColors.primary ,
-              automaticIndicatorColorAdjustment: true,
-              indicatorPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              tabs: [
-           Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(56.sp),
-           ),
-             child: Text("heelo")
-             ,),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(56.sp),
-                  color: AppColors.grey
-
-                ),
-                  child: Center(child: Text("heelo"))
-                  ,),
-                Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(56.sp),
-                ),
-                  child: Text("heelo")
-                  ,)
-
-          ]),
-          Expanded(child: TabBarView(children: [
-            Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
-          ],))
-        ],),
-
+        body: Column(
+          children: [
+            TabBar(
+                padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 0),
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50), // Creates border
+                    color: AppColors.white.withAlpha(0)),
+                labelColor: AppColors.white,
+                unselectedLabelColor: AppColors.blue,
+                tabs: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.blue,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    height: 40.0,
+                    alignment: Alignment.center,
+                    child: Text("Новые"),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGrey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    alignment: Alignment.center,
+                    height: 40.0,
+                    child: Center(child: Text("Выбранные")),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGrey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    alignment: Alignment.center,
+                    height: 40.0,
+                    child: Text("Отказы"),
+                  )
+                ]),
+            Expanded(
+                child: TabBarView(
+              children: [
+                ServiceList(),
+                Icon(Icons.directions_transit),
+                Icon(Icons.directions_bike),
+              ],
+            ))
+          ],
+        ),
       ),
     );
   }
