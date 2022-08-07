@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:top_yurist/presentation/Services/select_category.dart';
 import 'package:top_yurist/presentation/Services/service_detail.dart';
 import 'package:top_yurist/utils/colors.dart';
+
+import '../UserUploadedServices/LawyerChatScreen.dart';
 
 class ServiceScreen extends StatelessWidget {
   const ServiceScreen({Key? key}) : super(key: key);
@@ -71,31 +74,36 @@ class ServiceScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Уголовное право',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline3,
-                                        ),
-                                        SizedBox(width: 6.w),
-                                        Container(
-                                          width: 16.w,
-                                          height: 16.h,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: AppColors.primary,
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.of(context).pushNamed(LawyerChatScreen.routeName);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'Уголовное право',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline3,
                                           ),
-                                          child: const Center(
-                                            child: Text(
-                                              '1',
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                          SizedBox(width: 6.w),
+                                          Container(
+                                            width: 16.w,
+                                            height: 16.h,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: AppColors.primary,
+                                            ),
+                                            child: const Center(
+                                              child: Text(
+                                                '1',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                     SizedBox(height: 12.h),
                                     Text(

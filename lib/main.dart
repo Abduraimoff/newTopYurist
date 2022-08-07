@@ -16,6 +16,11 @@ import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/presentation/User/Requests/create_new_request.dart';
 import 'package:top_yurist/presentation/User/Requests/lawyer_profile_screen.dart';
 import 'package:top_yurist/presentation/User/Requests/request_detail.dart';
+import 'package:top_yurist/presentation/UserUploadedServices/LawyerChatScreen.dart';
+import 'package:top_yurist/presentation/UserUploadedServices/add_new_template.dart';
+import 'package:top_yurist/presentation/UserUploadedServices/create_template.dart';
+import 'package:top_yurist/presentation/UserUploadedServices/filter_by_city.dart';
+import 'package:top_yurist/presentation/UserUploadedServices/uploaded_service_detail.dart';
 import 'package:top_yurist/utils/theme.dart';
 import 'bloc/profile_cubit/CheckUserRole/user_role_cubit.dart';
 
@@ -79,7 +84,14 @@ class MyApp extends StatelessWidget {
                     LawyerSelectCategory.routeName: (context) => const LawyerSelectCategory(),
                     HomeScreen.routeName: (context) => const HomeScreen(),
                     UserProfileScreen.routeName: (context) => const UserProfileScreen(),
-                  },
+                    LawyerChatScreen.routeName: (context) => const LawyerChatScreen(),
+                    FilterByCity.routeName: (context) => const FilterByCity(),
+                    UploadedServiceDetail.routeName: (context) => const UploadedServiceDetail(),
+                    CreateTemplateScreen.routeName: (context) => const CreateTemplateScreen(),
+                    ChatScreen.routeName: (context) => const ChatScreen(),
+
+
+                   },
                 )));
   }
 }

@@ -62,12 +62,12 @@ class ServiceDetail extends StatelessWidget {
                     child: Text("Отказы"),
                   )
                 ]),
-            Expanded(
+            const Expanded(
                 child: TabBarView(
               children: [
                 ServiceList(),
-                Icon(Icons.directions_transit),
-                Icon(Icons.directions_bike),
+                ServiceList(),
+                ServiceList(),
               ],
             ))
           ],
