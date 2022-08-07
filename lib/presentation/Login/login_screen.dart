@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_yurist/bloc/Cubit/CheckUserRole/user_role_cubit.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = "login/screen";
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 120.h,
+              height: 80.h,
             ),
             Center(child: Image.asset("assets/images/Logo.png")),
             SizedBox(
@@ -73,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 value: Locales.lang,
               ),
             ),
+            Image.asset("assets/images/Безымянный-1.png", width: 247.w, height: 247.h,),
             const Spacer(),
             SizedBox(
               height: 48.h,
@@ -80,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: ElevatedButton(
                   onPressed: (){
                     Navigator.of(context).pushNamed(RegisterScreen.registerScreen);
+                    context.read<UserRoleCubit>().changeUserStatus("lawyer");
                   },  style: ElevatedButton.styleFrom(primary: const Color.fromRGBO(133, 141, 163, 0.1), elevation: 0, ),child:  LocaleText("i_lawyer", style: Theme.of(context).textTheme.headline3,),),
             ),
             SizedBox(height: 21.h,),
@@ -88,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 343.w,
                 child: ElevatedButton(onPressed: (){
                   Navigator.of(context).pushNamed(RegisterScreen.registerScreen);
+                  context.read<UserRoleCubit>().changeUserStatus("user");
                 },style: ElevatedButton.styleFrom(primary: const Color.fromRGBO(133, 141, 163, 0.1), elevation: 0, ), child:  LocaleText("i_user", style: Theme.of(context).textTheme.headline3,))),
             SizedBox(height: 30.h,)
           ],

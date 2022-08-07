@@ -9,6 +9,7 @@ import '../profile/lawyer_profile_page.dart';
 
 
 class HomeScreen extends StatefulWidget {
+  static const String routeName = "home/screen";
   const HomeScreen({Key? key}) : super(key: key);
 
   @override

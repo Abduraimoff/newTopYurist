@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/utils/colors.dart';
 
@@ -17,6 +18,7 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -37,43 +39,16 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            // Container(
-            // width: double.infinity,
-            // height: 48,
-            // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.circular(8),
-            //   border: Border.all(
-            //     color: const Color(0xFF858DA3),
-            //     width: 1,
-            //   ),
-            // ),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: const [
-            //       Text(
-            //         'Выберите ктегорию запроса',
-            //         style: TextStyle(
-            //           fontWeight: FontWeight.w400,
-            //           fontSize: 14,
-            //           color: Colors.black,
-            //         ),
-            //       ),
-            //       Icon(Icons.keyboard_arrow_down, color: Colors.black),
-            //     ],
-            //   ),
-            // ),
+             SizedBox(height: 20.h),
             Container(
               width: double.infinity,
-              height: 48,
+              height: 48.h,
               // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: const Color(0xFF858DA3),
-                  width: 1,
+                  width: 1.w,
                 ),
               ),
               child: DropdownButtonFormField(
@@ -95,17 +70,17 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
                 ),
                 items: _categories.map((city) {
                   return DropdownMenuItem(
-                    child: Text(city),
                     value: city,
+                    child: Text(city),
                   );
                 }).toList(),
                 onChanged: (val) {},
               ),
             ),
-            const SizedBox(height: 20),
+             SizedBox(height: 20.h),
             Container(
               width: double.infinity,
-              height: 180,
+              height: 180.h,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -130,7 +105,7 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+             SizedBox(height: 20.h),
             const Text(
               'Фото',
               style: TextStyle(
@@ -166,7 +141,7 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 6),
+                 SizedBox(width: 6.w),
                 DottedBorder(
                   color: const Color(0xFF858DA3),
                   radius: const Radius.circular(5),

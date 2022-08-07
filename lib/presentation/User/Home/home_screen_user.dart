@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../Favourites/favourites_screen.dart';
 import '../Requests/request_screen.dart';
 
 
 
 class HomeScreenUser extends StatefulWidget {
+  static const String routeName = "user/home/screen";
   const HomeScreenUser({Key? key}) : super(key: key);
 
   @override
@@ -24,10 +26,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
       'Index 1: Chat Screen',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Favourites screen',
-      style: optionStyle,
-    ),
+    const FavouritesScreen(),
     Text("Profile Screen")
   ];
 
