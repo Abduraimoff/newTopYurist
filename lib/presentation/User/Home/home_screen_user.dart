@@ -3,7 +3,10 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:top_yurist/presentation/profile/user_profile_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../Favourites/favourites_screen.dart';
 import '../Requests/request_screen.dart';
+
+
 
 class HomeScreenUser extends StatefulWidget {
   const HomeScreenUser({Key? key}) : super(key: key);
@@ -13,20 +16,18 @@ class HomeScreenUser extends StatefulWidget {
 }
 
 class _HomeScreenUserState extends State<HomeScreenUser> {
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static  final List<Widget> _widgetOptions = <Widget>[
     CreateRequestScreen(),
     Text(
       'Index 1: Chat Screen',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Favourites screen',
-      style: optionStyle,
-    ),
-    UserProfilePage()
+    const FavouritesScreen(),
+    Text("Profile Screen")
   ];
 
   void _onItemTapped(int index) {

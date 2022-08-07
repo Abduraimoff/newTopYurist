@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:top_yurist/presentation/Login/lawyer_select_category.dart';
+import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
+
+import '../../bloc/profile_cubit/CheckUserRole/user_role_cubit.dart';
 
 class SelectRegion extends StatefulWidget {
   static const routeName = "Select-region";
@@ -43,6 +49,12 @@ final List<String> added = [];
               SizedBox(height: 10.h,),
           InkWell(
             onTap: (){
+              if(context.read<UserRoleCubit>().userStatus == "user"){
+                Navigator.of(context).pushNamedAndRemoveUntil(HomeScreenUser.routeName, (route) => false);
+              }else{
+                Navigator.of(context).pushNamed(LawyerSelectCategory.routeName);
+              }
+              
               added.add(e);
               setState(() {
 
@@ -50,10 +62,10 @@ final List<String> added = [];
             },
             child: Row(
               children: [
-                Container(height: 18.h, width: 18.h,
-                decoration:  BoxDecoration(shape: BoxShape.circle, color: added.contains(e) ?  AppColors.primary : AppColors.grey),
-                  child: added.contains(e) ?  const Center(child: Icon(Icons.check, size: 10, color: Colors.white,),) : null,
-                ),
+                // Container(height: 18.h, width: 18.h,
+                // decoration:  BoxDecoration(shape: BoxShape.circle, color: added.contains(e) ?  AppColors.primary : AppColors.grey),
+                //   child: added.contains(e) ?  const Center(child: Icon(Icons.check, size: 10, color: Colors.white,),) : null,
+                // ),
                 SizedBox(width: 9.w,),
                 Text(e, style: Theme.of(context).textTheme.headline3,),
               ],

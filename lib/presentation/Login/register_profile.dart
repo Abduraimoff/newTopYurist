@@ -18,8 +18,8 @@ class RegisterProfile extends StatefulWidget {
 
 class _RegisterProfileState extends State<RegisterProfile> {
   String? phoneCode;
-  final TextEditingController _controller = TextEditingController();
-
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _SureNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -64,7 +64,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
             SizedBox(
               height: 48.h,
               child: TextField(
-                controller: _controller,
+                controller: _nameController,
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(8),
                     border: OutlineInputBorder(
@@ -88,7 +88,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
             SizedBox(
               height: 48.h,
               child: TextField(
-                controller: _controller,
+                controller: _SureNameController,
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(8),
                     border: OutlineInputBorder(

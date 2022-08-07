@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_yurist/presentation/User/Requests/lawyer_profile_screen.dart';
 
 import '../../../utils/colors.dart';
 
@@ -52,6 +53,7 @@ class UserRequestDetail extends StatelessWidget {
                 Tab(text: 'Запрос зыкрыт'),
               ],
             ),
+            SizedBox(height: 20.h,),
 
             Expanded(
               child: TabBarView(children: [
@@ -101,13 +103,18 @@ class DefaultTabView extends StatelessWidget {
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Феруз Тахирович',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.black,
+                        children:  [
+                          InkWell(
+                            onTap: (){
+                              Navigator.of(context).pushNamed(UserProfileScreen.routeName);
+                            },
+                            child: const Text(
+                              'Феруз Тахирович',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                           SizedBox(height: 3),

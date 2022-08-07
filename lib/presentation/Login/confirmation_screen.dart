@@ -31,6 +31,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> with TickerProv
 
     super.didChangeDependencies();
   }
+
   String get countText {
     Duration count = controller.duration! * controller.value;
     return controller.isDismissed
@@ -44,6 +45,12 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> with TickerProv
     if (countText == '00:00') {
 
     }
+  }
+
+  @override
+  void dispose() {
+   controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -107,7 +114,9 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> with TickerProv
                 fieldStyle: FieldStyle.box,
                 onCompleted: (pin) {
                   print("Completed: " + pin);
+                  Navigator.of(context).pushNamed(RegisterProfile.routeName);
                 },
+                onChanged: (value){},
               ),
 
             ],

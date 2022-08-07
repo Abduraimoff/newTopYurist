@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/Home/home_screen.dart';
+import 'package:top_yurist/presentation/Login/lawyer_select_category.dart';
 import 'package:top_yurist/presentation/Services/select_category.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/presentation/Login/confirmation_screen.dart';
@@ -14,11 +14,10 @@ import 'package:top_yurist/presentation/Login/select_region.dart';
 import 'package:top_yurist/presentation/Services/service_detail.dart';
 import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/presentation/User/Requests/create_new_request.dart';
+import 'package:top_yurist/presentation/User/Requests/lawyer_profile_screen.dart';
 import 'package:top_yurist/presentation/User/Requests/request_detail.dart';
-import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/theme.dart';
-
-import 'presentation/profile/user_profile_page.dart';
+import 'bloc/profile_cubit/CheckUserRole/user_role_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +39,6 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ProfileCubit(
               User(
-                id: 0,
                 name: 'Феруз Тахирович',
                 phoneNumber: '+998999999999',
                 image: 'assets/images/lawyer.jpg',
@@ -51,7 +49,8 @@ class MyApp extends StatelessWidget {
                 amountCOmplates: 6,
               ),
             ),
-          )
+          ),
+          BlocProvider(create: (context) => UserRoleCubit())
         ],
         child: LocaleBuilder(
             builder: (locale) => MaterialApp(
@@ -61,22 +60,25 @@ class MyApp extends StatelessWidget {
                   supportedLocales: Locales.supportedLocales,
                   locale: locale,
                   theme: MainTheme().themeData,
-                  home: const HomeScreen(),
+
+                  home: const HomeScreenUser(),
+                  initialRoute: LoginScreen.routeName,
+
                   routes: {
+                    HomeScreenUser.routeName: (context)=> const HomeScreenUser(),
                     RegisterScreen.registerScreen: (context) =>
                         const RegisterScreen(),
-                    ConfirmationScreen.routeName: (context) =>
-                        const ConfirmationScreen(),
-                    RegisterProfile.routeName: (context) =>
-                        const RegisterProfile(),
-                    SelectRegion.routeName: (context) => const SelectRegion(),
-                    SelectCategory.routeName: (context) =>
-                        const SelectCategory(),
+                    ConfirmationScreen.routeName: (context) => const ConfirmationScreen(),
+                    RegisterProfile.routeName: (context) => const RegisterProfile(),
+                    SelectRegion.routeName: (context) =>  const SelectRegion(),
+                    SelectCategory.routeName: (context) => const SelectCategory(),
                     ServiceDetail.routeName: (context) => const ServiceDetail(),
-                    CreateNewRequest.routeName: (context) =>
-                        const CreateNewRequest(),
-                    UserRequestDetail.routeName: (context) =>
-                        const UserRequestDetail()
+                    CreateNewRequest.routeName:(context) => const CreateNewRequest(),
+                    UserRequestDetail.routeName:(context) => const UserRequestDetail(),
+                    LoginScreen.routeName:(context) => const LoginScreen(),
+                    LawyerSelectCategory.routeName: (context) => const LawyerSelectCategory(),
+                    HomeScreen.routeName: (context) => const HomeScreen(),
+                    UserProfileScreen.routeName: (context) => const UserProfileScreen(),
                   },
                 )));
   }
