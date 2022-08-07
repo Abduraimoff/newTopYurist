@@ -16,6 +16,7 @@ class ReviewCubit extends Cubit<ReviewState> {
         Review(
           id: 0,
           user: User(
+            id: 1,
             name: 'Феруз Тахирович',
             phoneNumber: '+998999999999',
             image: 'assets/images/lawyer.jpg',
@@ -23,6 +24,7 @@ class ReviewCubit extends Cubit<ReviewState> {
             type: UserType.lawyer,
           ),
           lawyer: User(
+            id: 2,
             name: 'Феруз Тахирович',
             phoneNumber: '+998999999999',
             image: 'assets/images/lawyer.jpg',
@@ -41,12 +43,14 @@ class ReviewCubit extends Cubit<ReviewState> {
         Review(
           id: 1,
           user: User(
+            id: 3,
             name: 'Феруз Тахирович',
             phoneNumber: '+998999999999',
             image: 'assets/images/lawyer.jpg',
             type: UserType.lawyer,
           ),
           lawyer: User(
+            id: 4,
             name: 'Феруз Тахирович',
             phoneNumber: '+998999999999',
             image: '',

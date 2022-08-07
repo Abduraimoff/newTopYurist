@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ProfileCubit(
               User(
+                id: 0,
                 name: 'Феруз Тахирович',
                 phoneNumber: '+998999999999',
                 image: 'assets/images/lawyer.jpg',
@@ -64,13 +65,18 @@ class MyApp extends StatelessWidget {
                   routes: {
                     RegisterScreen.registerScreen: (context) =>
                         const RegisterScreen(),
-                    ConfirmationScreen.routeName: (context) => const ConfirmationScreen(),
-                    RegisterProfile.routeName: (context) => const RegisterProfile(),
-                    SelectRegion.routeName: (context) =>  const SelectRegion(),
-                    SelectCategory.routeName: (context) => const SelectCategory(),
+                    ConfirmationScreen.routeName: (context) =>
+                        const ConfirmationScreen(),
+                    RegisterProfile.routeName: (context) =>
+                        const RegisterProfile(),
+                    SelectRegion.routeName: (context) => const SelectRegion(),
+                    SelectCategory.routeName: (context) =>
+                        const SelectCategory(),
                     ServiceDetail.routeName: (context) => const ServiceDetail(),
-                    CreateNewRequest.routeName:(context) => const CreateNewRequest(),
-                    UserRequestDetail.routeName:(context) => const UserRequestDetail()
+                    CreateNewRequest.routeName: (context) =>
+                        const CreateNewRequest(),
+                    UserRequestDetail.routeName: (context) =>
+                        const UserRequestDetail()
                   },
                 )));
   }

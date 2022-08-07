@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:top_yurist/bloc/chat_cubit/chat_cubit.dart';
 import 'package:top_yurist/data/Models/chat/chat.dart';
+import 'package:top_yurist/presentation/messaging/messaging_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 class ChatsPage extends StatelessWidget {
@@ -170,63 +171,80 @@ class _ChatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: 16.w, top: 10.h, bottom: 10.h),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  chat.user.name,
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  chat.lastMessage.content,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.grey,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 12.h),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(50.h),
-                  ),
-                  child: Text(
-                    'В прцессе',
-                    style: TextStyle(
-                      color: AppColors.blue,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
+    return Stack(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(right: 16.w, top: 10.h, bottom: 10.h),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      chat.user.name,
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w500),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Text(
-              DateFormat('hh:mm').format(chat.lastMessage.time).toString(),
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
+                    SizedBox(height: 8.h),
+                    Text(
+                      chat.lastMessage.content,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 12.h),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.blue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(50.h),
+                      ),
+                      child: Text(
+                        'В прцессе',
+                        style: TextStyle(
+                          color: AppColors.blue,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
-      ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  DateFormat('hh:mm').format(chat.lastMessage.time).toString(),
+                  style: TextStyle(
+                    color: AppColors.grey,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        Positioned.fill(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MessagingPage(userId: chat.user.id),
+                ),
+              );
+            }),
+          ),
+        )
+      ],
     );
   }
 }

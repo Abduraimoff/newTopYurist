@@ -13,7 +13,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> getChats() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 300));
     final newState = Chatloaded(
       chats: [
         Chat(
@@ -24,10 +24,11 @@ class ChatCubit extends Cubit<ChatState> {
                 'Нужна консультация юриста по уголовному праву Цену можем обговорить лично, примерную стоимость за консультицию и защиту по делу в суде',
             time: DateTime.now(),
             type: MessageType.text,
-            userId: 0,
+            isSentByMe: true,
           ),
           isResolved: true,
           user: User(
+            id: 5,
             name: 'Феруз Тахирович',
             phoneNumber: '+998999999999',
             image: 'assets/images/lawyer.jpg',
@@ -42,10 +43,11 @@ class ChatCubit extends Cubit<ChatState> {
                 'Нужна консультация юриста по уголовному праву Цену можем обговорить лично, примерную стоимость за консультицию и защиту по делу в суде',
             time: DateTime.now(),
             type: MessageType.text,
-            userId: 0,
+            isSentByMe: true,
           ),
           isResolved: true,
           user: User(
+            id: 6,
             name: 'Феруз Тахирович',
             phoneNumber: '+998999999999',
             image: 'assets/images/lawyer.jpg',
