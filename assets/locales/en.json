@@ -23,5 +23,11 @@
   "selected": "Selected",
   "performed": "Performed",
   "chats": "Chats",
-  "empty": "Empty"
+  "empty": "Empty",
+  "numberOfApplications": "Number of applications",
+  "calls": "Calls",
+  "sentMessages": "Sent messages",
+  "incomingMessages": "incomign messages",
+  "youAreInFavorite": "you are in Favorite",
+  "statistics": "Statistics"
 }

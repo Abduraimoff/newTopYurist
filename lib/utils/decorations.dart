@@ -10,11 +10,13 @@ abstract class TextFieldDecorations {
       contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
       isCollapsed: true,
       border: const OutlineInputBorder(),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Color.fromRGBO(133, 141, 163, 1)),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Color.fromRGBO(133, 141, 163, 1)),
+        borderRadius: BorderRadius.circular(8.h),
       ),
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.blue),
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: AppColors.blue),
+        borderRadius: BorderRadius.circular(8.h),
       ),
     );
   }

@@ -55,7 +55,13 @@ class ChatCubit extends Cubit<ChatState> {
           ),
         ),
       ],
+      selectedType: 0,
     );
     emit(newState);
+  }
+
+  void changeType(int newType) {
+    final newstate = (state as Chatloaded).copyWith(selectedType: newType);
+    emit(newstate);
   }
 }

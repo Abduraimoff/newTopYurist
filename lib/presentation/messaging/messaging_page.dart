@@ -7,6 +7,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:top_yurist/bloc/messagin_bloc/messaging_bloc.dart';
 import 'package:top_yurist/data/Models/message_option/message_option.dart';
+import 'package:top_yurist/presentation/messaging/create_review.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 import '../../data/Models/message/message.dart';
@@ -20,9 +21,10 @@ class MessagingPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => MessagingBloc(),
       child: Scaffold(
-          body: _BodyWidget(
-        userId: userId,
-      )),
+        body: _BodyWidget(
+          userId: userId,
+        ),
+      ),
     );
   }
 }
@@ -199,7 +201,14 @@ class _OptionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final oprions = [
-      MessageOption(text: 'Выбрать юриста', onTap: () {}),
+      MessageOption(
+        text: 'Оставить отзыв',
+        onTap: () {
+          createReview(context);
+        },
+        textColor: AppColors.blue,
+        backgroundColor: AppColors.blue.withOpacity(0.1),
+      ),
       MessageOption(
         text: 'Отправить номер',
         onTap: () {},
