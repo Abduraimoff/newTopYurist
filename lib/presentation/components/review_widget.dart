@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
+
 import 'package:top_yurist/bloc/review_cubit/review_cubit.dart';
 import 'package:top_yurist/data/Models/review/review.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../../bloc/profile_cubit/profile_cubit_cubit.dart';
 import '../../data/Models/user/user.dart';
 
 class ReviewWidget extends StatelessWidget {

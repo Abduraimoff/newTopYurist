@@ -2,78 +2,88 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:top_yurist/bloc/Bloc/Auth/auth_bloc.dart';
+import 'package:top_yurist/bloc/Cubit/Auth/auth_user_cubit.dart';
 import 'package:top_yurist/presentation/Login/lawyer_select_category.dart';
 import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
 
-import '../../bloc/profile_cubit/CheckUserRole/user_role_cubit.dart';
+import '../../bloc/Bloc/Regions/regions_bloc.dart';
+
 
 class SelectRegion extends StatefulWidget {
   static const routeName = "Select-region";
    const SelectRegion({Key? key}) : super(key: key);
-static const List<String> regions = [
-  "город Ташкент",
-  "Андижанская область",
-  "Бухарская область",
-  "Джизакская область",
-  "Навоийская область",
-  "Самаркандская область",
-  "Ташкентская область",
-  "Ферганская область",
-  "Хорезмская область",
-  "Республика Каракалпакстан"
-];
 
   @override
   State<SelectRegion> createState() => _SelectRegionState();
 }
 
 class _SelectRegionState extends State<SelectRegion> {
-final List<String> added = [];
+final RegionsBloc _bloc = RegionsBloc();
+final AuthBloc _authBloc = AuthBloc();
+@override
+  void initState() {
+    _bloc.add(GetRegions());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       appBar: BaseAppBar(appBar: AppBar(), title: LocaleText("select_region_title", style: Theme.of(context).textTheme.headline3,),),
-      body: Padding(
+      body: BlocListener<AuthBloc, AuthState>(
+        bloc: _authBloc,
+  listener: (context, state) {
+  if(state is RegisterUserSuccessState){
+      Navigator.of(context).pushNamed(HomeScreenUser.routeName);
+  }
+  },
+  child: Padding(
         padding:  EdgeInsets.only(left: 16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: SelectRegion.regions.map((e) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 10.h,),
-          InkWell(
-            onTap: (){
-              if(context.read<UserRoleCubit>().userStatus == "user"){
-                Navigator.of(context).pushNamedAndRemoveUntil(HomeScreenUser.routeName, (route) => false);
-              }else{
-                Navigator.of(context).pushNamed(LawyerSelectCategory.routeName);
-              }
-              
-              added.add(e);
-              setState(() {
-
-              });
-            },
-            child: Row(
-              children: [
-                // Container(height: 18.h, width: 18.h,
-                // decoration:  BoxDecoration(shape: BoxShape.circle, color: added.contains(e) ?  AppColors.primary : AppColors.grey),
-                //   child: added.contains(e) ?  const Center(child: Icon(Icons.check, size: 10, color: Colors.white,),) : null,
-                // ),
-                SizedBox(width: 9.w,),
-                Text(e, style: Theme.of(context).textTheme.headline3,),
-              ],
-            ),
-          ),
-          SizedBox(height: 10.h,),
-          const Divider(color: AppColors.grey,),
-        ],)).toList(),),
-      ),);
+        child: BlocBuilder<RegionsBloc, RegionsState>(
+          bloc: _bloc,
+  builder: (context, state) {
+            if(state is RegionsLoadedSuccessState){
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: state.response.map((e) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10.h,),
+                      InkWell(
+                        onTap: (){
+                         context.read<AuthUserCubit>().getRegionId(e.title?.ruRu?? '', e.id ?? 0);
+                         if(context.read<AuthUserCubit>().newUser.userType == "lawyer"){
+                           Navigator.of(context).pushNamed(LawyerSelectCategory.routeName);
+                         } else{
+                           _authBloc.add(RegisterUserEvent(context.read<AuthUserCubit>().newUser));
+                         }
+                        },
+                        child: Row(
+                          children: [
+                            Container(height: 18.h, width: 18.h,
+                            decoration:  BoxDecoration(shape: BoxShape.circle, color: state.response.any((element) => context.read<AuthUserCubit>().newUser.regionId == e.id) ?  AppColors.primary : AppColors.grey),
+                              child: state.response.any((element) => context.read<AuthUserCubit>().newUser.regionId == e.id) ?  const Center(child: Icon(Icons.check, size: 10, color: Colors.white,),) : null,
+                            ),
+                            SizedBox(width: 9.w,),
+                            Text(e.title?.ruRu ?? "", style: Theme.of(context).textTheme.headline3,),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10.h,),
+                      const Divider(color: AppColors.grey,),
+                    ],)).toList(),),
+              );
+            }
+                return const Center(child: CircularProgressIndicator());
+  },
+),
+      ),
+),);
   }
 }
