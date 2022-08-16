@@ -10,6 +10,11 @@ class User {
   final int? amountFavorites;
   final int? amountSelects;
   final int? amountCOmplates;
+  final int? amountApplications;
+  final int? amountCalls;
+  final int? amountSentMessages;
+  final int? amountIncomingMessages;
+
   User({
     required this.id,
     required this.name,
@@ -20,6 +25,10 @@ class User {
     this.amountFavorites,
     this.amountSelects,
     this.amountCOmplates,
+    this.amountApplications,
+    this.amountCalls,
+    this.amountSentMessages,
+    this.amountIncomingMessages,
   });
 
   @override
@@ -59,6 +68,10 @@ class User {
     int? amountFavorites,
     int? amountSelects,
     int? amountCOmplates,
+    int? amountApplications,
+    int? amountCalls,
+    int? amountSentMessages,
+    int? amountIncomingMessages,
   }) {
     return User(
       id: id ?? this.id,
@@ -70,6 +83,11 @@ class User {
       amountFavorites: amountFavorites ?? this.amountFavorites,
       amountSelects: amountSelects ?? this.amountSelects,
       amountCOmplates: amountCOmplates ?? this.amountCOmplates,
+      amountApplications: amountApplications ?? this.amountApplications,
+      amountCalls: amountCalls ?? this.amountCalls,
+      amountSentMessages: amountSentMessages ?? this.amountSentMessages,
+      amountIncomingMessages:
+          amountIncomingMessages ?? this.amountIncomingMessages,
     );
   }
 }

@@ -92,10 +92,9 @@ class _BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final types = ['all', 'resolved', 'not_resolved'];
-    int selectedIndex = 0;
     return BlocBuilder<ChatCubit, ChatState>(
       builder: (context, state) {
+        int selectedIndex = (state as Chatloaded).selectedType;
         return Column(
           children: [
             SizedBox(height: 20.h),
@@ -109,7 +108,7 @@ class _BodyWidget extends StatelessWidget {
                       height: 40.h,
                       child: Chip(
                         padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        label: Center(child: LocaleText(types[index])),
+                        label: Center(child: LocaleText(state.types[index])),
                         backgroundColor: selectedIndex == index
                             ? AppColors.blue
                             : AppColors.grey.withOpacity(0.1),
@@ -127,14 +126,16 @@ class _BodyWidget extends StatelessWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(20.h),
-                          onTap: () {},
+                          onTap: () {
+                            context.read<ChatCubit>().changeType(index);
+                          },
                         ),
                       ),
                     )
                   ],
                 ),
                 separatorBuilder: (context, index) => SizedBox(width: 12.w),
-                itemCount: types.length,
+                itemCount: state.types.length,
                 scrollDirection: Axis.horizontal,
               ),
             ),
@@ -151,10 +152,10 @@ class _BodyWidget extends StatelessWidget {
                   },
                   separatorBuilder: (context, index) {
                     return _ChatWidget(
-                      chat: (state as Chatloaded).chats[index],
+                      chat: (state).chats[index],
                     );
                   },
-                  itemCount: (state as Chatloaded).chats.length + 1,
+                  itemCount: (state).chats.length + 1,
                 ),
               ),
             )

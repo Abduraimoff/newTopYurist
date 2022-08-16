@@ -8,6 +8,7 @@ import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
 import 'package:top_yurist/presentation/profile/reviews_page.dart';
+import 'package:top_yurist/presentation/profile/statistics_page.dart';
 import 'package:top_yurist/presentation/profile/switch_language_page.dart';
 import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
@@ -99,15 +100,15 @@ class UserInfoWidget extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: FittedBox(
-                child: LocaleText(
-                  title,
-                  style: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+              child: LocaleText(
+                title,
+                style: TextStyle(
+                  color: AppColors.grey,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
                 ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
           ],
@@ -121,9 +122,9 @@ class UserInfoWidget extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: Container(
           width: double.infinity,
-          height: (state.type == UserType.lawyer) ? 170.h : 99.h,
+          height: (state.type == UserType.lawyer) ? 203.h : 99.h,
           padding:
-              EdgeInsets.only(top: 20.h, bottom: 16.h, right: 16.w, left: 16.w),
+              EdgeInsets.only(top: 20.h, bottom: 10.h, right: 16.w, left: 16.w),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(6),
@@ -230,7 +231,7 @@ class UserInfoWidget extends StatelessWidget {
                           children: [
                             itemWidget(
                               amount: state.amountFavorites ?? 0,
-                              title: "favorites",
+                              title: "numberOfApplications",
                             ),
                             SizedBox(width: 5.w),
                             itemWidget(
@@ -243,6 +244,45 @@ class UserInfoWidget extends StatelessWidget {
                               title: "performed",
                             ),
                           ],
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      const Divider(
+                        color: AppColors.grey,
+                        height: 0,
+                      ),
+                      SizedBox(height: 10.h),
+                      SizedBox(
+                        height: 20.h,
+                        child: CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const StatisticsPage(),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Подробнее',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.blue,
+                                ),
+                              ),
+                              SvgPicture.asset(
+                                AppIcons.chevronRignt,
+                                color: AppColors.blue,
+                                height: 20.h,
+                                width: 20.h,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
