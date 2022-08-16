@@ -4,6 +4,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/bloc/Bloc/Auth/auth_bloc.dart';
 import 'package:top_yurist/bloc/Cubit/Auth/auth_user_cubit.dart';
+import 'package:top_yurist/data/Models/user/newUser.dart';
 import 'package:top_yurist/presentation/Login/lawyer_select_category.dart';
 import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
@@ -23,6 +24,7 @@ class SelectRegion extends StatefulWidget {
 class _SelectRegionState extends State<SelectRegion> {
 final RegionsBloc _bloc = RegionsBloc();
 final AuthBloc _authBloc = AuthBloc();
+NewUser? user;
 @override
   void initState() {
     _bloc.add(GetRegions());
@@ -48,7 +50,12 @@ final AuthBloc _authBloc = AuthBloc();
   builder: (context, state) {
             if(state is RegionsLoadedSuccessState){
               return SingleChildScrollView(
-                child: Column(
+                child: BlocBuilder<AuthUserCubit, AuthUserState>(
+  builder: (context, stateCubit) {
+    if(stateCubit is CollectUserData){
+      user = stateCubit.newUser;
+    }
+    return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: state.response.map((e) => Column(
@@ -61,7 +68,7 @@ final AuthBloc _authBloc = AuthBloc();
                          if(context.read<AuthUserCubit>().newUser.userType == "lawyer"){
                            Navigator.of(context).pushNamed(LawyerSelectCategory.routeName);
                          } else{
-                           _authBloc.add(RegisterUserEvent(context.read<AuthUserCubit>().newUser));
+                           _authBloc.add(RegisterUserEvent(user??NewUser()));
                          }
                         },
                         child: Row(
@@ -77,7 +84,9 @@ final AuthBloc _authBloc = AuthBloc();
                       ),
                       SizedBox(height: 10.h,),
                       const Divider(color: AppColors.grey,),
-                    ],)).toList(),),
+                    ],)).toList(),);
+  },
+),
               );
             }
                 return const Center(child: CircularProgressIndicator());

@@ -39,4 +39,9 @@ class AuthUserCubit extends Cubit<AuthUserState> {
     newUser.agreement = agreement;
     emit(CollectUserData(newUser));
   }
+  void getFullName(String name){
+    emit(AuthUserInitial());
+    newUser.fullName = name;
+    emit(CollectUserData(newUser));
+  }
 }

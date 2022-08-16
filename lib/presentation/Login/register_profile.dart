@@ -45,6 +45,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -115,6 +116,9 @@ class _RegisterProfileState extends State<RegisterProfile> {
                 height: 48.h,
                 child: TextField(
                   controller: _nameController,
+                  onChanged: (value){
+                    context.read<AuthUserCubit>().getFullName(value);
+                  },
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
                       border: OutlineInputBorder(
@@ -205,9 +209,10 @@ class _RegisterProfileState extends State<RegisterProfile> {
       agreement = state.newUser.agreement;
     }
     return FloatingActionButton(
-      onPressed: () {
-        context.read<AuthUserCubit>().newUser.fullName = "${_nameController.text} ${_sureNameController.text}";
+      onPressed: () async{
         fullName = "${_nameController.text} ${_sureNameController.text}";
+        context.read<AuthUserCubit>().getFullName(fullName??'');
+
         if((fullName?.length?? 0) <3){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your name should be at least 3 symbol')));
         } else if(agreement ?? false){
