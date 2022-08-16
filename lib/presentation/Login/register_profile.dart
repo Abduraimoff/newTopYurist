@@ -215,7 +215,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
 
         if((fullName?.length?? 0) <3){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your name should be at least 3 symbol')));
-        } else if(agreement ?? false){
+        } else if(agreement ?? true){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('please select agreement')));
         } else{
           Navigator.of(context).pushNamed(SelectRegion.routeName);
