@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
   File? image;
   String? fullName;
   bool? agreement;
+  bool _isPhotoUploading = false;
 
   Future pickImage() async {
     try {
@@ -38,6 +40,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
       final temporaryImage = File(image.path);
       setState(() {
         this.image = temporaryImage;
+        _isPhotoUploading = true;
       });
       _bloc.add(UploadImageEvent(temporaryImage));
     } on PlatformException catch (e) {
@@ -62,6 +65,9 @@ class _RegisterProfileState extends State<RegisterProfile> {
         bloc: _bloc,
         listener: (context, state) {
           if (state is UploadImageSuccessState) {
+            setState(() {
+              _isPhotoUploading = false;
+            });
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("`Your image successfully uploaded")));
           }
@@ -100,7 +106,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
               SizedBox(
                 height: 12.h,
               ),
-              TextButton(
+            _isPhotoUploading ? const Center(child: CupertinoActivityIndicator(color: AppColors.primary,)) :  TextButton(
                   onPressed: pickImage,
                   child: LocaleText(
                     "add_photo",

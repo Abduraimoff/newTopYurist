@@ -1,12 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:top_yurist/bloc/Cubit/Auth/auth_user_cubit.dart';
-import 'package:top_yurist/presentation/Home/home_screen.dart';
 import 'package:top_yurist/presentation/Login/confirmation_screen.dart';
-import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 import '../../bloc/Bloc/Auth/auth_bloc.dart';
@@ -23,29 +22,31 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   String? phoneCode;
   final AuthBloc _bloc = AuthBloc();
+  bool isLoading = false;
 
   String? error;
   final TextEditingController _controller = TextEditingController();
-  var maskFormatter =  MaskTextInputFormatter(
+  var maskFormatter = MaskTextInputFormatter(
       mask: '### ## ##',
-      filter: { "#": RegExp(r'[0-9]') },
-      type: MaskAutoCompletionType.lazy
-  );
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
-        body: SafeArea(
-          child: BlocListener<AuthBloc, AuthState>(
-            bloc: _bloc,
-    listener: (context, state) {
-      if(state is PhoneNumberVerifiedSuccessState){
-        Navigator.of(context).pushNamed(ConfirmationScreen.routeName);
-        context.read<AuthUserCubit>().newUser.token = state.response.token;
-      }
-
-    },
-    child: Padding(
+      body: SafeArea(
+        child: BlocListener<AuthBloc, AuthState>(
+          bloc: _bloc,
+          listener: (context, state) {
+            if (state is PhoneNumberVerifiedSuccessState) {
+              Navigator.of(context).pushNamed(ConfirmationScreen.routeName);
+              context.read<AuthUserCubit>().newUser.token =
+                  state.response.token;
+              isLoading = false;
+            }
+          },
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +70,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Container(
                       height: 48.h,
                       width: 100.w,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 14),
                       decoration: BoxDecoration(
                           color: AppColors.grey.withOpacity(0.10),
                           borderRadius: BorderRadius.circular(8)),
@@ -84,7 +86,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               DropdownButton<String>(
                                 style: Theme.of(context).textTheme.bodyText1,
                                 hint: const Text("_ _"),
-
                                 items: const [
                                   DropdownMenuItem<String>(
                                     value: "90",
@@ -132,13 +133,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(8),
                             border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: AppColors.grey),
+                              borderSide:
+                                  const BorderSide(color: AppColors.grey),
                               borderRadius: BorderRadius.circular(
                                 8.0,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: AppColors.grey),
+                              borderSide:
+                                  const BorderSide(color: AppColors.grey),
                               borderRadius: BorderRadius.circular(
                                 8.0,
                               ),
@@ -149,62 +152,82 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 Visibility(
-                    visible: error != null ? true: false,
-                    child: Text(error?? '', style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.red),))
+                    visible: error != null ? true : false,
+                    child: Text(
+                      error ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          ?.copyWith(color: AppColors.red),
+                    ))
               ],
             ),
           ),
-),
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SizedBox(
-            height: 48.h,
-            width: double.infinity,
-            child: FloatingActionButton(
-              onPressed: (){
-                if(phoneCode == null ){
-                  setState(() {
-                    error = "Please select your phone code";
-                  });
-                } else if(_controller.text.length <= 7){
-                  setState(() {
-                    error = "Please type your correct phone number";
-                  });
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SizedBox(
+          height: 48.h,
+          width: double.infinity,
+          child: FloatingActionButton(
+            onPressed: () {
+              if (phoneCode == null) {
+                setState(() {
+                  error = context.localeString("error_phone_code");
+                });
+              } else if (_controller.text.length <= 7) {
+                setState(() {
+                  error = context.localeString("error_phone_number");
+                });
+              } else {
+                setState(() {
+                  error == null;
+                  isLoading = true;
+                });
+                context.read<AuthUserCubit>().getUserPhone(
+                    ("$phoneCode ") + _controller.text);
 
-                } else{
-                  setState(() {
-                    error == null;
-                  });
-                  context.read<AuthUserCubit>().getUserPhone((phoneCode ?? "") + _controller.text.replaceAll(" ", ''));
-
-                  _bloc.add(VerifyPhoneNumber(userType: context.read<AuthUserCubit>().newUser.userType, phoneNumber: context.read<AuthUserCubit>().newUser.phoneNumber, context: context));
-                }
-
-
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-              ),
-                backgroundColor: AppColors.primary,
-              child: LocaleText("enter" , style: Theme.of(context).textTheme.headline3?.copyWith(color: AppColors.white),),
+                _bloc.add(VerifyPhoneNumber(
+                    userType: context.read<AuthUserCubit>().newUser.userType,
+                    phoneNumber:
+                        context.read<AuthUserCubit>().newUser.phoneNumber,
+                    context: context));
+              }
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
+            backgroundColor: AppColors.primary,
+            child: isLoading
+                ? const Center(
+                    child: CupertinoActivityIndicator(
+                    color: AppColors.white,
+                  ))
+                : LocaleText(
+                    "enter",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3
+                        ?.copyWith(color: AppColors.white),
+                  ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        // SizedBox(
-        //   width: double.infinity,
-        //   child: ElevatedButton(
-        //     onPressed: () {},
-        //     child: LocaleText(
-        //       "enter",
-        //       style: Theme.of(context)
-        //           .textTheme
-        //           .headline3
-        //           ?.copyWith(color: AppColors.white),
-        //     ),
-        //   ),
-        // ),
-      );
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // SizedBox(
+      //   width: double.infinity,
+      //   child: ElevatedButton(
+      //     onPressed: () {},
+      //     child: LocaleText(
+      //       "enter",
+      //       style: Theme.of(context)
+      //           .textTheme
+      //           .headline3
+      //           ?.copyWith(color: AppColors.white),
+      //     ),
+      //   ),
+      // ),
+    );
   }
 }

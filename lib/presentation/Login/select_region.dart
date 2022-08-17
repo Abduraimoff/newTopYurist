@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -25,7 +26,7 @@ class _SelectRegionState extends State<SelectRegion> {
   final RegionsBloc _bloc = RegionsBloc();
   final AuthBloc _authBloc = AuthBloc();
   NewUser? user;
-
+  bool _isLoading = false;
   @override
   void initState() {
     _bloc.add(GetRegions());
@@ -48,6 +49,9 @@ class _SelectRegionState extends State<SelectRegion> {
         listener: (context, state) {
           if (state is RegisterUserSuccessState) {
             Navigator.of(context).pushNamed(HomeScreenUser.routeName);
+            setState(() {
+              _isLoading = false;
+            });
           }
         },
         child: Padding(
@@ -107,10 +111,10 @@ class _SelectRegionState extends State<SelectRegion> {
                                                               .newUser
                                                               .regionId ==
                                                           e.id)
-                                                  ? const Center(
+                                                  ?  Center(
                                                       child: Icon(
                                                         Icons.check,
-                                                        size: 10,
+                                                        size: 10.sp,
                                                         color: Colors.white,
                                                       ),
                                                     )
@@ -159,13 +163,16 @@ class _SelectRegionState extends State<SelectRegion> {
                 Navigator.of(context).pushNamed(LawyerSelectCategory.routeName);
               } else {
                 _authBloc.add(RegisterUserEvent(user ?? NewUser()));
+                setState(() {
+                  _isLoading = true;
+                });
               }
             },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
             backgroundColor: AppColors.primary,
-            child: LocaleText(
+            child: _isLoading ? const Center(child: CupertinoActivityIndicator(color: AppColors.white,),) : LocaleText(
               "enter",
               style: Theme.of(context)
                   .textTheme

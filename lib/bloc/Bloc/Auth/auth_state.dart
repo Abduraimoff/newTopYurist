@@ -9,7 +9,7 @@ class AuthInitial extends AuthState {
   List<Object?> get props => [];
 }
 class AuthErrorState extends AuthState{
-  final Object? error;
+  final String? error;
 
   AuthErrorState({this.error});
   @override

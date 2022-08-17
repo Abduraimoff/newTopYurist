@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -22,6 +23,7 @@ class LawyerSelectCategory extends StatefulWidget {
 class _LawyerSelectCategoryState extends State<LawyerSelectCategory> {
   final ProblemTypeBloc _bloc = ProblemTypeBloc();
   final AuthBloc _authBloc = AuthBloc();
+  bool _isLoading = false;
   @override
   void initState() {
     _bloc.add(GetProblemsEvent());
@@ -36,13 +38,16 @@ class _LawyerSelectCategoryState extends State<LawyerSelectCategory> {
   listener: (context, state) {
     if(state is RegisterUserSuccessState){
       Navigator.of(context).pushNamed(HomeScreen.routeName);
+      setState(() {
+        _isLoading = false;
+      });
     }
   },
   child: Scaffold(
       appBar: BaseAppBar(
         appBar: AppBar(),
-        title: Text(
-          "Выберите свою категорию",
+        title: LocaleText(
+          "select_lawyer_category",
           style: Theme.of(context).textTheme.headline3,
         ),
       ),
@@ -123,11 +128,13 @@ class _LawyerSelectCategoryState extends State<LawyerSelectCategory> {
                     child: ElevatedButton(
                       onPressed: () {
                         _authBloc.add(RegisterUserEvent(context.read<AuthUserCubit>().newUser));
-
+                        setState(() {
+                          _isLoading = true;
+                        });
                       },
                       style:
                           ElevatedButton.styleFrom(primary: AppColors.primary),
-                      child: LocaleText(
+                      child: _isLoading ? const Center(child: CupertinoActivityIndicator(color: AppColors.white,),) : LocaleText(
                         'save',
                         style: Theme.of(context)
                             .textTheme

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -29,6 +30,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
   final AuthBloc _bloc = AuthBloc();
   final OtpFieldController _controller  = OtpFieldController();
   String? error;
+  bool _isLoading = false;
   
   
 
@@ -94,7 +96,9 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
         bloc: _bloc,
   listener: (context, state) {
       if(state is OtpCodeSuccessState){
-
+        setState(() {
+          _isLoading = false;
+        });
         if((state.response?.userExits?? false) &&  (state.response?.data?.fullName != null)){
           if(state.response?.data?.userType == "lawyer"){
             Navigator.of(context).pushNamed(HomeScreen.routeName);
@@ -107,7 +111,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
 
       }
       if(state is AuthErrorState){
-        error = state.error as String;
+        error = state.error;
+        setState(() {
+          _isLoading = false;
+        });
       }
   },
   child: SafeArea(
@@ -134,7 +141,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
                 height: 8.h,
               ),
               Text(
-                _phoneNumber ?? "phone number",
+              "+998 ${context.read<AuthUserCubit>().newUser.phoneNumber}"  ,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -144,6 +151,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
                 height: 32.h,
               ),
               OTPTextField(
+
                 controller: _controller,
                 length: 6,
                 width: MediaQuery.of(context).size.width,
@@ -156,9 +164,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
                 },
                 onChanged: (value) {},
               ),
+              SizedBox(height: 16.h,),
               Visibility(
                   visible: error == null ? false : true,
-                  child: Text(error?? "")),
+                  child: Text(error?? "", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.red),)),
             ],
           ),
         ),
@@ -200,14 +209,16 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
                 height: 48.h,
                 child: FloatingActionButton(
                   onPressed: () {
-
+                    setState(() {
+                      _isLoading = true;
+                    });
                   _bloc.add(OtpCodeSendEvent(context: context));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                   backgroundColor: AppColors.primary,
-                  child: LocaleText(
+                  child: _isLoading ? const Center(child: CupertinoActivityIndicator(color: AppColors.white,)): LocaleText(
                     "next",
                     style: Theme.of(context)
                         .textTheme

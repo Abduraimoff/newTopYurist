@@ -34,15 +34,15 @@ class ApiRequest{
   }
 
 
-  Future<Response> doPostRequest({required String slug,Map<String, dynamic>? queryParameters,
+  Future<dynamic> doPostRequest({required String slug,Map<String, dynamic>? queryParameters,
     Options? options,  data})async{
     try{
      final Response response =  await dio.post(Config.baseUrl+slug, queryParameters: queryParameters, options: options, data: data );
 
      return response;
 
-    }catch(e){
-      print(e);
+    } on DioError catch (e){
+
       rethrow;
     }
 
