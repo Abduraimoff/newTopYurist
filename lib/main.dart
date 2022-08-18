@@ -29,7 +29,7 @@ import 'package:top_yurist/utils/theme.dart';
 import 'bloc/Cubit/Auth/auth_user_cubit.dart';
 
 void main() async {
-  const storage =  FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
   WidgetsFlutterBinding.ensureInitialized();
   await Locales.init([
     'ru',
@@ -45,12 +45,14 @@ void main() async {
   //   }
   // }
 
-  runApp( MyApp(defaultHome: defaultHomeScreen,));
+  runApp(MyApp(
+    defaultHome: defaultHomeScreen,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final Widget? defaultHome;
-  const MyApp({Key? key,  this.defaultHome}) : super(key: key);
+  const MyApp({Key? key, this.defaultHome}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
           BlocProvider(create: (context) => AuthUserCubit()),
-
         ],
         child: LocaleBuilder(
             builder: (locale) => MaterialApp(
@@ -82,13 +83,15 @@ class MyApp extends StatelessWidget {
                   locale: locale,
                   theme: MainTheme().themeData,
                   home: defaultHome,
-
                   routes: {
                     HomeScreenUser.routeName: (context) =>
                         const HomeScreenUser(),
                     RegisterScreen.registerScreen: (context) =>
                         BlocProvider<AuthBloc>(
-                          create: (context, ) => AuthBloc(),
+                          create: (
+                            context,
+                          ) =>
+                              AuthBloc(),
                           child: const RegisterScreen(),
                         ),
                     ConfirmationScreen.routeName: (context) =>

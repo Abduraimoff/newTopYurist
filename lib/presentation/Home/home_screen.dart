@@ -8,7 +8,7 @@ import 'package:top_yurist/utils/colors.dart';
 
 import '../LawyerFavourites/lawyerFavourites.dart';
 import '../UserUploadedServices/add_new_template.dart';
-import '../profile/user_profile_page.dart';
+import '../profile/profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "home/screen";
@@ -24,9 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     ServiceScreen(),
-
     ChatsPage(),
-
     LawyerFavourites(),
     UserProfilePage(),
   ];
