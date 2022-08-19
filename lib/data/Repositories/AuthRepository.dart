@@ -57,6 +57,7 @@ class AuthRepository{
         await storage.write(key: Config.accessToken, value: "Bearer ${data.credentials?.accessToken}");
         await storage.write(key: Config.refreshToken, value: data.credentials?.refreshToken);
         await storage.write(key: Config.userType, value: data.data?.userType);
+        print(await storage.read(key: Config.accessToken));
         return data;
       }
       if(response.statusCode == 400){
@@ -102,7 +103,7 @@ class AuthRepository{
         "profile_photo": user.imageUrl,
         "full_name": user.fullName,
         "region_id": user.regionId,
-        "agreement": user.agreement,
+        "agreement": true,
         "problem_types": user.problemTypes,
       }
     );

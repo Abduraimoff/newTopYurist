@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_yurist/bloc/Bloc/Application/application_bloc.dart';
+import 'package:top_yurist/bloc/Bloc/ProblemType/problem_type_bloc.dart';
 import 'package:top_yurist/utils/colors.dart';
+
+import '../../../data/Models/regions/regions.dart';
 
 class CreateNewRequest extends StatefulWidget {
   static const String routeName = "create_request";
@@ -14,23 +20,28 @@ class CreateNewRequest extends StatefulWidget {
 }
 
 class _CreateNewRequestState extends State<CreateNewRequest> {
-  final List<String> _categories = ['1', '2'];
+  final ApplicationBloc _applicationBloc = ApplicationBloc();
+  final ProblemTypeBloc _problemTypeBloc = ProblemTypeBloc();
+     List<RegionsResponse> _categories = [];
+  String? selectedCategory;
+
+@override
+  void initState() {
+    _problemTypeBloc.add(GetProblemsEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: AppColors.grey),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
-          'Создание запроса',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-            height: 2.4,
-            color: Colors.black,
-          ),
+        title:   LocaleText(
+          'create_request',
+          style: Theme.of(context).textTheme.headline3,
         ),
         centerTitle: true,
       ),
@@ -51,31 +62,33 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
                   width: 1.w,
                 ),
               ),
-              child: DropdownButtonFormField(
-                decoration: const InputDecoration(
+              child: BlocBuilder<ProblemTypeBloc, ProblemTypeState>(
+                bloc: _problemTypeBloc,
+  builder: (context, state) {
+                  if(state is ProblemLoadedSuccess){
+                    _categories = state.response;
+                  }
+    return DropdownButtonFormField<RegionsResponse>(
+                decoration:  InputDecoration(
                   border: InputBorder.none,
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  hintText: 'Выберите ктегорию запроса',
-                  hintStyle: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  hintText: context.localeString('select_category_request'),
+                  hintStyle: Theme.of(context).textTheme.headline5,
                 ),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
+                style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black),
                 items: _categories.map((city) {
                   return DropdownMenuItem(
                     value: city,
-                    child: Text(city),
+                    child: Text(city.title?.ruRu?? ""),
                   );
                 }).toList(),
-                onChanged: (val) {},
-              ),
+                onChanged: (val) {
+                  selectedCategory = val?.id;
+                },
+              );
+  },
+),
             ),
              SizedBox(height: 20.h),
             Container(
@@ -215,4 +228,5 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
       ),
     );
   }
+
 }

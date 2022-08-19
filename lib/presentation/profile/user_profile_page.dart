@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
+import 'package:top_yurist/presentation/Login/login_screen.dart';
 import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
 import 'package:top_yurist/presentation/profile/reviews_page.dart';
 import 'package:top_yurist/presentation/profile/statistics_page.dart';
@@ -13,6 +15,8 @@ import 'package:top_yurist/presentation/profile/switch_language_page.dart';
 import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
+
+import '../../utils/config.dart';
 
 class UserProfilePage extends StatelessWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -611,7 +615,7 @@ class __PushNotificationWidgetState extends State<_PushNotificationWidget> {
 
 class _LogOutWidget extends StatelessWidget {
   const _LogOutWidget({Key? key}) : super(key: key);
-
+final FlutterSecureStorage storage = const FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -629,20 +633,25 @@ class _LogOutWidget extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              AppIcons.logOut,
-              color: AppColors.blue,
-              height: 20.h,
-              width: 20.h,
-            ),
-            SizedBox(width: 12.w),
-            LocaleText(
-              'log_out',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),
-            )
-          ],
+        child: InkWell(
+          onTap: () {
+
+          },
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                AppIcons.logOut,
+                color: AppColors.blue,
+                height: 20.h,
+                width: 20.h,
+              ),
+              SizedBox(width: 12.w),
+              LocaleText(
+                'log_out',
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),
+              )
+            ],
+          ),
         ),
       ),
     );

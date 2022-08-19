@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/presentation/User/Requests/create_new_request.dart';
 import 'package:top_yurist/presentation/User/Requests/request_detail.dart';
@@ -17,8 +18,8 @@ class RequestMainScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text(
-            'Запросы',
+           LocaleText(
+            'requests',
             style: Theme.of(context).textTheme.headline2?.copyWith(fontWeight: FontWeight.bold),
           ),
            SizedBox(height: 20.h),
@@ -33,8 +34,8 @@ class RequestMainScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(CreateNewRequest.routeName);
               },
-              child:  Text(
-                'Создать запрос',
+              child:  LocaleText(
+                'create_request',
                 style: Theme.of(context).textTheme.headline3?.copyWith(color: AppColors.primary ),
               ),
             ),

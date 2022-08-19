@@ -29,21 +29,25 @@ import 'package:top_yurist/utils/theme.dart';
 import 'bloc/Cubit/Auth/auth_user_cubit.dart';
 
 void main() async {
-  const storage =  FlutterSecureStorage();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Locales.init([
     'ru',
     "en",
     "uz",
   ]);
+  const storage =  FlutterSecureStorage();
   Widget defaultHomeScreen = const LoginScreen();
-  // if(await storage.containsKey(key: Config.accessToken)){
-  //   if(await storage.read(key: Config.userType) == "lawyer"){
-  //     defaultHomeScreen =  const HomeScreen();
-  //   } else{
-  //     defaultHomeScreen = const HomeScreenUser();
-  //   }
-  // }
+  if(await storage.containsKey(key: Config.accessToken)){
+    var val = await storage.read(key: Config.accessToken);
+
+    print(val);
+    if(await storage.read(key: Config.userType) == "lawyer"){
+      defaultHomeScreen =  const HomeScreen();
+    } else{
+      defaultHomeScreen = const HomeScreenUser();
+    }
+  }
 
   runApp( MyApp(defaultHome: defaultHomeScreen,));
 }
