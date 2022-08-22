@@ -1,5 +1,5 @@
 import 'package:top_yurist/data/HttpRequest/dio_client.dart';
-import 'package:top_yurist/data/HttpRequest/http_requests.dart';
+import 'package:top_yurist/data/Models/user/user.dart';
 
 class ProfileRepository {
   final _request = DioClient().getDio();
@@ -15,4 +15,20 @@ class ProfileRepository {
       print(e);
     }
   }
+
+  Future<User?> getUser() async {
+    const path = '/api/profile/info/';
+
+    try {
+      final responce = await _request.get(path);
+      final user = User.fromJson(responce.data);
+      return user;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Future<void> editUser(){
+
+  // }
 }

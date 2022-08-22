@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/bloc/Bloc/Auth/auth_bloc.dart';
-import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/Home/home_screen.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
@@ -59,20 +59,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => ProfileCubit(
-              User(
-                  name: 'Феруз Тахирович',
-                  phoneNumber: '+998999999999',
-                  image: 'assets/images/lawyer.jpg',
-                  isVerified: false,
-                  type: UserType.lawyer,
-                  amountFavorites: 4,
-                  amountSelects: 5,
-                  amountCOmplates: 6,
-                  id: 4),
-            ),
+            create: (context) => ProfileCubit(),
           ),
-          BlocProvider(create: (context) => AuthUserCubit()),
+          BlocProvider(create: (context) => AuthUserCubit(), lazy: false),
         ],
         child: LocaleBuilder(
             builder: (locale) => MaterialApp(

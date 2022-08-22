@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:top_yurist/bloc/profile_cubit/profile_cubit_cubit.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/profile/edit_profile_page.dart';
 import 'package:top_yurist/presentation/profile/faq_page.dart';
@@ -23,56 +23,62 @@ class UserProfilePage extends StatelessWidget {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  LocaleText(
-                    'profile',
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'г.Ташкент',
-                        style: TextStyle(
-                          color: AppColors.grey,
-                          fontSize: 16.sp,
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      SvgPicture.asset(
-                        AppIcons.location,
-                        color: AppColors.blue,
-                        height: 20.h,
-                        width: 20.h,
-                      )
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(height: 20.h),
-              const UserInfoWidget(),
-              SizedBox(height: 16.h),
-              const _UserTypeSwitherWidget(),
-              SizedBox(height: 20.h),
-              Expanded(
-                child: ListView(
+        child:
+            BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+          if (state is ProfileInitial) {
+            return const Center(child: CircularProgressIndicator.adaptive());
+          }
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const _ItemsWidget(),
-                    SizedBox(height: 20.h),
-                    const _PushNotificationWidget(),
-                    SizedBox(height: 20.h),
-                    const _LogOutWidget(),
+                    LocaleText(
+                      'profile',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'г.Ташкент',
+                          style: TextStyle(
+                            color: AppColors.grey,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                        SvgPicture.asset(
+                          AppIcons.location,
+                          color: AppColors.blue,
+                          height: 20.h,
+                          width: 20.h,
+                        )
+                      ],
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
+                SizedBox(height: 20.h),
+                const UserInfoWidget(),
+                SizedBox(height: 16.h),
+                const _UserTypeSwitherWidget(),
+                SizedBox(height: 20.h),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      const _ItemsWidget(),
+                      SizedBox(height: 20.h),
+                      const _PushNotificationWidget(),
+                      SizedBox(height: 20.h),
+                      const _LogOutWidget(),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
@@ -117,13 +123,17 @@ class UserInfoWidget extends StatelessWidget {
       );
     }
 
-    return BlocBuilder<ProfileCubit, User>(builder: (context, state) {
+    return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+      if (state is ProfileErrorState) {
+        return Text('Error');
+      }
+      state as UserState;
       return AnimatedSize(
         duration: const Duration(milliseconds: 300),
         alignment: Alignment.topCenter,
         child: Container(
           width: double.infinity,
-          height: (state.type == UserType.lawyer) ? 203.h : 99.h,
+          height: (state.user.userType == UserType.lawyer) ? 203.h : 99.h,
           padding:
               EdgeInsets.only(top: 20.h, bottom: 10.h, right: 16.w, left: 16.w),
           decoration: BoxDecoration(
@@ -146,7 +156,11 @@ class UserInfoWidget extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 29.5.h,
-                          backgroundImage: AssetImage(state.image),
+                          backgroundImage: NetworkImage(
+                            state.user.profilePhoto ?? '',
+                          ),
+                          onBackgroundImageError: (exception, stackTrace) =>
+                              Colors.blue,
                         ),
                         SizedBox(width: 12.w),
                         Expanded(
@@ -155,7 +169,7 @@ class UserInfoWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                state.name,
+                                state.user.fullName ?? "",
                                 style: TextStyle(
                                   color: AppColors.black,
                                   fontSize: 16.sp,
@@ -164,8 +178,8 @@ class UserInfoWidget extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              if (state.type == UserType.lawyer)
-                                state.isVerified == true
+                              if (state.user.userType == UserType.lawyer)
+                                state.user.lawyerState == true
                                     ? LocaleText(
                                         'verified',
                                         style: TextStyle(
@@ -184,7 +198,7 @@ class UserInfoWidget extends StatelessWidget {
                                       )
                               else
                                 Text(
-                                  state.phoneNumber,
+                                  state.user.username ?? "",
                                   style: TextStyle(
                                     color: AppColors.grey,
                                     fontSize: 14.sp,
@@ -217,7 +231,7 @@ class UserInfoWidget extends StatelessWidget {
                   )
                 ],
               ),
-              if (state.type == UserType.lawyer)
+              if (state.user.userType == UserType.lawyer)
                 Expanded(
                   child: Column(
                     children: [
@@ -231,17 +245,17 @@ class UserInfoWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             itemWidget(
-                              amount: state.amountFavorites ?? 0,
+                              amount: state.user.applicationCount ?? 0,
                               title: "numberOfApplications",
                             ),
                             SizedBox(width: 5.w),
                             itemWidget(
-                              amount: state.amountSelects ?? 0,
+                              amount: state.user.selectedCount ?? 0,
                               title: "selected",
                             ),
                             SizedBox(width: 5.w),
                             itemWidget(
-                              amount: state.amountCOmplates ?? 0,
+                              amount: state.user.acceptedCount ?? 0,
                               title: "performed",
                             ),
                           ],
@@ -307,9 +321,10 @@ class _UserTypeSwitherWidget extends StatefulWidget {
 class _UserTypeSwitherWidgetState extends State<_UserTypeSwitherWidget> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, User>(builder: (context, state) {
+    return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
       final profilecubit = context.read<ProfileCubit>();
-      bool islawyer = state.type == UserType.lawyer;
+      state as UserState;
+      bool islawyer = state.user.userType == UserType.lawyer;
       return Container(
         padding: EdgeInsets.all(2.h),
         height: 36.h,
@@ -474,8 +489,9 @@ class _ItemsWidget extends StatelessWidget {
       ],
     );
 
-    return BlocBuilder<ProfileCubit, User>(
+    return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
+        state as UserState;
         return Column(
           children: [
             Container(
@@ -483,7 +499,7 @@ class _ItemsWidget extends StatelessWidget {
               decoration: decoration,
               child: Column(
                 children: [
-                  if (state.type == UserType.lawyer)
+                  if (state.user.userType == UserType.lawyer)
                     imetWidget(
                       icon: AppIcons.warning,
                       title: "verification",
@@ -495,7 +511,7 @@ class _ItemsWidget extends StatelessWidget {
                           ),
                         );
                       },
-                      iconColor: state.isVerified == true
+                      iconColor: state.user.lawyerState == true
                           ? AppColors.grey
                           : AppColors.red,
                     ),
@@ -578,7 +594,7 @@ class __PushNotificationWidgetState extends State<_PushNotificationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, User>(
+    return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         return Container(
           height: 50.h,

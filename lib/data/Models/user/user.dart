@@ -1,93 +1,86 @@
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+import 'package:top_yurist/data/parser/parser.dart';
+
+part 'user.g.dart';
+
 enum UserType { lawyer, notLawyer }
 
-class User {
-  final int id;
-  final String name;
-  final String phoneNumber;
-  final String image;
-  final bool? isVerified;
-  final UserType type;
-  final int? amountFavorites;
-  final int? amountSelects;
-  final int? amountCOmplates;
-  final int? amountApplications;
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class User extends Equatable {
+  @JsonKey(fromJson: userTypeFromString)
+  final UserType? userType;
+  final String? fullName;
+  final int? acceptedCount;
+  final int? selectedCount;
+  final int? applicationCount;
+  final String? username;
+  @JsonKey(fromJson: lawyerIsVerified)
+  final bool? lawyerState;
+  final String? profilePhoto;
   final int? amountCalls;
   final int? amountSentMessages;
   final int? amountIncomingMessages;
-
-  User({
-    required this.id,
-    required this.name,
-    required this.phoneNumber,
-    required this.image,
-    this.isVerified,
-    required this.type,
-    this.amountFavorites,
-    this.amountSelects,
-    this.amountCOmplates,
-    this.amountApplications,
+  final int? amountFavorites;
+  const User({
+    this.userType,
+    this.fullName,
+    this.acceptedCount,
+    this.selectedCount,
+    this.applicationCount,
+    this.username,
+    this.lawyerState,
+    this.profilePhoto,
     this.amountCalls,
     this.amountSentMessages,
     this.amountIncomingMessages,
+    this.amountFavorites,
   });
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is User &&
-        other.name == name &&
-        other.phoneNumber == phoneNumber &&
-        other.image == image &&
-        other.isVerified == isVerified &&
-        other.type == type &&
-        other.amountFavorites == amountFavorites &&
-        other.amountSelects == amountSelects &&
-        other.amountCOmplates == amountCOmplates;
-  }
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 
   @override
-  int get hashCode {
-    return name.hashCode ^
-        phoneNumber.hashCode ^
-        image.hashCode ^
-        isVerified.hashCode ^
-        type.hashCode ^
-        amountFavorites.hashCode ^
-        amountSelects.hashCode ^
-        amountCOmplates.hashCode;
-  }
+  List<Object?> get props => [
+        applicationCount,
+        userType,
+        fullName,
+        selectedCount,
+        acceptedCount,
+        username,
+        lawyerState,
+        profilePhoto
+      ];
 
   User copyWith({
-    int? id,
-    String? name,
-    String? phoneNumber,
-    String? image,
-    bool? isVerified,
-    UserType? type,
-    int? amountFavorites,
-    int? amountSelects,
-    int? amountCOmplates,
-    int? amountApplications,
+    UserType? userType,
+    String? fullName,
+    int? acceptedCount,
+    int? selectedCount,
+    int? applicationCount,
+    String? username,
+    bool? lawyerState,
+    String? profilePhoto,
     int? amountCalls,
     int? amountSentMessages,
     int? amountIncomingMessages,
+    int? amountFavorites,
   }) {
     return User(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      image: image ?? this.image,
-      isVerified: isVerified ?? this.isVerified,
-      type: type ?? this.type,
-      amountFavorites: amountFavorites ?? this.amountFavorites,
-      amountSelects: amountSelects ?? this.amountSelects,
-      amountCOmplates: amountCOmplates ?? this.amountCOmplates,
-      amountApplications: amountApplications ?? this.amountApplications,
+      userType: userType ?? this.userType,
+      fullName: fullName ?? this.fullName,
+      acceptedCount: acceptedCount ?? this.acceptedCount,
+      selectedCount: selectedCount ?? this.selectedCount,
+      applicationCount: applicationCount ?? this.applicationCount,
+      username: username ?? this.username,
+      lawyerState: lawyerState ?? this.lawyerState,
+      profilePhoto: profilePhoto ?? this.profilePhoto,
       amountCalls: amountCalls ?? this.amountCalls,
       amountSentMessages: amountSentMessages ?? this.amountSentMessages,
       amountIncomingMessages:
           amountIncomingMessages ?? this.amountIncomingMessages,
+      amountFavorites: amountFavorites ?? this.amountFavorites,
     );
   }
 }

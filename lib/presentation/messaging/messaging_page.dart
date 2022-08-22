@@ -87,13 +87,14 @@ class _AppBarWidget extends StatelessWidget {
             SizedBox(width: 18.w),
             CircleAvatar(
               radius: 16.h,
-              backgroundImage:
-                  AssetImage((state as MessagingLoaded).user.image),
+              backgroundImage: AssetImage(
+                (state as MessagingLoaded).user.profilePhoto ?? "",
+              ),
             ),
             SizedBox(width: 12.w),
             Expanded(
               child: Text(
-                (state).user.name,
+                state.user.fullName ?? '',
                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

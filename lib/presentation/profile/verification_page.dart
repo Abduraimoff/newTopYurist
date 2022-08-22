@@ -13,10 +13,10 @@ class VerificationPage extends StatefulWidget {
   const VerificationPage({Key? key}) : super(key: key);
 
   @override
-  State<VerificationPage> createState() => _VerificationPageState();
+  State<VerificationPage> createState() => VerificationPageState();
 }
 
-class _VerificationPageState extends State<VerificationPage> {
+class VerificationPageState extends State<VerificationPage> {
   int page = 1;
 
   void changePage(int index) {
@@ -27,56 +27,51 @@ class _VerificationPageState extends State<VerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              _AppBarWidget(),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20.h),
-                      const _AboutInstutionWidget(),
-                      SizedBox(height: 24.h),
-                      const _EducationWidget(),
-                      SizedBox(height: 24.h),
-                      const _ExperienceWidget(),
-                      SizedBox(height: 19.h),
-                      SizedBox(
-                        width: double.infinity,
-                        child: CupertinoButton(
-                          color: AppColors.blue,
-                          child: Text(
-                            'Далее',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
+    return (page == 1)
+        ? Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  children: [
+                    const _AppBarWidget(),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 20.h),
+                            const _AboutInstutionWidget(),
+                            SizedBox(height: 24.h),
+                            const _EducationWidget(),
+                            SizedBox(height: 24.h),
+                            const _ExperienceWidget(),
+                            SizedBox(height: 19.h),
+                            SizedBox(
+                              width: double.infinity,
+                              child: CupertinoButton(
+                                color: AppColors.blue,
+                                child: Text(
+                                  'Далее',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                onPressed: () => changePage(2),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const VerificationTwoPage(),
-                                ));
-                          },
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          )
+        : const VerificationTwoPage();
   }
 }
 
@@ -85,7 +80,7 @@ class _AppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageState = context.findAncestorStateOfType<_VerificationPageState>();
+    final pageState = context.findAncestorStateOfType<VerificationPageState>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

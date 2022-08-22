@@ -27,12 +27,13 @@ class DioClient {
     if (options.path == "/api/refresh_token") {
       return handler.next(options);
     }
-    final accessToken = await _tokenProvider.getAccessToken();
+    var accessToken = await _tokenProvider.getAccessToken();
     if (kDebugMode) {
       print(accessToken);
     }
     if (accessToken == null || JwtDecoder.isExpired(accessToken)) {
       await _refreshToken();
+      accessToken = await _tokenProvider.getAccessToken();
     }
     options.headers["Authorization"] = "Bearer $accessToken";
     return handler.next(options);

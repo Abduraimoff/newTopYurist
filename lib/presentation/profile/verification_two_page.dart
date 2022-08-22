@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
@@ -84,11 +85,15 @@ class _AppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final verificationFirstState =
+        context.findAncestorStateOfType<VerificationPageState>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            verificationFirstState?.changePage(1);
+          },
           child: SvgPicture.asset(
             AppIcons.chevronLeft,
             height: 24.h,

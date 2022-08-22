@@ -183,7 +183,7 @@ class _ChatWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      chat.user.name,
+                      chat.user.fullName ?? '',
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w500),
                     ),
@@ -239,7 +239,7 @@ class _ChatWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MessagingPage(userId: chat.user.id),
+                  builder: (context) => MessagingPage(userId: 0),
                 ),
               );
             }),
