@@ -38,16 +38,13 @@ void main() async {
   ]);
   const storage =  FlutterSecureStorage();
   Widget defaultHomeScreen = const LoginScreen();
-  if(await storage.containsKey(key: Config.accessToken)){
-    var val = await storage.read(key: Config.accessToken);
 
-    print(val);
     if(await storage.read(key: Config.userType) == "lawyer"){
       defaultHomeScreen =  const HomeScreen();
-    } else{
+    } else if(await storage.read(key: Config.userType) == "user"){
       defaultHomeScreen = const HomeScreenUser();
     }
-  }
+
 
   runApp( MyApp(defaultHome: defaultHomeScreen,));
 }

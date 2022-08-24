@@ -6,10 +6,10 @@ import 'package:top_yurist/utils/config.dart';
 class ApiRequest{
   final Dio dio = Dio();
   final _storage = const FlutterSecureStorage();
-  String? accessToken;
+
   api(){
     dio.interceptors.add(InterceptorsWrapper(onRequest: (option, handler) async{
-      option.headers["Authorization"] = "Bearer $accessToken";
+      option.headers["Authorization"] = "Bearer ${ await _storage.read(key: Config.refreshToken)}";
       return handler.next(option);
     }, onError: (DioError error, handler) async{
       if(error.response?.statusCode == 401){
@@ -24,11 +24,14 @@ class ApiRequest{
   }
   Future<void> refreshToken()async{
     final refreshToken = await _storage.read(key: Config.refreshToken);
-    final response = await dio.post("/api/refresh_token", queryParameters: {"token": refreshToken});
-    if(response.statusCode == 200){
-      accessToken = response.data["access_token"];
+
+    final response = await dio.post("${Config.baseUrl}/api/refresh_token/", queryParameters: {"token": "Bearer $refreshToken"});
+    if(response.statusCode == 200) {
+
+      await _storage.write(key: Config.accessToken, value: response.data["access_token"]);
+      await _storage.write(key: Config.refreshToken, value: response.data["refresh_token"]);
     }else{
-      accessToken = null;
+
       _storage.deleteAll();
     }
   }
@@ -48,6 +51,7 @@ class ApiRequest{
 
   Future<Response> doGetRequest({required String slug,Map<String, dynamic>? queryParameters,
     Options? options,}) async{
+    // await api();
     try{
       final Response response = await dio.get(Config.baseUrl +slug, queryParameters: queryParameters, options: options);
       return response;

@@ -615,6 +615,7 @@ class __PushNotificationWidgetState extends State<_PushNotificationWidget> {
 
 class _LogOutWidget extends StatelessWidget {
   const _LogOutWidget({Key? key}) : super(key: key);
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 final FlutterSecureStorage storage = const FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
@@ -634,7 +635,9 @@ final FlutterSecureStorage storage = const FlutterSecureStorage();
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: InkWell(
-          onTap: () {
+          onTap: () async{
+            Navigator.of(context).pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
+            await _storage.deleteAll();
 
           },
           child: Row(
