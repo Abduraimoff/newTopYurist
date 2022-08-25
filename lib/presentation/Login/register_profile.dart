@@ -42,7 +42,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
         this.image = temporaryImage;
         _isPhotoUploading = true;
       });
-      _bloc.add(UploadImageEvent(temporaryImage));
+      _bloc.add(UploadImageEvent(temporaryImage, "user"));
     } on PlatformException catch (e) {
       print("filed to pick image: $e");
     }

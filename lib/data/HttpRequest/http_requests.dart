@@ -41,6 +41,7 @@ class ApiRequest{
     Options? options,  data})async{
     try{
      final Response response =  await dio.post(Config.baseUrl+slug, queryParameters: queryParameters, options: options, data: data );
+     print(response.statusCode);
      return response;
     } on DioError catch (e){
 
@@ -58,5 +59,17 @@ class ApiRequest{
     }catch(e){
       rethrow;
     }
+  }
+  Future<dynamic> doPatchRequest({required String slug,Map<String, dynamic>? queryParameters,
+    Options? options,  data})async{
+    try{
+      final Response response =  await dio.patch(Config.baseUrl+slug, queryParameters: queryParameters, options: options, data: data );
+      print(response.statusCode);
+      return response;
+    } on DioError catch (e){
+
+      rethrow;
+    }
+
   }
 }

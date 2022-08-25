@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
-
-import '../../bloc/profile_cubit/profile_cubit_cubit.dart';
 
 class StatisticsPage extends StatelessWidget {
   const StatisticsPage({Key? key}) : super(key: key);
@@ -44,8 +43,9 @@ class StatisticsPage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder<ProfileCubit, User>(
+        child: BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
+            state as UserState;
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: SingleChildScrollView(
@@ -108,14 +108,14 @@ class StatisticsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.amountApplications,
+                                  amount: state.user.applicationCount,
                                   title: 'numberOfApplications',
                                 ),
                               ),
                               SizedBox(width: 20.w),
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.amountSelects,
+                                  amount: state.user.selectedCount,
                                   title: 'selected',
                                 ),
                               ),
@@ -129,14 +129,14 @@ class StatisticsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.amountCOmplates,
+                                  amount: state.user.acceptedCount,
                                   title: 'performed',
                                 ),
                               ),
                               SizedBox(width: 20.w),
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.amountCalls,
+                                  amount: state.user.amountCalls,
                                   title: 'calls',
                                 ),
                               ),
@@ -150,14 +150,14 @@ class StatisticsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.amountSentMessages,
+                                  amount: state.user.amountSentMessages,
                                   title: 'sentMessages',
                                 ),
                               ),
                               SizedBox(width: 20.w),
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.amountIncomingMessages,
+                                  amount: state.user.amountIncomingMessages,
                                   title: 'incomingMessages',
                                 ),
                               ),
@@ -168,7 +168,7 @@ class StatisticsPage extends StatelessWidget {
                             child: const Divider(height: 0),
                           ),
                           itemWidget(
-                            amount: state.amountFavorites,
+                            amount: state.user.amountFavorites,
                             title: 'youAreInFavorite',
                           ),
                         ],

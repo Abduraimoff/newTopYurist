@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:top_yurist/bloc/Bloc/UserHome/user_home_bloc.dart';
 import 'package:top_yurist/presentation/User/Requests/create_new_request.dart';
 import 'package:top_yurist/presentation/User/Requests/request_detail.dart';
 import 'package:top_yurist/presentation/widgets/base_button.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../../../../bloc/Bloc/Application/application_bloc.dart';
 import '../../../../data/Models/user/user_home_request_list.dart';
 
 class RequestMainScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class RequestMainScreen extends StatefulWidget {
 }
 
 class _RequestMainScreenState extends State<RequestMainScreen> {
-  final UserHomeBloc _bloc = UserHomeBloc();
+  final ApplicationBloc _bloc = ApplicationBloc();
   int selectedIndex = 0;
   List<UserHomeRequestListResponse>? allData;
   List<UserHomeRequestListResponse>? data;
@@ -43,23 +43,30 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return BlocBuilder<UserHomeBloc, UserHomeState>(
+    return BlocConsumer<ApplicationBloc, ApplicationState>(
       bloc: _bloc,
+      listener: (context, state){
+        if(state is ApplicationPublishedState){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your application successfully published")));
+          _bloc.add(GetRequestsList());
+        }
+      },
+
       builder: (context, state) {
-        if (state is UserHomeInitial) {
+        if (state is ApplicationInitial) {
           return const Center(
             child: CupertinoActivityIndicator(),
           );
         }
-        if (state is UserRequestErrorState) {
+        if (state is ApplicationErrorState) {
           return const Center(
             child: Text("Something went wrong"),
           );
         }
         if (state is UserRequestsListSuccessState) {
           data = state.response;
-          allData = state.response;
-          return state.response.isEmpty
+          allData = state.response;}
+          return (data?.isEmpty ?? false)
               ? const UserHomeEmptyPage()
               : Padding(
                   padding: const EdgeInsets.only(
@@ -82,7 +89,7 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
                           TextButton(
                             onPressed: () {
                               Navigator.of(context)
-                                  .pushNamed(CreateNewRequest.routeName);
+                                  .pushNamed(CreateNewRequest.routeName).then((value) =>  _bloc.add(GetRequestsList()));
                             },
                             child: LocaleText(
                               'create',
@@ -267,7 +274,9 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
                                                   width: 145.w,
                                                   child: BaseButton(
                                                       title: 'publish',
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        _bloc.add(PublishEvent(data?[i].id ?? ""));
+                                                      },
                                                       isLoading: false),
                                                 ),
                                                 SizedBox(
@@ -318,8 +327,8 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
                     ],
                   ),
                 );
-        }
-        return const Center(child: CupertinoActivityIndicator());
+
+
       },
     );
   }

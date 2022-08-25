@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -19,45 +18,53 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository repository = AuthRepository();
   AuthBloc() : super(AuthInitial()) {
-    on<VerifyPhoneNumber>((event, emit) async{
-      try{
-        final PhoneVerifiedResponse response = await repository.verifyPhone(event.context, );
+    on<VerifyPhoneNumber>((event, emit) async {
+      try {
+        final PhoneVerifiedResponse response = await repository.verifyPhone(
+          event.context,
+        );
         emit(PhoneNumberVerifiedSuccessState(response));
+
       } on DioError catch(e){
           if(e.response != null){
             print(e.response?.data );
           }
         emit(AuthErrorState(error: e.response?.data["error"]));
-      }
 
+      }
     });
-    on<OtpCodeSendEvent>((event, emit) async{
-      try{
-        final ProfileResponse response = await repository.sendOtpCode(event.context);
-        if(response.statusCode == 400){
+    on<OtpCodeSendEvent>((event, emit) async {
+      try {
+        final ProfileResponse response =
+            await repository.sendOtpCode(event.context);
+        if (response.statusCode == 400) {
           emit(AuthErrorState(error: response.error));
         }
         emit(OtpCodeSuccessState(response: response));
+
       }on DioError catch (e){
         emit(AuthErrorState(error: e.response?.data["error"]));
       }
     });
     on<UploadImageEvent>((event, emit) async{
       try{
-        final response = await repository.uploadImage(image: event.file, category: "test");
+        final response = await repository.uploadImage(image: event.file, category: event.category);
 
         emit(UploadImageSuccessState(response: response));
       } on DioError catch(e){
         emit(AuthErrorState(error: e.response?.data["error"]));
+
       }
     });
-    on<RegisterUserEvent>((event, emit) async{
 
-      try{
+    on<RegisterUserEvent>((event, emit) async {
+      try {
         final response = await repository.registerUser(event.user);
         emit(RegisterUserSuccessState(response));
+
       }on DioError catch(e){
         emit(AuthErrorState(error: e.response?.data["error"]));
+
       }
     });
   }

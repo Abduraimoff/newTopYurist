@@ -27,3 +27,19 @@ class ApplicationCreatedSuccessfullyState extends ApplicationState{
   List<Object?> get props => [response];
 
 }
+
+class ApplicationPublishedState extends ApplicationState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}
+class UserRequestsListSuccessState extends ApplicationState{
+  final List<UserHomeRequestListResponse> response;
+
+   UserRequestsListSuccessState(this.response);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [response];
+
+}

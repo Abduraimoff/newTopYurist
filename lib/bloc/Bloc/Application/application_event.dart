@@ -12,3 +12,19 @@ class CreateApplicationEvent extends ApplicationEvent{
   List<Object?> get props => [data];
 
 }
+
+class PublishEvent extends ApplicationEvent{
+  final String id;
+
+  PublishEvent( this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+
+}
+class GetRequestsList extends ApplicationEvent{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

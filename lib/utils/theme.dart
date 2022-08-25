@@ -17,6 +17,7 @@ class MainTheme {
               fontWeight: FontWeight.w500),
           bodyText1: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.black.withOpacity(0.5)),
           headline5: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.grey, ),
+          headline6: TextStyle(fontWeight: FontWeight.w400, color: AppColors.black.withOpacity(0.5), fontSize: 12),
           button: TextStyle(
               fontSize: 16,
               color: AppColors.black.withOpacity(0.4),
