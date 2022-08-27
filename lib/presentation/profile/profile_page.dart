@@ -245,17 +245,17 @@ class UserInfoWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             itemWidget(
-                              amount: state.user.applicationCount ?? 0,
+                              amount: state.user.offerAmount ?? 0,
                               title: "numberOfApplications",
                             ),
                             SizedBox(width: 5.w),
                             itemWidget(
-                              amount: state.user.selectedCount ?? 0,
+                              amount: state.user.selectedAmount ?? 0,
                               title: "selected",
                             ),
                             SizedBox(width: 5.w),
                             itemWidget(
-                              amount: state.user.acceptedCount ?? 0,
+                              amount: state.user.finishedApplicatoinCount ?? 0,
                               title: "performed",
                             ),
                           ],

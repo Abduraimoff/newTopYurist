@@ -41,9 +41,9 @@ class MessagingBloc extends Bloc<MessagingEvent, MessagingState> {
               profilePhoto: 'assets/images/lawyer.jpg',
               lawyerState: false,
               userType: UserType.lawyer,
-              selectedCount: 5,
-              acceptedCount: 6,
-              applicationCount: 0,
+              selectedAmount: 5,
+              finishedApplicatoinCount: 6,
+              offerAmount: 0,
             ),
           );
           emit(messages);

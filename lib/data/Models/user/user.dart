@@ -12,30 +12,34 @@ class User extends Equatable {
   @JsonKey(fromJson: userTypeFromString)
   final UserType? userType;
   final String? fullName;
-  final int? acceptedCount;
-  final int? selectedCount;
-  final int? applicationCount;
+  final int? finishedApplicatoinCount;
+  final int? selectedAmount;
+  final int? offerAmount;
   final String? username;
   @JsonKey(fromJson: lawyerIsVerified)
   final bool? lawyerState;
   final String? profilePhoto;
-  final int? amountCalls;
-  final int? amountSentMessages;
-  final int? amountIncomingMessages;
-  final int? amountFavorites;
+  final int? callCount;
+  final int? sentMessageCount;
+  final int? receivedMessageCount;
+  final int? customerFavoriteCount;
+  final List<String>? problemTypes;
+  final int? regionId;
   const User({
     this.userType,
     this.fullName,
-    this.acceptedCount,
-    this.selectedCount,
-    this.applicationCount,
+    this.finishedApplicatoinCount,
+    this.selectedAmount,
+    this.offerAmount,
     this.username,
     this.lawyerState,
     this.profilePhoto,
-    this.amountCalls,
-    this.amountSentMessages,
-    this.amountIncomingMessages,
-    this.amountFavorites,
+    this.callCount,
+    this.sentMessageCount,
+    this.receivedMessageCount,
+    this.customerFavoriteCount,
+    this.problemTypes,
+    this.regionId,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -43,44 +47,55 @@ class User extends Equatable {
 
   @override
   List<Object?> get props => [
-        applicationCount,
         userType,
         fullName,
-        selectedCount,
-        acceptedCount,
+        finishedApplicatoinCount,
+        selectedAmount,
+        offerAmount,
         username,
         lawyerState,
-        profilePhoto
+        profilePhoto,
+        callCount,
+        sentMessageCount,
+        receivedMessageCount,
+        customerFavoriteCount,
+        problemTypes,
+        regionId,
       ];
 
   User copyWith({
     UserType? userType,
     String? fullName,
-    int? acceptedCount,
-    int? selectedCount,
-    int? applicationCount,
+    int? finishedApplicatoinCount,
+    int? selectedAmount,
+    int? offerAmount,
     String? username,
     bool? lawyerState,
     String? profilePhoto,
-    int? amountCalls,
-    int? amountSentMessages,
-    int? amountIncomingMessages,
-    int? amountFavorites,
+    int? callCount,
+    int? sentMessageCount,
+    int? receivedMessageCount,
+    int? customerFavoriteCount,
+    List<String>? problemTypes,
+    int? regionId,
   }) {
     return User(
       userType: userType ?? this.userType,
       fullName: fullName ?? this.fullName,
-      acceptedCount: acceptedCount ?? this.acceptedCount,
-      selectedCount: selectedCount ?? this.selectedCount,
-      applicationCount: applicationCount ?? this.applicationCount,
+      finishedApplicatoinCount:
+          finishedApplicatoinCount ?? this.finishedApplicatoinCount,
+      selectedAmount: selectedAmount ?? this.selectedAmount,
+      offerAmount: offerAmount ?? this.offerAmount,
       username: username ?? this.username,
       lawyerState: lawyerState ?? this.lawyerState,
       profilePhoto: profilePhoto ?? this.profilePhoto,
-      amountCalls: amountCalls ?? this.amountCalls,
-      amountSentMessages: amountSentMessages ?? this.amountSentMessages,
-      amountIncomingMessages:
-          amountIncomingMessages ?? this.amountIncomingMessages,
-      amountFavorites: amountFavorites ?? this.amountFavorites,
+      callCount: callCount ?? this.callCount,
+      sentMessageCount: sentMessageCount ?? this.sentMessageCount,
+      receivedMessageCount: receivedMessageCount ?? this.receivedMessageCount,
+      customerFavoriteCount:
+          customerFavoriteCount ?? this.customerFavoriteCount,
+      problemTypes: problemTypes ?? this.problemTypes,
+      regionId: regionId ?? this.regionId,
     );
   }
 }

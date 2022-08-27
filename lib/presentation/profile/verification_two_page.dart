@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -5,8 +7,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
+import 'package:top_yurist/utils/get_image.dart';
 import 'package:top_yurist/utils/icons.dart';
 
 class VerificationTwoPage extends StatefulWidget {
@@ -156,7 +160,9 @@ class _PassportWidget extends StatelessWidget {
                 color: AppColors.blue,
               ),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final file = await pickImage();
+            },
           ),
         ),
         SizedBox(height: 16.h),
@@ -174,7 +180,9 @@ class _PassportWidget extends StatelessWidget {
                 color: AppColors.blue,
               ),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final file = await pickImage();
+            },
           ),
         ),
       ],
@@ -212,7 +220,9 @@ class _DiplomWidget extends StatelessWidget {
                 color: AppColors.blue,
               ),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final file = await pickImage();
+            },
           ),
         ),
       ],
@@ -250,7 +260,9 @@ class _LicenseWidget extends StatelessWidget {
                 color: AppColors.blue,
               ),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final file = await pickImage();
+            },
           ),
         ),
       ],
@@ -288,7 +300,9 @@ class _ExtractWidget extends StatelessWidget {
                 color: AppColors.blue,
               ),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final file = await pickImage();
+            },
           ),
         ),
       ],
@@ -317,9 +331,10 @@ class _StateLicenseWidget extends StatelessWidget {
           child: CupertinoButton(
             padding: EdgeInsets.symmetric(vertical: 13.h),
             borderRadius: BorderRadius.circular(8),
-            color: AppColors.blue,
-            disabledColor: const Color.fromRGBO(28, 79, 209, 0.1),
-            onPressed: null,
+            color: const Color.fromRGBO(28, 79, 209, 0.1),
+            onPressed: () async {
+              final file = await pickImage();
+            },
             child: Text(
               'Добавьте фото лицензии',
               style: TextStyle(

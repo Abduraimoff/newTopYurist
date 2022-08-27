@@ -9,31 +9,37 @@ part of 'user.dart';
 User _$UserFromJson(Map<String, dynamic> json) => User(
       userType: userTypeFromString(json['user_type'] as String?),
       fullName: json['full_name'] as String?,
-      acceptedCount: json['accepted_count'] as int?,
-      selectedCount: json['selected_count'] as int?,
-      applicationCount: json['application_count'] as int?,
+      finishedApplicatoinCount: json['accepted_count'] as int?,
+      selectedAmount: json['selected_count'] as int?,
+      offerAmount: json['application_count'] as int?,
       username: json['username'] as String?,
       lawyerState: lawyerIsVerified(json['lawyer_state'] as String?),
       profilePhoto: json['profile_photo'] as String?,
-      amountCalls: json['amount_calls'] as int?,
-      amountSentMessages: json['amount_sent_messages'] as int?,
-      amountIncomingMessages: json['amount_incoming_messages'] as int?,
-      amountFavorites: json['amount_favorites'] as int?,
+      callCount: json['amount_calls'] as int?,
+      sentMessageCount: json['amount_sent_messages'] as int?,
+      receivedMessageCount: json['amount_incoming_messages'] as int?,
+      customerFavoriteCount: json['amount_favorites'] as int?,
+      problemTypes: (json['problem_types'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      regionId: json['region_id'] as int?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'user_type': _$UserTypeEnumMap[instance.userType],
       'full_name': instance.fullName,
-      'accepted_count': instance.acceptedCount,
-      'selected_count': instance.selectedCount,
-      'application_count': instance.applicationCount,
+      'accepted_count': instance.finishedApplicatoinCount,
+      'selected_count': instance.selectedAmount,
+      'application_count': instance.offerAmount,
       'username': instance.username,
       'lawyer_state': instance.lawyerState,
       'profile_photo': instance.profilePhoto,
-      'amount_calls': instance.amountCalls,
-      'amount_sent_messages': instance.amountSentMessages,
-      'amount_incoming_messages': instance.amountIncomingMessages,
-      'amount_favorites': instance.amountFavorites,
+      'amount_calls': instance.callCount,
+      'amount_sent_messages': instance.sentMessageCount,
+      'amount_incoming_messages': instance.receivedMessageCount,
+      'amount_favorites': instance.customerFavoriteCount,
+      'problem_types': instance.problemTypes,
+      'region_id': instance.regionId,
     };
 
 const _$UserTypeEnumMap = {

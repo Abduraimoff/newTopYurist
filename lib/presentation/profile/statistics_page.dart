@@ -108,14 +108,14 @@ class StatisticsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.user.applicationCount,
+                                  amount: state.user.offerAmount,
                                   title: 'numberOfApplications',
                                 ),
                               ),
                               SizedBox(width: 20.w),
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.user.selectedCount,
+                                  amount: state.user.selectedAmount,
                                   title: 'selected',
                                 ),
                               ),
@@ -129,14 +129,14 @@ class StatisticsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.user.acceptedCount,
+                                  amount: state.user.finishedApplicatoinCount,
                                   title: 'performed',
                                 ),
                               ),
                               SizedBox(width: 20.w),
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.user.amountCalls,
+                                  amount: state.user.callCount,
                                   title: 'calls',
                                 ),
                               ),
@@ -150,14 +150,14 @@ class StatisticsPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.user.amountSentMessages,
+                                  amount: state.user.sentMessageCount,
                                   title: 'sentMessages',
                                 ),
                               ),
                               SizedBox(width: 20.w),
                               Expanded(
                                 child: itemWidget(
-                                  amount: state.user.amountIncomingMessages,
+                                  amount: state.user.receivedMessageCount,
                                   title: 'incomingMessages',
                                 ),
                               ),
@@ -168,7 +168,7 @@ class StatisticsPage extends StatelessWidget {
                             child: const Divider(height: 0),
                           ),
                           itemWidget(
-                            amount: state.user.amountFavorites,
+                            amount: state.user.customerFavoriteCount,
                             title: 'youAreInFavorite',
                           ),
                         ],
