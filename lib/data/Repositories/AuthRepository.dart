@@ -6,11 +6,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/bloc/Cubit/Auth/auth_user_cubit.dart';
 import 'package:top_yurist/data/HttpRequest/http_requests.dart';
 import 'package:top_yurist/data/Models/auth/image_response.dart';
-<<<<<<< HEAD
-import 'package:top_yurist/data/Models/regions/regions.dart';
-=======
-import 'package:top_yurist/data/data_provider/token_provider.dart';
->>>>>>> dev
 import '../../utils/config.dart';
 import '../Models/auth/phone_verified_response.dart';
 import '../Models/auth/profile_response.dart';
@@ -38,34 +33,20 @@ class AuthRepository{
         return PhoneVerifiedResponse.fromJson(response.data);
       }
       return response.data;
-<<<<<<< HEAD
+
 
     }catch(e){
 
       rethrow;
     }
   }
-  Future<ProfileResponse> sendOtpCode(BuildContext? context) async{
-    try{
-      final  response = await request.doPostRequest(slug: "/api/auth",
-=======
 
-
-    }on DioError catch(e){
-
-      if(e.response != null){
-        return(PhoneVerifiedResponse(error: e.response?.data["error"]));
-      }
-      return PhoneVerifiedResponse(error: e.message);
-      }
-    }
 
 
   Future<ProfileResponse> sendOtpCode(BuildContext? context) async {
     try {
       final response = await ApiRequest().doPostRequest(
           slug: "/api/auth",
->>>>>>> dev
           queryParameters: {
             "grant_type": "authorization_code",
             "token": context?.read<AuthUserCubit>().newUser.token,
@@ -87,34 +68,12 @@ class AuthRepository{
         return ProfileResponse(error: response.data["error"], statusCode: response.statusCode);
       }
       return response.data;
-<<<<<<< HEAD
+
     }catch(e){
 
       rethrow;
     }
   }
-  Future<ImageResponse> uploadImage({File? image, String? category})async{
-       ImageResponse res = ImageResponse();
-      var formData = FormData.fromMap({
-        "file":  await MultipartFile.fromFile(image!.path),
-        "category": "test"
-      });
-      try{
-      final response = await request.doPostRequest(slug: "/file/upload-unique", data: formData,
-
-      options: Options(headers: {
-        "Authorization" : await storage.read(key: Config.accessToken),
-      })
-      );
-=======
-
-    } on DioError catch(e){
-      if(e.response != null){
-        return ProfileResponse(error: e.response?.data["error"]);
-      }
-      return ProfileResponse(error: e.message);
-      }
-    }
 
 
   Future<ImageResponse> uploadImage({File? image, String? category}) async {
@@ -130,7 +89,7 @@ class AuthRepository{
           options: Options(headers: {
             "Authorization": await storage.read(key: Config.accessToken),
           }));
->>>>>>> dev
+
       res.statusCode = response.statusCode;
       if(response.statusCode == 200){
         return ImageResponse.fromJson(response.data) ;
@@ -146,28 +105,15 @@ class AuthRepository{
     }
 
   }
-<<<<<<< HEAD
-  Future<ProfileResponse> registerUser(NewUser user) async{
-    final response = await request.doPostRequest(slug: "/api/registration", options: Options(
-      headers: {"Authorization": await storage.read(key: Config.accessToken),},),
-      data: {
-        "profile_photo": user.imageUrl,
-        "full_name": user.fullName,
-        "region_id": user.regionId,
-        "agreement": user.agreement,
-        "problem_types": user.problemTypes,
-      }
-    );
-    print(response.statusCode);
-    return ProfileResponse.fromJson(response.data);
-  }
 
-}
-=======
+
+
+
+
 
   Future<ProfileResponse> registerUser(NewUser user) async{
     try{
-      final response = await request.doPostRequest(slug: "/api/registration", options: Options(
+      final Response response = await request.doPostRequest(slug: "/api/registration", options: Options(
         headers: {"Authorization": await storage.read(key: Config.accessToken),},),
           data: {
             "profile_photo": user.imageUrl,
@@ -177,7 +123,7 @@ class AuthRepository{
             "problem_types": user.problemTypes,
           }
       );
-      return ProfileResponse.fromJson(response);
+      return ProfileResponse.fromJson(response.data);
     }on DioError catch(e){
       return ProfileResponse(error: e.response?.data["error"]);
     }
@@ -185,4 +131,4 @@ class AuthRepository{
 
 
 }
->>>>>>> dev
+

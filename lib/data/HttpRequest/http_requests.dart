@@ -63,7 +63,7 @@ class ApiRequest{
 
   Future<Response> doGetRequest({required String slug,Map<String, dynamic>? queryParameters,
     Options? options,}) async{
-    await api();
+    // await api();
     try{
       final Response response = await dio.get(Config.baseUrl +slug, queryParameters: queryParameters, options: options);
       return response;

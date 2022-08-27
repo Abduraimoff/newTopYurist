@@ -41,11 +41,11 @@ void main() async {
 
   Widget defaultHomeScreen = const LoginScreen();
 
-    if(await storage.read(key: Config.userType) == "lawyer"){
-      defaultHomeScreen =  const HomeScreen();
-    } else if(await storage.read(key: Config.userType) == "user"){
-      defaultHomeScreen = const HomeScreenUser();
-    }
+    // if(await storage.read(key: Config.userType) == "lawyer"){
+    //   defaultHomeScreen =  const HomeScreen();
+    // } else if(await storage.read(key: Config.userType) == "user"){
+    //   defaultHomeScreen = const HomeScreenUser();
+    // }
 
 
   runApp(MyApp(
