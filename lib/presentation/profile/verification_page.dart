@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:top_yurist/bloc/verification_cubit/verification_cubit.dart';
 import 'package:top_yurist/presentation/profile/verification_two_page.dart';
 import 'package:top_yurist/utils/decorations.dart';
 import 'package:top_yurist/utils/icons.dart';
@@ -13,10 +15,10 @@ class VerificationPage extends StatefulWidget {
   const VerificationPage({Key? key}) : super(key: key);
 
   @override
-  State<VerificationPage> createState() => _VerificationPageState();
+  State<VerificationPage> createState() => VerificationPageState();
 }
 
-class _VerificationPageState extends State<VerificationPage> {
+class VerificationPageState extends State<VerificationPage> {
   int page = 1;
 
   void changePage(int index) {
@@ -27,55 +29,55 @@ class _VerificationPageState extends State<VerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              _AppBarWidget(),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20.h),
-                      const _AboutInstutionWidget(),
-                      SizedBox(height: 24.h),
-                      const _EducationWidget(),
-                      SizedBox(height: 24.h),
-                      const _ExperienceWidget(),
-                      SizedBox(height: 19.h),
-                      SizedBox(
-                        width: double.infinity,
-                        child: CupertinoButton(
-                          color: AppColors.blue,
-                          child: Text(
-                            'Далее',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
+    return BlocProvider(
+      create: (context) => VerificationCubit(),
+      child: Builder(builder: (context) {
+        return (page == 1)
+            ? Scaffold(
+                body: SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      children: [
+                        const _AppBarWidget(),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 20.h),
+                                const _AboutInstutionWidget(),
+                                SizedBox(height: 24.h),
+                                const _EducationWidget(),
+                                SizedBox(height: 24.h),
+                                const _ExperienceWidget(),
+                                SizedBox(height: 19.h),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: CupertinoButton(
+                                    color: AppColors.blue,
+                                    child: Text(
+                                      'Далее',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    onPressed: () => changePage(2),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const VerificationTwoPage(),
-                                ));
-                          },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
+              )
+            : const VerificationTwoPage();
+      }),
     );
   }
 }
@@ -85,7 +87,7 @@ class _AppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageState = context.findAncestorStateOfType<_VerificationPageState>();
+    final pageState = context.findAncestorStateOfType<VerificationPageState>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -134,6 +136,9 @@ class _AboutInstutionWidget extends StatelessWidget {
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
           decoration: TextFieldDecorations.roundedDecoration(context)
               .copyWith(hintText: 'Ваше имя или название организации'),
+          onChanged: (value) {
+            context.read<VerificationCubit>().verify.title = value;
+          },
         ),
         SizedBox(height: 24.h),
         SizedBox(
@@ -148,6 +153,9 @@ class _AboutInstutionWidget extends StatelessWidget {
                 TextFieldDecorations.roundedDecoration(context).copyWith(
               hintText: 'О себе',
             ),
+            onChanged: (value) {
+              context.read<VerificationCubit>().verify.description = value;
+            },
           ),
         ),
       ],
@@ -163,6 +171,9 @@ class _EducationWidget extends StatefulWidget {
 }
 
 class __EducationWidgetState extends State<_EducationWidget> {
+  String name = '';
+  String start = '';
+  String end = '';
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -177,6 +188,9 @@ class __EducationWidgetState extends State<_EducationWidget> {
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
           decoration: TextFieldDecorations.roundedDecoration(context)
               .copyWith(hintText: 'Название заведения'),
+          onChanged: (v) {
+            name = v;
+          },
         ),
         SizedBox(height: 16.h),
         Row(
@@ -207,7 +221,9 @@ class __EducationWidgetState extends State<_EducationWidget> {
                       child: Text(i.toString()),
                     )
                 ],
-                onChanged: (value) {},
+                onChanged: (value) {
+                  start = value.toString();
+                },
               ),
             ),
             SizedBox(width: 15.w),
@@ -237,7 +253,9 @@ class __EducationWidgetState extends State<_EducationWidget> {
                       child: Text(i.toString()),
                     )
                 ],
-                onChanged: (value) {},
+                onChanged: (value) {
+                  end = value.toString();
+                },
               ),
             )
           ],

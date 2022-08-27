@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 
 import 'package:top_yurist/bloc/review_cubit/review_cubit.dart';
 import 'package:top_yurist/data/Models/review/review.dart';
 import 'package:top_yurist/utils/colors.dart';
 
-import '../../bloc/profile_cubit/profile_cubit_cubit.dart';
 import '../../data/Models/user/user.dart';
 
 class ReviewWidget extends StatelessWidget {
@@ -19,7 +19,8 @@ class ReviewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reviewCubit = context.watch<ReviewCubit>();
-    return BlocBuilder<ProfileCubit, User>(builder: (context, state) {
+    return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+      state as UserState;
       return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.h),
@@ -43,13 +44,14 @@ class ReviewWidget extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 16.h,
-                        backgroundImage: AssetImage(review.user.image),
+                        backgroundImage:
+                            AssetImage(review.user.profilePhoto ?? ''),
                         onBackgroundImageError: (exception, stackTrace) =>
                             const AssetImage('assets/images/userError.png'),
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        review.user.name,
+                        review.user.fullName ?? '',
                         style: TextStyle(
                             fontSize: 14.sp, fontWeight: FontWeight.w400),
                       )
@@ -89,7 +91,7 @@ class ReviewWidget extends StatelessWidget {
               ),
             ),
             const Divider(),
-            if (state.type == UserType.lawyer)
+            if (state.user.userType == UserType.lawyer)
               SizedBox(
                 height: 50.w,
                 child: Row(
@@ -121,14 +123,15 @@ class ReviewWidget extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                      backgroundImage: AssetImage(review.lawyer?.image ?? ""),
+                      backgroundImage:
+                          AssetImage(review.lawyer?.profilePhoto ?? ""),
                       radius: 16.h,
                       onBackgroundImageError: (exception, stackTrace) =>
                           const AssetImage('assets/images/userError.png')),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
-                      review.lawyer?.name ?? "",
+                      review.lawyer?.fullName ?? "",
                       style: TextStyle(
                           fontSize: 14.sp, fontWeight: FontWeight.w400),
                       maxLines: 1,

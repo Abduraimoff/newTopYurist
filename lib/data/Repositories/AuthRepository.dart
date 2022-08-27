@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/bloc/Cubit/Auth/auth_user_cubit.dart';
 import 'package:top_yurist/data/HttpRequest/http_requests.dart';
 import 'package:top_yurist/data/Models/auth/image_response.dart';
+import 'package:top_yurist/data/Models/regions/regions.dart';
 import '../../utils/config.dart';
 import '../Models/auth/phone_verified_response.dart';
 import '../Models/auth/profile_response.dart';
@@ -17,7 +18,7 @@ class AuthRepository{
   final storage =  const FlutterSecureStorage();
 
   Future<PhoneVerifiedResponse> verifyPhone(BuildContext context) async{
-    
+
     try{
       final  response = await request.doPostRequest(slug: "/api/auth",
           queryParameters: {
@@ -35,8 +36,8 @@ class AuthRepository{
       }
       return response.data;
 
-    }on DioError catch(e){
-        
+    }catch(e){
+
       rethrow;
     }
   }
@@ -63,7 +64,8 @@ class AuthRepository{
         return ProfileResponse(error: response.data["error"], statusCode: response.statusCode);
       }
       return response.data;
-    } on DioError catch(e){
+    }catch(e){
+
       rethrow;
     }
   }
@@ -106,7 +108,7 @@ class AuthRepository{
         "problem_types": user.problemTypes,
       }
     );
-
+    print(response.statusCode);
     return ProfileResponse.fromJson(response.data);
   }
 

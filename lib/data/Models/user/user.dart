@@ -1,93 +1,101 @@
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+import 'package:top_yurist/data/parser/parser.dart';
+
+part 'user.g.dart';
+
 enum UserType { lawyer, notLawyer }
 
-class User {
-  final int id;
-  final String name;
-  final String phoneNumber;
-  final String image;
-  final bool? isVerified;
-  final UserType type;
-  final int? amountFavorites;
-  final int? amountSelects;
-  final int? amountCOmplates;
-  final int? amountApplications;
-  final int? amountCalls;
-  final int? amountSentMessages;
-  final int? amountIncomingMessages;
-
-  User({
-    required this.id,
-    required this.name,
-    required this.phoneNumber,
-    required this.image,
-    this.isVerified,
-    required this.type,
-    this.amountFavorites,
-    this.amountSelects,
-    this.amountCOmplates,
-    this.amountApplications,
-    this.amountCalls,
-    this.amountSentMessages,
-    this.amountIncomingMessages,
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class User extends Equatable {
+  @JsonKey(fromJson: userTypeFromString)
+  final UserType? userType;
+  final String? fullName;
+  final int? finishedApplicatoinCount;
+  final int? selectedAmount;
+  final int? offerAmount;
+  final String? username;
+  @JsonKey(fromJson: lawyerIsVerified)
+  final bool? lawyerState;
+  final String? profilePhoto;
+  final int? callCount;
+  final int? sentMessageCount;
+  final int? receivedMessageCount;
+  final int? customerFavoriteCount;
+  final List<String>? problemTypes;
+  final int? regionId;
+  const User({
+    this.userType,
+    this.fullName,
+    this.finishedApplicatoinCount,
+    this.selectedAmount,
+    this.offerAmount,
+    this.username,
+    this.lawyerState,
+    this.profilePhoto,
+    this.callCount,
+    this.sentMessageCount,
+    this.receivedMessageCount,
+    this.customerFavoriteCount,
+    this.problemTypes,
+    this.regionId,
   });
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is User &&
-        other.name == name &&
-        other.phoneNumber == phoneNumber &&
-        other.image == image &&
-        other.isVerified == isVerified &&
-        other.type == type &&
-        other.amountFavorites == amountFavorites &&
-        other.amountSelects == amountSelects &&
-        other.amountCOmplates == amountCOmplates;
-  }
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 
   @override
-  int get hashCode {
-    return name.hashCode ^
-        phoneNumber.hashCode ^
-        image.hashCode ^
-        isVerified.hashCode ^
-        type.hashCode ^
-        amountFavorites.hashCode ^
-        amountSelects.hashCode ^
-        amountCOmplates.hashCode;
-  }
+  List<Object?> get props => [
+        userType,
+        fullName,
+        finishedApplicatoinCount,
+        selectedAmount,
+        offerAmount,
+        username,
+        lawyerState,
+        profilePhoto,
+        callCount,
+        sentMessageCount,
+        receivedMessageCount,
+        customerFavoriteCount,
+        problemTypes,
+        regionId,
+      ];
 
   User copyWith({
-    int? id,
-    String? name,
-    String? phoneNumber,
-    String? image,
-    bool? isVerified,
-    UserType? type,
-    int? amountFavorites,
-    int? amountSelects,
-    int? amountCOmplates,
-    int? amountApplications,
-    int? amountCalls,
-    int? amountSentMessages,
-    int? amountIncomingMessages,
+    UserType? userType,
+    String? fullName,
+    int? finishedApplicatoinCount,
+    int? selectedAmount,
+    int? offerAmount,
+    String? username,
+    bool? lawyerState,
+    String? profilePhoto,
+    int? callCount,
+    int? sentMessageCount,
+    int? receivedMessageCount,
+    int? customerFavoriteCount,
+    List<String>? problemTypes,
+    int? regionId,
   }) {
     return User(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      image: image ?? this.image,
-      isVerified: isVerified ?? this.isVerified,
-      type: type ?? this.type,
-      amountFavorites: amountFavorites ?? this.amountFavorites,
-      amountSelects: amountSelects ?? this.amountSelects,
-      amountCOmplates: amountCOmplates ?? this.amountCOmplates,
-      amountApplications: amountApplications ?? this.amountApplications,
-      amountCalls: amountCalls ?? this.amountCalls,
-      amountSentMessages: amountSentMessages ?? this.amountSentMessages,
-      amountIncomingMessages:
-          amountIncomingMessages ?? this.amountIncomingMessages,
+      userType: userType ?? this.userType,
+      fullName: fullName ?? this.fullName,
+      finishedApplicatoinCount:
+          finishedApplicatoinCount ?? this.finishedApplicatoinCount,
+      selectedAmount: selectedAmount ?? this.selectedAmount,
+      offerAmount: offerAmount ?? this.offerAmount,
+      username: username ?? this.username,
+      lawyerState: lawyerState ?? this.lawyerState,
+      profilePhoto: profilePhoto ?? this.profilePhoto,
+      callCount: callCount ?? this.callCount,
+      sentMessageCount: sentMessageCount ?? this.sentMessageCount,
+      receivedMessageCount: receivedMessageCount ?? this.receivedMessageCount,
+      customerFavoriteCount:
+          customerFavoriteCount ?? this.customerFavoriteCount,
+      problemTypes: problemTypes ?? this.problemTypes,
+      regionId: regionId ?? this.regionId,
     );
   }
 }

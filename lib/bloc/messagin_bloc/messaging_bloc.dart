@@ -35,12 +35,15 @@ class MessagingBloc extends Bloc<MessagingEvent, MessagingState> {
                 isSentByMe: true,
               ),
             ],
-            user: User(
-              id: 7,
-              name: 'Феруз Тахирович',
-              phoneNumber: '+998999999999',
-              image: 'assets/images/lawyer.jpg',
-              type: UserType.lawyer,
+            user: const User(
+              fullName: 'Феруз Тахирович',
+              username: '+998999999999',
+              profilePhoto: 'assets/images/lawyer.jpg',
+              lawyerState: false,
+              userType: UserType.lawyer,
+              selectedAmount: 5,
+              finishedApplicatoinCount: 6,
+              offerAmount: 0,
             ),
           );
           emit(messages);
