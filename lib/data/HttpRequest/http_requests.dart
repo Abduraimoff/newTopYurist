@@ -23,17 +23,28 @@ class ApiRequest{
 
   }
   Future<void> refreshToken()async{
+    final Dio newDio = Dio();
     final refreshToken = await _storage.read(key: Config.refreshToken);
+    final accessToken = await _storage.read(key: Config.accessToken);
+    try{
 
-    final response = await dio.post("${Config.baseUrl}/api/refresh_token/", queryParameters: {"token": "Bearer $refreshToken"});
-    if(response.statusCode == 200) {
+      final response = await newDio.post("${Config.baseUrl}/api/refresh_token/", queryParameters: {"token": "Bearer $refreshToken"}, options: Options(headers: {
+        "Authorization": accessToken,
+      }));
+      if(response.statusCode == 200) {
 
-      await _storage.write(key: Config.accessToken, value: response.data["access_token"]);
-      await _storage.write(key: Config.refreshToken, value: response.data["refresh_token"]);
-    }else{
+        await _storage.write(key: Config.accessToken, value: response.data["access_token"]);
+        await _storage.write(key: Config.refreshToken, value: response.data["refresh_token"]);
+      }else{
 
-      _storage.deleteAll();
+        _storage.deleteAll();
+      }
+
+
+    } on DioError catch(e){
+      print(e.response?.data);
     }
+
   }
 
 
@@ -52,7 +63,7 @@ class ApiRequest{
 
   Future<Response> doGetRequest({required String slug,Map<String, dynamic>? queryParameters,
     Options? options,}) async{
-    // await api();
+    await api();
     try{
       final Response response = await dio.get(Config.baseUrl +slug, queryParameters: queryParameters, options: options);
       return response;
