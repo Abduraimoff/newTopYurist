@@ -27,7 +27,8 @@ class OtpCodeSendEvent extends AuthEvent{
 
 class UploadImageEvent extends AuthEvent{
   final File file;
-  UploadImageEvent(this.file);
+  final String category;
+  UploadImageEvent(this.file, this.category);
   @override
   List<Object?> get props => [file];
 }

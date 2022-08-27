@@ -10,7 +10,7 @@ class TokenProvider {
 
   Future<void> saveAccessToken(String? value) async {
     if (value == null) return;
-    await _storage.write(key: TokenProviderKeys.accessToken, value: value);
+    await _storage.write(key: TokenProviderKeys.accessToken, value: "Bearer $value");
   }
 
   Future<String?> getAccessToken() async {

@@ -25,15 +25,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         emit(PhoneNumberVerifiedSuccessState(response));
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
       } on DioError catch(e){
           if(e.response != null){
             print(e.response?.data );
           }
         emit(AuthErrorState(error: e.response?.data["error"]));
+<<<<<<< HEAD
 =======
       } catch (e) {
         emit(AuthErrorState(error: e));
 >>>>>>> diyorjon
+=======
+
+>>>>>>> dev
       }
     });
     on<OtpCodeSendEvent>((event, emit) async {
@@ -45,17 +53,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
         emit(OtpCodeSuccessState(response: response));
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
       }on DioError catch (e){
         emit(AuthErrorState(error: e.response?.data["error"]));
       }
     });
     on<UploadImageEvent>((event, emit) async{
       try{
-        final response = await repository.uploadImage(image: event.file, category: "test");
+        final response = await repository.uploadImage(image: event.file, category: event.category);
 
         emit(UploadImageSuccessState(response: response));
       } on DioError catch(e){
         emit(AuthErrorState(error: e.response?.data["error"]));
+<<<<<<< HEAD
 =======
       } catch (e) {
         emit(AuthErrorState(error: e));
@@ -72,12 +85,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         emit(AuthErrorState(error: e));
 >>>>>>> diyorjon
+=======
+
+>>>>>>> dev
       }
     });
+
     on<RegisterUserEvent>((event, emit) async {
       try {
         final response = await repository.registerUser(event.user);
         emit(RegisterUserSuccessState(response));
+<<<<<<< HEAD
 <<<<<<< HEAD
       }on DioError catch(e){
         emit(AuthErrorState(error: e.response?.data["error"]));
@@ -85,6 +103,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         emit(AuthErrorState(error: e));
 >>>>>>> diyorjon
+=======
+
+      }on DioError catch(e){
+        emit(AuthErrorState(error: e.response?.data["error"]));
+
+>>>>>>> dev
       }
     });
   }

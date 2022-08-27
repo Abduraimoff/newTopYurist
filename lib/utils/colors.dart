@@ -11,4 +11,6 @@ class AppColors {
   static const Color scaffoldBackground = Color(0xFFFBFBFB);
   static const Color primary = Color(0xFF1C4FD1);
   static const Color lightGrey = Color(0xEFF0F2FF);
+  static const Color hotToddy = Color(0xFFAD7A2C);
+  static const Color dividerColor = Color.fromRGBO(217, 217, 217, 1);
 }

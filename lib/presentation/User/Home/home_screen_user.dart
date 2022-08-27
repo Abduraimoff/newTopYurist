@@ -18,10 +18,13 @@ class HomeScreenUser extends StatefulWidget {
 class _HomeScreenUserState extends State<HomeScreenUser> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
+
+
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
-    CreateRequestScreen(),
-    ChatsPage(),
+    const CreateRequestScreen(),
+
+    const ChatsPage(),
     const FavouritesScreen(),
     const UserProfilePage(),
   ];

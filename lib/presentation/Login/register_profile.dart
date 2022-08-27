@@ -42,7 +42,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
         this.image = temporaryImage;
         _isPhotoUploading = true;
       });
-      _bloc.add(UploadImageEvent(temporaryImage));
+      _bloc.add(UploadImageEvent(temporaryImage, "user"));
     } on PlatformException catch (e) {
       print("filed to pick image: $e");
     }
@@ -163,7 +163,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
                           8.0,
                         ),
                       ),
-                      hintText: context.localeString('surName')),
+                      hintText: context.localeString('name2')),
                 ),
               ),
               SizedBox(
@@ -179,7 +179,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
                       actions: [
                         ElevatedButton(onPressed: (){
                           agreement = true;
-                          context.read<AuthUserCubit>().getUserAgreement(false);
+                          context.read<AuthUserCubit>().getUserAgreement(true);
                           Navigator.of(context).pop();
                         }, child: const Text("no")),
                         ElevatedButton(onPressed: (){
@@ -193,7 +193,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
                         .textTheme
                         .bodyText1
                         ?.copyWith(
-                        decoration: TextDecoration.underline)),
+                        decoration: TextDecoration.underline), overflow: TextOverflow.ellipsis,),
                   )
 
                 ],
@@ -217,12 +217,13 @@ class _RegisterProfileState extends State<RegisterProfile> {
     return FloatingActionButton(
       onPressed: () async{
         fullName = "${_nameController.text} ${_sureNameController.text}";
+        context.read<AuthUserCubit>().getUserAgreement(true);
         context.read<AuthUserCubit>().getFullName(fullName??'');
 
-        if((fullName?.length?? 0) <3){
+        if(_nameController.text.length < 3){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your name should be at least 3 symbol')));
-        } else if(agreement ?? true){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('please select agreement')));
+        } else if(_sureNameController.text.length < 3){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your surname should be at least 3 symbol')));
         } else{
           Navigator.of(context).pushNamed(SelectRegion.routeName);
         }
