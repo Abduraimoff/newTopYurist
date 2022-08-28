@@ -46,7 +46,6 @@ void main() async {
       defaultHomeScreen = const HomeScreenUser();
     }
 
-
   runApp(MyApp(
     defaultHome: defaultHomeScreen,
   ));
