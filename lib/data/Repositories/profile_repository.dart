@@ -23,13 +23,9 @@ class ProfileRepository {
   Future<User?> getUser() async {
     const path = '/api/profile/info/';
 
-    try {
-      final responce = await _request.get(path);
-      final user = User.fromJson(responce.data);
-      return user;
-    } catch (e) {
-      return null;
-    }
+    final responce = await _request.get(path);
+    final user = User.fromJson(responce.data);
+    return user;
   }
 
   Future<void> editUser(User user) async {

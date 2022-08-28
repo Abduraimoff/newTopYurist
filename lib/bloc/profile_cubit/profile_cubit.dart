@@ -16,11 +16,14 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> loadUser() async {
     final user = await _request.getUser();
-
-    if (user == null) {
-      emit(ProfileErrorState());
-    } else {
-      emit(UserState(user: user));
+    try {
+      if (user == null) {
+        emit(const ProfileErrorState('user null'));
+      } else {
+        emit(UserState(user: user));
+      }
+    } catch (e) {
+      emit(ProfileErrorState(e.toString()));
     }
   }
 
