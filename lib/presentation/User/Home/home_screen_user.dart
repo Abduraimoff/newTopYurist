@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:top_yurist/presentation/profile/profile_page.dart';
 import 'package:top_yurist/utils/colors.dart';
-
 import '../../chat/chat_page.dart';
 import '../Favourites/favourites_screen.dart';
 import '../Requests/request_screen.dart';
