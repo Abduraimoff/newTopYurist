@@ -14,4 +14,7 @@ class FaqLoadedState extends FaqState {
   final List<Faq> faqs;
 }
 
-class FaqErrorState extends FaqState {}
+class FaqErrorState extends FaqState {
+  const FaqErrorState(this.errorText);
+  final String errorText;
+}

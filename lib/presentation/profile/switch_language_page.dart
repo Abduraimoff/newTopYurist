@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:top_yurist/data/Repositories/profile_repository.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 
@@ -13,6 +14,7 @@ class SwitchLanguagePage extends StatefulWidget {
 }
 
 class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
+  final profileRepository = ProfileRepository();
   @override
   Widget build(BuildContext context) {
     Widget languageItem({
@@ -57,7 +59,8 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
           Positioned.fill(
               child: Material(
             color: Colors.transparent,
-            child: InkWell(onTap: () {
+            child: InkWell(onTap: () async {
+              await profileRepository.changeLanguage(languageCode);
               setState(() {
                 Locales.change(context, languageCode);
               });

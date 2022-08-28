@@ -25,6 +25,7 @@ class User extends Equatable {
   final int? customerFavoriteCount;
   final List<String>? problemTypes;
   final int? regionId;
+  final String? id;
   const User({
     this.userType,
     this.fullName,
@@ -40,6 +41,7 @@ class User extends Equatable {
     this.customerFavoriteCount,
     this.problemTypes,
     this.regionId,
+    this.id,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -47,6 +49,7 @@ class User extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         userType,
         fullName,
         finishedApplicatoinCount,
@@ -78,6 +81,7 @@ class User extends Equatable {
     int? customerFavoriteCount,
     List<String>? problemTypes,
     int? regionId,
+    String? id,
   }) {
     return User(
       userType: userType ?? this.userType,
@@ -96,6 +100,7 @@ class User extends Equatable {
           customerFavoriteCount ?? this.customerFavoriteCount,
       problemTypes: problemTypes ?? this.problemTypes,
       regionId: regionId ?? this.regionId,
+      id: id ?? this.id,
     );
   }
 }
