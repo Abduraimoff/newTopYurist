@@ -9,16 +9,15 @@ class ApiRequest{
 
   api(){
     dio.interceptors.add(InterceptorsWrapper(onRequest: (option, handler) async{
-      option.headers["Authorization"] = "Bearer ${ await _storage.read(key: Config.refreshToken)}";
+      option.headers["Authorization"] = "Bearer ${ await _storage.read(key: Config.accessToken)}";
       return handler.next(option);
     }, onError: (DioError error, handler) async{
       if(error.response?.statusCode == 401){
         if(await _storage.containsKey(key: Config.refreshToken)){
-       await refreshToken();
+          await refreshToken();
         }
       }
     }
-
     ));
 
   }

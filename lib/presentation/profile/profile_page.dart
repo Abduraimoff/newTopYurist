@@ -640,7 +640,7 @@ class __PushNotificationWidgetState extends State<_PushNotificationWidget> {
 class _LogOutWidget extends StatelessWidget {
   const _LogOutWidget({Key? key}) : super(key: key);
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-final FlutterSecureStorage storage = const FlutterSecureStorage();
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return Container(
