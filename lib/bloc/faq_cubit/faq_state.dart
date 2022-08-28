@@ -8,3 +8,10 @@ abstract class FaqState extends Equatable {
 }
 
 class FaqInitial extends FaqState {}
+
+class FaqLoadedState extends FaqState {
+  const FaqLoadedState(this.faqs);
+  final List<Faq> faqs;
+}
+
+class FaqErrorState extends FaqState {}

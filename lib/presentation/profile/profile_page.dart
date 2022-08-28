@@ -24,6 +24,7 @@ class UserProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileCubit>().loadUser();
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       body: SafeArea(
@@ -31,6 +32,8 @@ class UserProfilePage extends StatelessWidget {
             BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
           if (state is ProfileInitial) {
             return const Center(child: CircularProgressIndicator.adaptive());
+          } else if (state is ProfileErrorState) {
+            return Center(child: Text(state.errorText));
           }
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -640,7 +643,7 @@ class __PushNotificationWidgetState extends State<_PushNotificationWidget> {
 class _LogOutWidget extends StatelessWidget {
   const _LogOutWidget({Key? key}) : super(key: key);
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-final FlutterSecureStorage storage = const FlutterSecureStorage();
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -659,10 +662,10 @@ final FlutterSecureStorage storage = const FlutterSecureStorage();
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: InkWell(
-          onTap: () async{
-            Navigator.of(context).pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
+          onTap: () async {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                LoginScreen.routeName, (route) => false);
             await _storage.deleteAll();
-
           },
           child: Row(
             children: [

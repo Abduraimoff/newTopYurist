@@ -28,8 +28,32 @@ class _BodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FAQCubit, FaqState>(
       builder: (context, state) {
-        return Scaffold();
+        if (state is FaqInitial) {
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator.adaptive()));
+        } else if (state is FaqLoadedState) {
+          return const _FAQLoadedWidget();
+        }
+        return const _FAQErrorWidget();
       },
     );
+  }
+}
+
+class _FAQLoadedWidget extends StatelessWidget {
+  const _FAQLoadedWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
+}
+
+class _FAQErrorWidget extends StatelessWidget {
+  const _FAQErrorWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
   }
 }
