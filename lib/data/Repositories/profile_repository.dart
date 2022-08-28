@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:top_yurist/data/HttpRequest/dio_client.dart';
 import 'package:top_yurist/data/Models/auth/image_response.dart';

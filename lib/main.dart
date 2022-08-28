@@ -40,14 +40,11 @@ void main() async {
   ]);
 
   Widget defaultHomeScreen = const LoginScreen();
-
     if(await storage.read(key: Config.userType) == "lawyer"){
       defaultHomeScreen =  const HomeScreen();
-    } else if(await storage.read(key: Config.userType) == "user"){
+    } else if(await storage.read(key: Config.userType) == "customer"){
       defaultHomeScreen = const HomeScreenUser();
     }
-
-
   runApp(MyApp(
     defaultHome: defaultHomeScreen,
   ));
@@ -81,7 +78,7 @@ class MyApp extends StatelessWidget {
                     RegisterScreen.registerScreen: (context) =>
                         BlocProvider<AuthBloc>(
                           create: (
-                            context,
+                            context
                           ) =>
                               AuthBloc(),
                           child: const RegisterScreen(),

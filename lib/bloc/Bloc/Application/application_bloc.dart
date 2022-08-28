@@ -36,6 +36,16 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
           }
         }
     });
+    on<UpdateApplicationEvent>((event, emit) async{
+      try{
+        final response = await repository.updateApplication(event.data, event.id);
+        emit(ApplicationCreatedSuccessfullyState(response));
+      }on DioError catch(e){
+        if(e.response != null){
+          emit(ApplicationErrorState(e.response?.data["error"]));
+        }
+      }
+    });
     on<PublishEvent>((event, emit) async{
       try{
         final response = await repository.publishApplication(event.id);

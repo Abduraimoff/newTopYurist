@@ -14,6 +14,7 @@ import 'package:top_yurist/bloc/Bloc/ProblemType/problem_type_bloc.dart';
 import 'package:top_yurist/utils/colors.dart';
 import '../../../bloc/Bloc/Auth/auth_bloc.dart';
 import '../../../data/Models/regions/regions.dart';
+import '../../../data/Models/user/user_home_request_list.dart';
 
 class CreateNewRequest extends StatefulWidget {
   static const String routeName = "create_request";
@@ -41,6 +42,8 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
   String? categoryError;
   String? descriptionError;
   String? imageError;
+  RegionsResponse? problemType;
+ UserHomeRequestListResponse? data;
 
   Future pickImage() async {
     try {
@@ -62,6 +65,15 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
   void initState() {
     _problemTypeBloc.add(GetProblemsEvent());
     super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+ data = ModalRoute.of(context)?.settings.arguments == null ? null : ModalRoute.of(context)?.settings.arguments as UserHomeRequestListResponse;
+ _imageList = data?.photos ?? [];
+ _controller.text = data?.description ?? "";
+ isHideMyNumber = data?.privatePhone ?? false;
+ selectedCategory = data?.problemTypeId;
+    super.didChangeDependencies();
   }
 
   @override
@@ -102,6 +114,7 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
         _publishAll = false;
         _controller.text = '';
         _isLoading = false;
+        data = null;
       });
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Your application successfully created")));
     }
@@ -134,19 +147,20 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 14),
-                      hintText: context.localeString('select_category_request'),
+                      hintText: data?.problemType?.ruRu ?? context.localeString('select_category_request'),
                       hintStyle: Theme.of(context).textTheme.headline5,
                     ),
                     style: Theme.of(context)
                         .textTheme
                         .headline5
                         ?.copyWith(color: AppColors.black),
-                    items: _categories.map((city) {
+                    items: _categories.map((element) {
                       return DropdownMenuItem(
-                        value: city,
-                        child: Text(city.title?.ruRu ?? ""),
+                        value: element,
+                        child: Text(element.title?.ruRu ?? ""),
                       );
                     }).toList(),
+                    value: problemType,
                     onChanged: (val) {
                       setState(() {
                         selectedCategory = val?.id;
@@ -333,15 +347,26 @@ class _CreateNewRequestState extends State<CreateNewRequest> {
                           });
                         }
                     } else{
-                      _applicationBloc.add(CreateApplicationEvent(
-                          {
-                            "problem_type_id": selectedCategory,
-                            "description": _controller.text,
-                            "photos": _imageList,
-                            "private_phone": isHideMyNumber,
-                            "publish": _publishAll
-                          }
-                      ));
+                      if(data != null){
+                        _applicationBloc.add(UpdateApplicationEvent({
+                          "problem_type_id": selectedCategory,
+                          "description": _controller.text,
+                          "photos": _imageList,
+                          "private_phone": isHideMyNumber,
+                          "publish": _publishAll
+                        }, data?.id));
+                      } else{
+                        _applicationBloc.add(CreateApplicationEvent(
+                            {
+                              "problem_type_id": selectedCategory,
+                              "description": _controller.text,
+                              "photos": _imageList,
+                              "private_phone": isHideMyNumber,
+                              "publish": _publishAll
+                            }
+                        ));
+                      }
+
                     }
 
 

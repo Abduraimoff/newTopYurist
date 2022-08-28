@@ -74,7 +74,7 @@ class DioClient {
     );
   }
 
-  Dio getDio() {
+  Dio  getDio() {
     return _dio;
   }
 }

@@ -12,6 +12,16 @@ class CreateApplicationEvent extends ApplicationEvent{
   List<Object?> get props => [data];
 
 }
+class UpdateApplicationEvent extends ApplicationEvent{
+  final Map<String, dynamic> data;
+  final String? id;
+
+  UpdateApplicationEvent(this.data,  this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [data];
+
+}
 
 class PublishEvent extends ApplicationEvent{
   final String id;

@@ -286,7 +286,9 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
                                                     height: 44.h,
                                                     width: 145.w,
                                                     child: ElevatedButton(
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Navigator.of(context).pushNamed(CreateNewRequest.routeName, arguments: data?[i]);
+                                                      },
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         elevation: 0,

@@ -22,7 +22,20 @@ class ApplicationRepository{
       print(e.response?.data);
       rethrow;
     }
+  }
+  Future<CreateApplicationResponse> updateApplication(Map<String, dynamic> data, String? id) async{
+    try{
+      final Response response = await ApiRequest().doPutRequest(slug: "/api/application/update", data: data,
+          queryParameters: {"id": id},
+          options: Options(headers: {
+        "Authorization": await storage.read(key:  Config.accessToken)
+      }));
 
+      return CreateApplicationResponse.fromJson(response.data);
+    }catch(e){
+
+      rethrow;
+    }
   }
   Future<dynamic> publishApplication(String id) async{
     try{

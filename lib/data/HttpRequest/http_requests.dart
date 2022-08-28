@@ -60,6 +60,18 @@ class ApiRequest{
     }
 
   }
+  Future<dynamic> doPutRequest({required String slug,Map<String, dynamic>? queryParameters,
+    Options? options,  data})async{
+    try{
+      final Response response =  await dio.put(Config.baseUrl+slug, queryParameters: queryParameters, options: options, data: data );
+
+      return response;
+    } on DioError catch (e){
+
+      rethrow;
+    }
+
+  }
 
   Future<Response> doGetRequest({required String slug,Map<String, dynamic>? queryParameters,
     Options? options,}) async{
