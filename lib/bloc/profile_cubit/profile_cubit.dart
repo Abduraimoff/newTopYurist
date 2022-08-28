@@ -15,6 +15,9 @@ class ProfileCubit extends Cubit<ProfileState> {
   final _request = ProfileRepository();
 
   Future<void> loadUser() async {
+    if (state is! ProfileInitial) {
+      return;
+    }
     final user = await _request.getUser();
     try {
       if (user == null) {
