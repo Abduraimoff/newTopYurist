@@ -18,6 +18,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository repository = AuthRepository();
   AuthBloc() : super(AuthInitial()) {
+
     on<VerifyPhoneNumber>((event, emit) async {
       try {
         final PhoneVerifiedResponse response = await repository.verifyPhone(
@@ -35,6 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       }
     });
+
     on<OtpCodeSendEvent>((event, emit) async {
       try {
         final ProfileResponse response =
@@ -48,6 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthErrorState(error: e.response?.data["error"]));
       }
     });
+
     on<UploadImageEvent>((event, emit) async{
       try{
         final response = await repository.uploadImage(image: event.file, category: event.category);

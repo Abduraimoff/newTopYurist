@@ -7,7 +7,6 @@ class VerifyPhoneNumber extends AuthEvent{
   final String? userType;
   final String? phoneNumber;
   final BuildContext context;
-
   VerifyPhoneNumber({required this.userType, required this.phoneNumber, required this.context});
   @override
   // TODO: implement props
@@ -17,7 +16,6 @@ class VerifyPhoneNumber extends AuthEvent{
 class OtpCodeSendEvent extends AuthEvent{
 
   final BuildContext? context;
-
   OtpCodeSendEvent({ this.context});
   @override
   // TODO: implement props

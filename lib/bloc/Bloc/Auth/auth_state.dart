@@ -5,22 +5,21 @@ abstract class AuthState extends Equatable{}
 
 class AuthInitial extends AuthState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
+
 class AuthErrorState extends AuthState{
   final String? error;
 
   AuthErrorState({this.error});
   @override
-  // TODO: implement props
   List<Object?> get props => [error];
 }
+
 class PhoneNumberVerifiedSuccessState  extends AuthState{
   final PhoneVerifiedResponse response;
   PhoneNumberVerifiedSuccessState(this.response);
   @override
-  // TODO: implement props
   List<Object?> get props => [response];
 }
 
@@ -29,7 +28,6 @@ class OtpCodeSuccessState extends AuthState{
 
   OtpCodeSuccessState({this.response});
   @override
-  // TODO: implement props
   List<Object?> get props => [response];
 }
 
@@ -38,7 +36,6 @@ class UploadImageSuccessState extends AuthState{
 
   UploadImageSuccessState({this.response});
   @override
-  // TODO: implement props
   List<Object?> get props => [response];
 
 }
@@ -47,7 +44,6 @@ class RegisterUserSuccessState extends AuthState{
 
   RegisterUserSuccessState(this.response);
   @override
-  // TODO: implement props
   List<Object?> get props => [response];
 
 }

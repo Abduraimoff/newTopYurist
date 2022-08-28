@@ -5,7 +5,6 @@ abstract class RegionsState  extends Equatable{}
 
 class RegionsInitial extends RegionsState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
@@ -22,7 +21,6 @@ final List<RegionsResponse> response;
 
   RegionsLoadedSuccessState(this.response);
   @override
-  // TODO: implement props
   List<Object?> get props => [response];
 
 }

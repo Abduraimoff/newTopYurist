@@ -8,6 +8,7 @@ class ApplicationInitial extends ApplicationState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+
 class ApplicationErrorState extends ApplicationState{
   final Object error;
 
@@ -34,6 +35,7 @@ class ApplicationPublishedState extends ApplicationState{
   List<Object?> get props => [];
 
 }
+
 class UserRequestsListSuccessState extends ApplicationState{
   final List<UserHomeRequestListResponse> response;
 

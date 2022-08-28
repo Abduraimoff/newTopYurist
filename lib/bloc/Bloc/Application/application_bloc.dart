@@ -12,6 +12,7 @@ import '../../../data/Models/user/user_home_request_list.dart';
 part 'application_event.dart';
 part 'application_state.dart';
 
+
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   final ApplicationRepository repository = ApplicationRepository();
   ApplicationBloc() : super(ApplicationInitial()) {
