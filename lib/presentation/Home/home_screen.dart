@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
-import 'package:top_yurist/presentation/Login/login_screen.dart';
 import 'package:top_yurist/presentation/Services/SeriviceScreen.dart';
 import 'package:top_yurist/presentation/chat/chat_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 import '../LawyerFavourites/lawyerFavourites.dart';
-import '../UserUploadedServices/add_new_template.dart';
 import '../profile/profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
