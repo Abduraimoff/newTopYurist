@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,8 @@ import 'package:top_yurist/presentation/Login/select_region.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
 import '../../bloc/Cubit/Auth/auth_user_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class RegisterProfile extends StatefulWidget {
   static const String routeName = "register_profile";
@@ -31,6 +34,16 @@ class _RegisterProfileState extends State<RegisterProfile> {
   String? fullName;
   bool? agreement = false;
   bool _isPhotoUploading = false;
+
+
+
+  final Uri _url = Uri.parse('https://topyurist.uz');
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
+  }
 
   Future pickImage() async {
     try {
@@ -171,33 +184,37 @@ class _RegisterProfileState extends State<RegisterProfile> {
               ),
 
               Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Checkbox(value: agreement, onChanged: ( value){
                     setState(() {
                       agreement = value;
                     });
                   }, activeColor: AppColors.primary,),
-                  LocaleText(
-                    "registration_offer_1",
-                    style: Theme.of(context).textTheme.bodyText1,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+
+                  Expanded(
+                    child:
+
+                    RichText(
+                      maxLines: 2,
+                      text: TextSpan(
+                        children:  <TextSpan>[
+                          const TextSpan(text: 'Регистрируясь, вы принимаете ', style: TextStyle(fontSize: 14, color: Colors.black)),
+                          TextSpan(
+                              text: 'публичную оферту',
+                              style: const TextStyle(fontSize: 14, color: Colors.black,decoration: TextDecoration.underline),
+                            recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // html.window.open("https://topyurist.uz", "Top yurist");
+                              _launchUrl;
+                            }),
+
+                        ],
+                      ),
+                    )
                   ),
 
-                  // RichText(
-                  //   maxLines: 2,
-                  //   text: TextSpan(
-                  //
-                  //     text: 'Hello ',
-                  //
-                  //     style: DefaultTextStyle.of(context).style,
-                  //     children: const <TextSpan>[
-                  //       TextSpan(text: 'bold', style: TextStyle(fontWeight: FontWeight.bold)),
-                  //       TextSpan(text: ' world!'),
-                  //     ],
-                  //   ),
-                  // )
+
                   // InkWell(
                   //   onTap: (){
                   //     showDialog(context: context, builder: (context) => AlertDialog(content: const Text('Are you confirm ?'),
@@ -274,5 +291,6 @@ class _RegisterProfileState extends State<RegisterProfile> {
 
     );
   }
+
 
 }
