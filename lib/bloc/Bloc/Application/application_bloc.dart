@@ -15,10 +15,12 @@ part 'application_state.dart';
 
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   final ApplicationRepository repository = ApplicationRepository();
+   List<UserHomeRequestListResponse>? data = [];
   ApplicationBloc() : super(ApplicationInitial()) {
     on<GetRequestsList>((event, emit) async{
       try{
         final response = await repository.getUserRequestsList();
+        data = response;
         emit(UserRequestsListSuccessState(response));
       }on DioError catch(e){
         if(e.response != null ){
@@ -55,6 +57,11 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
           emit(ApplicationErrorState(e.response?.data["error"]));
         }
       }
+    });
+    on<FilterEvent>((event, emit){
+      emit(ApplicationInitial());
+      final filteredData = data?.where((element) => element.state == event.state).toList();
+      emit(UserRequestsListSuccessState(event.state == ""? data: filteredData));
     });
   }
 }

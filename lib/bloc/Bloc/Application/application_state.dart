@@ -37,7 +37,7 @@ class ApplicationPublishedState extends ApplicationState{
 }
 
 class UserRequestsListSuccessState extends ApplicationState{
-  final List<UserHomeRequestListResponse> response;
+  final List<UserHomeRequestListResponse>? response;
 
    UserRequestsListSuccessState(this.response);
   @override

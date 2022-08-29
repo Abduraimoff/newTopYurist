@@ -38,3 +38,13 @@ class GetRequestsList extends ApplicationEvent{
   List<Object?> get props => [];
 
 }
+
+class FilterEvent extends ApplicationEvent{
+  final String? state;
+
+  FilterEvent(this.state);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [state];
+
+}
