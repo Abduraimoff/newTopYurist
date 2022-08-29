@@ -13,6 +13,7 @@ class ProfileImage extends StatelessWidget {
     return CachedNetworkImage(imageUrl: imageUrl ?? "",
     width: width,
     height: height,
+    fit: BoxFit.cover,
     errorWidget: (context, url, error) => Icon(Icons.person_outline, size: width,),
     );
   }
