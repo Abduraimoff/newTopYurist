@@ -17,9 +17,27 @@ class UserFavoriteBloc extends Bloc<UserFavoriteEvent, UserFavoriteState> {
     try{
       final Response response = await repository.getUserFavoriteLowyerList();
       emit(UserFavoriteLoadedSuccessState(UserFavoriteResponse.fromJson(response.data)));
-    }catch (e){
+    } on DioError catch (e){
+      if(e.response != null){
+        emit(UserFavoriteErrorState(e.response?.data["errors"]));
+      } else{
+        emit(UserFavoriteErrorState(e.message));
+      }
 
     }
+    });
+    on<UnFavoriteLawyerEvent>((event, emit) async{
+      try{
+        final Response response = await repository.unFavoriteLawyer(event.id);
+        emit(UnFavoriteSuccessState());
+      } on DioError catch (e){
+        if(e.response != null){
+          emit(UserFavoriteErrorState(e.response?.data["errors"]));
+        } else{
+          emit(UserFavoriteErrorState(e.message));
+        }
+
+      }
     });
   }
 }

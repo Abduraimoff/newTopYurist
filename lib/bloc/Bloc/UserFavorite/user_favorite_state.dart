@@ -26,3 +26,14 @@ final UserFavoriteResponse response;
   List<Object?> get props => [];
 
 }
+
+class UnFavoriteSuccessState extends UserFavoriteState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+class MakeFavoriteSuccessState extends UserFavoriteState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
