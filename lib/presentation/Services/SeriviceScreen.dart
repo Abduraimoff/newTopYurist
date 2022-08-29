@@ -93,15 +93,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                          LawyerChatScreen.routeName);
-                                    },
-                                    child: Row(
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      LawyerChatScreen.routeName);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       children: [
                                         Text(
                                           // state.response![i].,
@@ -130,17 +130,17 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                         // ),
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(height: 12.h),
-                                  Text(
-                                    'Количество запросов: ${state.response[i].application_count!}' ,
-                                    style:
-                                    Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline5,
-                                  ),
-                                ],
+                                    SizedBox(height: 12.h),
+                                    Text(
+                                      'Количество запросов: ${state.response[i].application_count!}' ,
+                                      style:
+                                      Theme
+                                          .of(context)
+                                          .textTheme
+                                          .headline5,
+                                    ),
+                                  ],
+                                ),
                               ),
                               InkWell(
                                   onTap: () {
