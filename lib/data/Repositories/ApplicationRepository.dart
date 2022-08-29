@@ -45,7 +45,6 @@ class ApplicationRepository{
           options: Options(headers: {
         "Authorization": await storage.read(key:  Config.accessToken)
       }));
-
       return PublishApplication.fromJson(response.data);
     } on DioError catch(e){
       print(e.response?.data);
@@ -60,6 +59,51 @@ class ApplicationRepository{
       }));
       return userHomeRequestListResponseFromJson(response.data);
     } catch(e){
+      rethrow;
+    }
+
+  }
+  Future<dynamic> applicationDelete(String? id) async{
+    try{
+      final Response response = await ApiRequest().doDeleteRequest(slug: "/api/application/delete", queryParameters: {
+        "id": id
+      },
+          options: Options(headers: {
+            "Authorization": await storage.read(key:  Config.accessToken)
+          }));
+      return PublishApplication.fromJson(response.data);
+    } on DioError catch(e){
+
+      rethrow;
+    }
+
+  }
+  Future<dynamic> applicationResumed(String? id) async{
+    try{
+      final Response response = await ApiRequest().doPatchRequest(slug: "/api/application/resume", queryParameters: {
+        "id": id
+      },
+          options: Options(headers: {
+            "Authorization": await storage.read(key:  Config.accessToken)
+          }));
+      return PublishApplication.fromJson(response.data);
+    } on DioError catch(e){
+
+      rethrow;
+    }
+
+  }
+  Future<dynamic> applicationAddedToFavourite(String? id) async{
+    try{
+      final Response response = await ApiRequest().doPatchRequest(slug: "/api/application/favorite/add", queryParameters: {
+        "id": id
+      },
+          options: Options(headers: {
+            "Authorization": await storage.read(key:  Config.accessToken)
+          }));
+      return PublishApplication.fromJson(response.data);
+    } on DioError catch(e){
+
       rethrow;
     }
 

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_yurist/bloc/Bloc/Application/Cubit/user_offer_filter_cubit.dart';
+import 'package:top_yurist/bloc/Bloc/Application/Cubit/user_offer_filter_cubit.dart';
 import 'package:top_yurist/bloc/Offer/offer_bloc.dart';
+import 'package:top_yurist/presentation/User/Home/widgets/user_filter_offer.dart';
 import 'package:top_yurist/presentation/User/Requests/lawyer_profile_screen.dart';
 
 import '../../../utils/colors.dart';
@@ -25,6 +28,7 @@ class _UserRequestDetailState extends State<UserRequestDetail> {
   Map<String, dynamic>? data;
   int selectedIndex = 0;
   static const List<String> titleList = ["all", "selected", "closed_request"];
+  String? filter;
 
   @override
   void didChangeDependencies() {
@@ -35,66 +39,75 @@ class _UserRequestDetailState extends State<UserRequestDetail> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: AppColors.black),
-        elevation: 0,
-        title: Text(
-          widget.title ?? "",
-          style: Theme.of(context).textTheme.headline3,
-        ),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16.w),
-            child: const Icon(Icons.filter_list_rounded, color: Colors.black),
-          )
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 20.h,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          iconTheme: const IconThemeData(color: AppColors.black),
+          elevation: 0,
+          title: Text(
+            widget.title ?? "",
+            style: Theme.of(context).textTheme.headline3,
           ),
-          SizedBox(
-            height: 40.h,
-            child: ListView.separated(
-              padding: EdgeInsets.only(left: 16.w),
-              itemBuilder: (context, index) => UserHomeTabbar(
-                title: titleList[index],
-                onPressed: () {
-                  setState(() {
-                    selectedIndex = index;
-                  });
-                },
-                isSelected: selectedIndex == index,
+          centerTitle: true,
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 16.w),
+              child:  IconButton(icon: Icon(Icons.filter_list_rounded), color: Colors.black,
+              onPressed: (){
+                Navigator.of(context).pushNamed(UserFilterOffer.routeName);
+              },
               ),
-              separatorBuilder: (context, index) => SizedBox(width: 12.w),
-              itemCount: 3,
-              scrollDirection: Axis.horizontal,
+            )
+          ],
+        ),
+        body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 20.h,
+                ),
+                SizedBox(
+                  height: 40.h,
+                  child: ListView.separated(
+                    padding: EdgeInsets.only(left: 16.w),
+                    itemBuilder: (context, index) => UserHomeTabbar(
+                      title: titleList[index],
+                      onPressed: () {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                      },
+                      isSelected: selectedIndex == index,
+                    ),
+                    separatorBuilder: (context, index) => SizedBox(width: 12.w),
+                    itemCount: 3,
+                    scrollDirection: Axis.horizontal,
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                BlocBuilder<UserOfferFilterCubit, UserOfferFilterState>(
+        builder: (context, state) {
+          return Expanded(
+                  child: selectedIndex == 0
+                      ? DefaultTabView(
+                          id: widget.id,
+                        )
+                      : selectedIndex == 1
+                          ? DefaultTabView()
+                          : DefaultTabView(),
+                );
+        },
+),
+              ],
             ),
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          Expanded(
-            child: selectedIndex == 0
-                ? DefaultTabView(
-                    id: widget.id,
-                  )
-                : selectedIndex == 1
-                    ? DefaultTabView()
-                    : DefaultTabView(),
-          ),
-        ],
-      ),
-    );
+      );
   }
 }
 
 class DefaultTabView extends StatelessWidget {
   final String? id;
+
 
   DefaultTabView({Key? key, this.id}) : super(key: key);
   final OfferBloc _bloc = OfferBloc();
@@ -107,6 +120,7 @@ class DefaultTabView extends StatelessWidget {
           "application_id": id,
           "page": 1,
           "size": 100,
+          "sort_by": context.read<UserOfferFilterCubit>().filter
         })),
       child: BlocBuilder<OfferBloc, OfferState>(
         builder: (context, state) {

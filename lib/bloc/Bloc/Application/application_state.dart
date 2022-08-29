@@ -10,7 +10,7 @@ class ApplicationInitial extends ApplicationState {
 }
 
 class ApplicationErrorState extends ApplicationState{
-  final Object error;
+  final String error;
 
   ApplicationErrorState(this.error);
   @override
@@ -43,6 +43,32 @@ class UserRequestsListSuccessState extends ApplicationState{
   @override
   // TODO: implement props
   List<Object?> get props => [response];
-
 }
 
+class ApplicationSuccessfullyDeleted extends ApplicationState{
+  final PublishApplication response;
+
+  ApplicationSuccessfullyDeleted(this.response);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [response];
+
+}
+class ApplicationResumedSuccessFully extends ApplicationState{
+  final PublishApplication response;
+
+  ApplicationResumedSuccessFully(this.response);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [response];
+
+}
+class  ApplicationSuccessfullyAddedToFavourite extends ApplicationState{
+  final PublishApplication response;
+
+  ApplicationSuccessfullyAddedToFavourite(this.response);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [response];
+
+}

@@ -32,9 +32,21 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
       bloc: _bloc,
       listener: (context, state) {
         if (state is ApplicationPublishedState) {
+          selectedIndex = 0;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Your application successfully published")));
           _bloc.add(GetRequestsList());
+        } else if (state is ApplicationSuccessfullyDeleted){
+          selectedIndex = 0;
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Your application successfully deleted")));
+        } else if (state is ApplicationResume){
+          selectedIndex = 0;
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Your application successfully Resumed")));
+        }
+        if (state is ApplicationErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
         }
       },
       builder: (context, state) {

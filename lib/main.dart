@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:top_yurist/bloc/Bloc/Application/Cubit/user_offer_filter_cubit.dart';
 import 'package:top_yurist/bloc/Bloc/Auth/auth_bloc.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 import 'package:top_yurist/presentation/Home/home_screen.dart';
@@ -14,6 +15,7 @@ import 'package:top_yurist/presentation/Login/select_region.dart';
 import 'package:top_yurist/presentation/Services/select_category.dart';
 import 'package:top_yurist/presentation/Services/service_detail.dart';
 import 'package:top_yurist/presentation/User/Home/home_screen_user.dart';
+import 'package:top_yurist/presentation/User/Home/widgets/user_filter_offer.dart';
 import 'package:top_yurist/presentation/User/Requests/create_new_request.dart';
 import 'package:top_yurist/presentation/User/Requests/lawyer_profile_screen.dart';
 import 'package:top_yurist/presentation/User/Requests/request_detail.dart';
@@ -62,6 +64,7 @@ class MyApp extends StatelessWidget {
             create: (context) => ProfileCubit(),
           ),
           BlocProvider(create: (context) => AuthUserCubit(), lazy: false),
+          BlocProvider(create: (context) => UserOfferFilterCubit(), lazy: false),
         ],
         child: LocaleBuilder(
             builder: (locale) => MaterialApp(
@@ -109,6 +112,7 @@ class MyApp extends StatelessWidget {
                     CreateTemplateScreen.routeName: (context) =>
                         const CreateTemplateScreen(),
                     ChatScreen.routeName: (context) => const ChatScreen(),
+                    UserFilterOffer.routeName: (context) => const UserFilterOffer()
                   },
                 )));
   }

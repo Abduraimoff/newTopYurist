@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:top_yurist/data/Repositories/ApplicationRepository.dart';
 
 import '../../../data/Models/application/create_application_response.dart';
+import '../../../data/Models/application/publish_aplication.dart';
 import '../../../data/Models/user/user_home_request_list.dart';
 
 part 'application_event.dart';
@@ -24,7 +25,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         emit(UserRequestsListSuccessState(response));
       }on DioError catch(e){
         if(e.response != null ){
-          emit(ApplicationErrorState(e));
+          emit(ApplicationErrorState(e.response?.data["error"]));
         }
       }
     });
@@ -62,6 +63,36 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       emit(ApplicationInitial());
       final filteredData = data?.where((element) => element.state == event.state).toList();
       emit(UserRequestsListSuccessState(event.state == ""? data: filteredData));
+    });
+    on<ApplicationDeleteEvent>((event, emit) async{
+      try{
+        final response = await repository.applicationDelete(event.id);
+        emit(ApplicationSuccessfullyDeleted(response));
+      }on DioError catch(e){
+        if(e.response != null){
+          emit(ApplicationErrorState(e.response?.data["error"]));
+        }
+      }
+    });
+    on<ApplicationResume>((event, emit) async{
+      try{
+        final response = await repository.applicationResumed(event.id);
+        emit(ApplicationResumedSuccessFully(response));
+      }on DioError catch(e){
+        if(e.response != null){
+          emit(ApplicationErrorState(e.response?.data["error"]));
+        }
+      }
+    });
+    on<ApplicationAddFavouriteEvent>((event, emit) async{
+      try{
+        final response = await repository.applicationAddedToFavourite(event.id);
+        emit(ApplicationSuccessfullyAddedToFavourite(response));
+      }on DioError catch(e){
+        if(e.response != null){
+          emit(ApplicationErrorState(e.response?.data["error"]));
+        }
+      }
     });
   }
 }

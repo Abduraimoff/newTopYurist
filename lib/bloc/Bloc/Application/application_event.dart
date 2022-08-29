@@ -48,3 +48,31 @@ class FilterEvent extends ApplicationEvent{
   List<Object?> get props => [state];
 
 }
+
+class ApplicationDeleteEvent extends ApplicationEvent{
+  final String? id;
+  ApplicationDeleteEvent(this.id);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class ApplicationResume extends ApplicationEvent{
+  final String id;
+
+  ApplicationResume(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+
+}
+
+class ApplicationAddFavouriteEvent extends ApplicationEvent{
+  final String? id;
+
+  ApplicationAddFavouriteEvent(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+}

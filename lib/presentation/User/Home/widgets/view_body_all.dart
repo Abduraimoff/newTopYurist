@@ -23,6 +23,8 @@ class _ViewBodyState extends State<ViewBody> {
   List<UserHomeRequestListResponse>? allData;
   List<UserHomeRequestListResponse>? data;
   List<UserHomeRequestListResponse>? data1;
+  final List<String> firstList = ["look","resume","del" ];
+  final List<String> secondList = ["look","del" ];
   @override
   void initState() {
     widget.bloc?.add(GetRequestsList());
@@ -31,19 +33,21 @@ class _ViewBodyState extends State<ViewBody> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    return BlocBuilder<ApplicationBloc, ApplicationState>(
+    return BlocConsumer<ApplicationBloc, ApplicationState>(
       bloc: widget.bloc,
+      listener: (context, state){
+        if(state is ApplicationSuccessfullyDeleted){
+          widget.bloc?.add(GetRequestsList());
+        }
+
+      },
       builder: (context, state) {
         if (state is ApplicationInitial) {
           return const Center(
             child: CupertinoActivityIndicator(),
           );
         }
-        if (state is ApplicationErrorState) {
-          return const Center(
-            child: Text("Something went wrong"),
-          );
-        }
+
         if (state is UserRequestsListSuccessState) {
           data = state.response;
           allData = state.response;
@@ -115,8 +119,37 @@ class _ViewBodyState extends State<ViewBody> {
                                 ],
                               ),
                             ),
-                            const Icon(Icons.more_horiz,
-                                color: Colors.grey),
+                    Container(
+                      color: AppColors.white,
+                      child: DropdownButton<String>(
+
+                        icon: const Icon(Icons.more_horiz,
+                            color: Colors.grey),
+                        elevation: 0,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: const SizedBox(),
+                        onChanged: (String? newValue) {
+                          if(newValue == "del"){
+                            widget.bloc?.add(ApplicationDeleteEvent(data?[i].id));
+                          } else if(newValue == "resume"){
+                            widget.bloc?.add(ApplicationResume(data?[i].id??""));
+                          }
+                        },
+                        items: data?[i].state == "PUBLISHED" ? firstList
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: LocaleText(value),
+                          );
+                        }).toList() : secondList.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: LocaleText(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+
                           ],
                         ),
                         const SizedBox(height: 4),

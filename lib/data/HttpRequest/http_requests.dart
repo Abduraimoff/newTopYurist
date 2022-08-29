@@ -94,4 +94,16 @@ class ApiRequest{
     }
 
   }
+  Future<dynamic> doDeleteRequest({required String slug,Map<String, dynamic>? queryParameters,
+    Options? options,  data})async{
+    try{
+      final Response response =  await dio.delete(Config.baseUrl+slug, queryParameters: queryParameters, options: options, data: data );
+
+      return response;
+    } on DioError catch (e){
+
+      rethrow;
+    }
+
+  }
 }
