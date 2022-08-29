@@ -2,33 +2,38 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:top_yurist/data/HttpRequest/dio_client.dart';
 import 'package:top_yurist/data/Models/auth/image_response.dart';
+import 'package:top_yurist/data/Models/faq/faq.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 
 class ProfileRepository {
   final _request = DioClient().getDio();
 
-  Future<void> getFAQ() async {
+  Future<List<Faq>> getFAQ() async {
     const path = '/api/profile/faq';
 
     try {
       final responce = await _request.get(path);
+      final list = responce.data as List;
 
+      final faqs = list.map((e) => Faq.fromJson(e)).toList();
       print(responce);
+      return faqs;
     } catch (e) {
       print(e);
+      throw Exception(e);
     }
   }
 
   Future<User?> getUser() async {
-    const path = '/api/profile/info/';
+    const path = '/api/profile/info';
+    // final headers = {};
+    // final dio = Dio();
 
-    try {
-      final responce = await _request.get(path);
-      final user = User.fromJson(responce.data);
-      return user;
-    } catch (e) {
-      return null;
-    }
+    final responce = await _request.get(path);
+
+    print(responce);
+    final user = User.fromJson(responce.data);
+    return user;
   }
 
   Future<void> editUser(User user) async {

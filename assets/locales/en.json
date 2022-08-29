@@ -29,5 +29,12 @@
   "sentMessages": "Sent messages",
   "incomingMessages": "incomign messages",
   "youAreInFavorite": "you are in Favorite",
-  "statistics": "Statistics"
+  "statistics": "Statistics",
+  "closed_request": "Запрос зыкрыт",
+  "solved_request": "Решеных запросов",
+  "experience": "Стаж",
+  "chosen_by_you": "Выбран вами",
+  "approximate_price": "Примерная цена",
+  "sum": "сум"
+
 }

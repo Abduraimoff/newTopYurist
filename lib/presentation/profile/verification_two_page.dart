@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/get_image.dart';

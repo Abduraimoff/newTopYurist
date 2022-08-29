@@ -18,4 +18,7 @@ class UserState extends ProfileState {
   List<Object> get props => [user];
 }
 
-class ProfileErrorState extends ProfileState {}
+class ProfileErrorState extends ProfileState {
+  const ProfileErrorState(this.errorText);
+  final String errorText;
+}

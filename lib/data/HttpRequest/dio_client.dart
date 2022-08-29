@@ -35,7 +35,7 @@ class DioClient {
       await _refreshToken();
       accessToken = await _tokenProvider.getAccessToken();
     }
-    options.headers["Authorization"] = "Bearer $accessToken";
+    options.headers.addAll({"Authorization": accessToken});
     return handler.next(options);
   }
 

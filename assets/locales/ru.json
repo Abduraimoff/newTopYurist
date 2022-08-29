@@ -59,5 +59,14 @@
   "publish_all_not": "При публикации функция редактирования не доступна",
   "category_error": "Пожалуйста, выберите категорию.",
   "problem_description_error": "Введите не менее 15 символов.",
-  "must_add_image_error": "Пожалуйста, добавьте изображение."
+  "must_add_image_error": "Пожалуйста, добавьте изображение.",
+  "closed_request": "Запрос зыкрыт",
+  "solved_request": "Решеных запросов",
+  "experience": "Стаж",
+  "chosen_by_you": "Выбран вами",
+  "approximate_price": "Примерная цена",
+  "sum": "сум"
+
+
+
 }

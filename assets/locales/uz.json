@@ -23,5 +23,12 @@
   "selected": "Tanlanganlar",
   "performed": "Bajarilganlar",
   "chats": "Chatlar",
-  "empty": "Bo'sh"
+  "empty": "Bo'sh",
+  "closed_request": "Запрос зыкрыт",
+  "solved_request": "Решеных запросов",
+  "experience": "Стаж",
+  "chosen_by_you": "Выбран вами",
+  "approximate_price": "Примерная цена",
+  "sum": "сум"
+
 }

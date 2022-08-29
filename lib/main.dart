@@ -4,7 +4,6 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/bloc/Bloc/Auth/auth_bloc.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
-import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/Home/home_screen.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
 import 'package:top_yurist/presentation/Login/confirmation_screen.dart';
@@ -45,6 +44,7 @@ void main() async {
     } else if(await storage.read(key: Config.userType) == "customer"){
       defaultHomeScreen = const HomeScreenUser();
     }
+
   runApp(MyApp(
     defaultHome: defaultHomeScreen,
   ));

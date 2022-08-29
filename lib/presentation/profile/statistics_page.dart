@@ -4,7 +4,6 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
-import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
 

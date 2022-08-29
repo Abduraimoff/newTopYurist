@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_yurist/presentation/widgets/profileImage.dart';
 
+import '../../../data/Models/offers/offer_list_response.dart';
 import '../../../utils/colors.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   static const String routeName = "user/profile";
   const UserProfileScreen({Key? key}) : super(key: key);
 
+  @override
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  Datum? data;
+  @override
+  void didChangeDependencies() {
+   data = ModalRoute.of(context)?.settings.arguments as Datum;
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -15,45 +29,30 @@ class UserProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: AppColors.grey),
+
         elevation: 0,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 32.w,
-              height: 32.h,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                image:
-                DecorationImage(image: AssetImage('assets/images/lawyer.jpg')),
-              ),
-            ),
-            const SizedBox(width: 12),
+            CircleAvatar(child: ProfileImage(imageUrl: data?.lawyerProfilePhoto)),
+             SizedBox(width: 12.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children:  [
                 Text(
-                  'Феруз Тахирович',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                  data?.lawyerFullName ?? "",
+                  style: Theme.of(context).textTheme.headline3,
                 ),
-                SizedBox(height: 3),
-                Text(
-                  'Верифицирован',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Colors.green,
-                  ),
+                SizedBox(height: 3.h),
+                LocaleText(
+                  'verified',
+                  style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.green),
                 ),
               ],
             ),
           ],
         ),
-        centerTitle: true,
+        centerTitle: false,
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
