@@ -12,6 +12,7 @@ import 'package:top_yurist/presentation/Login/select_region.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
 import '../../bloc/Cubit/Auth/auth_user_cubit.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 
 class RegisterProfile extends StatefulWidget {
   static const String routeName = "register_profile";
@@ -172,29 +173,51 @@ class _RegisterProfileState extends State<RegisterProfile> {
 
               Row(
                 children: [
-                  LocaleText("registration_offer_1", style: Theme.of(context).textTheme.bodyText1,),
-                  InkWell(
-                    onTap: (){
-                      showDialog(context: context, builder: (context) => AlertDialog(content: const Text('Are you confirm ?'),
-                      actions: [
-                        ElevatedButton(onPressed: (){
-                          agreement = true;
-                          context.read<AuthUserCubit>().getUserAgreement(true);
-                          Navigator.of(context).pop();
-                        }, child: const Text("no")),
-                        ElevatedButton(onPressed: (){
-                          agreement = false;
-                          context.read<AuthUserCubit>().getUserAgreement(true);
-                          Navigator.of(context).pop();
-                        }, child: const Text("ok")), ],
-                      ));
-                    },
-                    child: LocaleText("registration_offer_2", style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(
-                        decoration: TextDecoration.underline), overflow: TextOverflow.ellipsis,),
-                  )
+                  Checkbox(value: agreement, onChanged: ( value){
+                    setState(() {
+                      agreement = value;
+                    });
+                  }, activeColor: AppColors.primary,),
+                  LocaleText(
+                    "registration_offer_1",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  maxLines: 2,),
+
+                  // RichText(
+                  //   maxLines: 2,
+                  //   text: TextSpan(
+                  //
+                  //     text: 'Hello ',
+                  //
+                  //     style: DefaultTextStyle.of(context).style,
+                  //     children: const <TextSpan>[
+                  //       TextSpan(text: 'bold', style: TextStyle(fontWeight: FontWeight.bold)),
+                  //       TextSpan(text: ' world!'),
+                  //     ],
+                  //   ),
+                  // )
+                  // InkWell(
+                  //   onTap: (){
+                  //     showDialog(context: context, builder: (context) => AlertDialog(content: const Text('Are you confirm ?'),
+                  //     actions: [
+                  //       ElevatedButton(onPressed: (){
+                  //         agreement = true;
+                  //         context.read<AuthUserCubit>().getUserAgreement(true);
+                  //         Navigator.of(context).pop();
+                  //       }, child: const Text("no")),
+                  //       ElevatedButton(onPressed: (){
+                  //         agreement = false;
+                  //         context.read<AuthUserCubit>().getUserAgreement(true);
+                  //         Navigator.of(context).pop();
+                  //       }, child: const Text("ok")), ],
+                  //     ));
+                  //   },
+                  //   child: LocaleText("registration_offer_2", style: Theme.of(context)
+                  //       .textTheme
+                  //       .bodyText1
+                  //       ?.copyWith(
+                  //       decoration: TextDecoration.underline), overflow: TextOverflow.ellipsis,),
+                  // )
 
                 ],
               )

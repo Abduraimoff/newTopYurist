@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -27,9 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 80.h,
             ),
-            Center(child: Image.asset("assets/images/Logo.png")),
+            Center(child: SvgPicture.asset('assets/icons/logo_new.svg')),
             SizedBox(
-              height: 63.h,
+              height: 10.h,
             ),
             LocaleText(
               "welcome",
