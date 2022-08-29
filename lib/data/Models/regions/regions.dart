@@ -13,22 +13,25 @@ class RegionsResponse {
     this.id,
     this.title,
     this.sort,
+    this.application_count,
   });
 
   final dynamic id;
   final Title? title;
   final int? sort;
-
+  final int? application_count;
   factory RegionsResponse.fromJson(Map<String, dynamic> json) => RegionsResponse(
     id: json["id"],
     title: Title.fromJson(json["title"]),
     sort: json["sort"],
+    application_count: json["application_count"]
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "title": title?.toJson(),
     "sort": sort,
+    "application_count": application_count,
   };
 }
 

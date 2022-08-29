@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_yurist/bloc/Bloc/Lawyer/HomeList/selected_services_list_bloc.dart';
 
 import 'package:top_yurist/presentation/Services/select_category.dart';
 import 'package:top_yurist/presentation/Services/service_detail.dart';
@@ -8,14 +10,34 @@ import 'package:top_yurist/utils/colors.dart';
 
 import '../UserUploadedServices/LawyerChatScreen.dart';
 
-class ServiceScreen extends StatelessWidget {
+class ServiceScreen extends StatefulWidget {
   const ServiceScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ServiceScreen> createState() => _ServiceScreenState();
+}
+
+class _ServiceScreenState extends State<ServiceScreen> {
+  final SelectedServicesListBloc _bloc = SelectedServicesListBloc();
+
+  @override
+  void initState() {
+    _bloc.add(GetSelectedServicesEvent());
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
-      body: SafeArea(
+      body: BlocListener<SelectedServicesListBloc, SelectedServicesListState>(
+        bloc: _bloc,
+        listener: (context, state) {
+          if (state is SelectedServicesListLoadedSuccess) {
+
+          }
+        },
+      child: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
@@ -44,7 +66,11 @@ class ServiceScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 18.h),
-              Expanded(
+            BlocBuilder<SelectedServicesListBloc, SelectedServicesListState>(
+            bloc: _bloc,
+            builder: (context, state) {
+            if (state is SelectedServicesListLoadedSuccess) {
+            return Expanded(
                   child: ListView.builder(
 
                 itemBuilder: (context, i) {
@@ -75,41 +101,48 @@ class ServiceScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     InkWell(
-                                      onTap: (){
-                                        Navigator.of(context).pushNamed(LawyerChatScreen.routeName);
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                            LawyerChatScreen.routeName);
                                       },
                                       child: Row(
                                         children: [
                                           Text(
-                                            'Уголовное право',
-                                            style: Theme.of(context)
+                                            // state.response![i].,
+                                            state.response[i].title?.ruRu ?? "NULL",
+
+                                            style: Theme
+                                                .of(context)
                                                 .textTheme
                                                 .headline3,
                                           ),
                                           SizedBox(width: 6.w),
-                                          Container(
-                                            width: 16.w,
-                                            height: 16.h,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.primary,
-                                            ),
-                                            child: const Center(
-                                              child: Text(
-                                                '1',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ),
+                                          // Container(
+                                          //   width: 16.w,
+                                          //   height: 16.h,
+                                          //   decoration: const BoxDecoration(
+                                          //     shape: BoxShape.circle,
+                                          //     color: AppColors.primary,
+                                          //   ),
+                                          //   child: const Center(
+                                          //     child: Text(
+                                          //       '1',
+                                          //       style: TextStyle(
+                                          //           color: Colors.white),
+                                          //     ),
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ),
                                     SizedBox(height: 12.h),
                                     Text(
-                                      'Количество запросов: 56',
+                                      'Количество запросов: ${state.response[i].application_count!}' ,
                                       style:
-                                          Theme.of(context).textTheme.headline5,
+                                      Theme
+                                          .of(context)
+                                          .textTheme
+                                          .headline5,
                                     ),
                                   ],
                                 ),
@@ -119,15 +152,24 @@ class ServiceScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ),
+                    )
+                  // }
+                  // return const Center(child: CircularProgressIndicator());
+  // },
+// );
                   );
                 },
-                itemCount: 4,
-              ))
+                itemCount: state.response.length,
+              ));
+    }
+    return const Center(child: CircularProgressIndicator());
+  },
+)
             ],
           ),
         ),
       ),
+),
     );
   }
 }
