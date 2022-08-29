@@ -12,7 +12,6 @@ import 'package:top_yurist/presentation/Login/select_region.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
 import '../../bloc/Cubit/Auth/auth_user_cubit.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 
 class RegisterProfile extends StatefulWidget {
   static const String routeName = "register_profile";
@@ -30,7 +29,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
   final ImagePicker _picker = ImagePicker();
   File? image;
   String? fullName;
-  bool? agreement;
+  bool? agreement = false;
   bool _isPhotoUploading = false;
 
   Future pickImage() async {
@@ -173,6 +172,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
 
               Row(
                 children: [
+
                   Checkbox(value: agreement, onChanged: ( value){
                     setState(() {
                       agreement = value;
@@ -181,7 +181,9 @@ class _RegisterProfileState extends State<RegisterProfile> {
                   LocaleText(
                     "registration_offer_1",
                     style: Theme.of(context).textTheme.bodyText1,
-                  maxLines: 2,),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
 
                   // RichText(
                   //   maxLines: 2,
