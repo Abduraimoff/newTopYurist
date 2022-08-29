@@ -16,7 +16,6 @@ class ProfileRepository {
       final list = responce.data as List;
 
       final faqs = list.map((e) => Faq.fromJson(e)).toList();
-      print(responce);
       return faqs;
     } catch (e) {
       print(e);
@@ -75,5 +74,12 @@ class ProfileRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> changeLanguage(String language) async {
+    const path = '/api/profile/locale';
+    final data = {"locale": language};
+
+    final responce = await _request.patch(path, data: data);
   }
 }

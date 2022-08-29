@@ -5,6 +5,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/verification_cubit/verification_cubit.dart';
+import 'package:top_yurist/data/Models/verify/verify.dart';
 import 'package:top_yurist/presentation/profile/verification_two_page.dart';
 import 'package:top_yurist/utils/decorations.dart';
 import 'package:top_yurist/utils/icons.dart';
@@ -136,6 +137,9 @@ class _AboutInstutionWidget extends StatelessWidget {
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
           decoration: TextFieldDecorations.roundedDecoration(context)
               .copyWith(hintText: 'Ваше имя или название организации'),
+          controller: TextEditingController(
+            text: context.read<VerificationCubit>().verify.title,
+          ),
           onChanged: (value) {
             context.read<VerificationCubit>().verify.title = value;
           },
@@ -152,6 +156,9 @@ class _AboutInstutionWidget extends StatelessWidget {
             decoration:
                 TextFieldDecorations.roundedDecoration(context).copyWith(
               hintText: 'О себе',
+            ),
+            controller: TextEditingController(
+              text: context.read<VerificationCubit>().verify.description,
             ),
             onChanged: (value) {
               context.read<VerificationCubit>().verify.description = value;
@@ -171,9 +178,24 @@ class _EducationWidget extends StatefulWidget {
 }
 
 class __EducationWidgetState extends State<_EducationWidget> {
+  final verifyKey = GlobalKey<FormState>();
   String name = '';
   String start = '';
   String end = '';
+  bool isUploaded = false;
+  @override
+  void initState() {
+    final verificationCubit = context.read<VerificationCubit>();
+    if (verificationCubit.verify.studies != null &&
+        verificationCubit.verify.studies!.isNotEmpty) {
+      final studie = verificationCubit.verify.studies!.first;
+      name = studie.title;
+      start = studie.startAt ?? '';
+      end = studie.endAt ?? '';
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -184,82 +206,6 @@ class __EducationWidgetState extends State<_EducationWidget> {
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 16.h),
-        TextField(
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
-          decoration: TextFieldDecorations.roundedDecoration(context)
-              .copyWith(hintText: 'Название заведения'),
-          onChanged: (v) {
-            name = v;
-          },
-        ),
-        SizedBox(height: 16.h),
-        Row(
-          children: [
-            Expanded(
-              child: DropdownButtonFormField<int>(
-                hint: Text(
-                  'Начало',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                decoration: TextFieldDecorations.roundedDecoration(context),
-                borderRadius: BorderRadius.circular(10),
-                menuMaxHeight: 200.h,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400,
-                ),
-                value: null,
-                items: [
-                  for (int i = DateTime.now().year; i > 1940; i--)
-                    DropdownMenuItem(
-                      value: i,
-                      child: Text(i.toString()),
-                    )
-                ],
-                onChanged: (value) {
-                  start = value.toString();
-                },
-              ),
-            ),
-            SizedBox(width: 15.w),
-            Expanded(
-              child: DropdownButtonFormField<int>(
-                hint: Text(
-                  'Окончание',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                decoration: TextFieldDecorations.roundedDecoration(context),
-                borderRadius: BorderRadius.circular(10),
-                menuMaxHeight: 200.h,
-                value: null,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400,
-                ),
-                items: [
-                  for (int i = DateTime.now().year; i > 1940; i--)
-                    DropdownMenuItem(
-                      value: i,
-                      child: Text(i.toString()),
-                    )
-                ],
-                onChanged: (value) {
-                  end = value.toString();
-                },
-              ),
-            )
-          ],
-        ),
         SizedBox(height: 16.h),
         SizedBox(
           width: double.infinity,
@@ -267,6 +213,19 @@ class __EducationWidgetState extends State<_EducationWidget> {
             padding: EdgeInsets.symmetric(vertical: 13.h),
             borderRadius: BorderRadius.circular(8),
             color: const Color.fromRGBO(28, 79, 209, 0.1),
+            onPressed: isUploaded
+                ? null
+                : () {
+                    final verifyBloc = context.read<VerificationCubit>();
+                    if (verifyKey.currentState!.validate()) {
+                      final studie =
+                          Studie(title: name, startAt: start, endAt: end);
+                      verifyBloc.addEducation(studie);
+                      setState(() {
+                        isUploaded = true;
+                      });
+                    }
+                  },
             child: Text(
               'Добавить место учебы',
               style: TextStyle(
@@ -275,7 +234,6 @@ class __EducationWidgetState extends State<_EducationWidget> {
                 color: AppColors.blue,
               ),
             ),
-            onPressed: () {},
           ),
         ),
       ],
@@ -283,9 +241,19 @@ class __EducationWidgetState extends State<_EducationWidget> {
   }
 }
 
-class _ExperienceWidget extends StatelessWidget {
+class _ExperienceWidget extends StatefulWidget {
   const _ExperienceWidget({Key? key}) : super(key: key);
 
+  @override
+  State<_ExperienceWidget> createState() => _ExperienceWidgetState();
+}
+
+class _ExperienceWidgetState extends State<_ExperienceWidget> {
+  final verifyKey = GlobalKey<FormState>();
+  String name = '';
+  String start = '';
+  String end = '';
+  bool isUploaded = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -296,75 +264,124 @@ class _ExperienceWidget extends StatelessWidget {
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
         SizedBox(height: 16.h),
-        TextField(
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
-          decoration: TextFieldDecorations.roundedDecoration(context)
-              .copyWith(hintText: 'Название организации'),
-        ),
-        SizedBox(height: 16.h),
-        Row(
-          children: [
-            Expanded(
-              child: DropdownButtonFormField<int>(
-                hint: Text(
-                  'Начало',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                  ),
+        Form(
+            key: verifyKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'не может быть пустым';
+                    }
+                    return null;
+                  },
+                  style:
+                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+                  decoration: TextFieldDecorations.roundedDecoration(context)
+                      .copyWith(hintText: 'Название организации'),
+                  onChanged: (v) {
+                    name = v;
+                    if (isUploaded) {
+                      setState(() {
+                        isUploaded = false;
+                      });
+                    }
+                  },
                 ),
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400,
-                ),
-                decoration: TextFieldDecorations.roundedDecoration(context),
-                borderRadius: BorderRadius.circular(10),
-                menuMaxHeight: 200.h,
-                value: null,
-                items: [
-                  for (int i = DateTime.now().year; i > 1940; i--)
-                    DropdownMenuItem(
-                      value: i,
-                      child: Text(i.toString()),
+                SizedBox(height: 16.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<int>(
+                        validator: (value) {
+                          if (value == null) {
+                            return 'введите год';
+                          }
+                          return null;
+                        },
+                        hint: Text(
+                          'Начало',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        decoration:
+                            TextFieldDecorations.roundedDecoration(context),
+                        borderRadius: BorderRadius.circular(10),
+                        menuMaxHeight: 200.h,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        value: null,
+                        items: [
+                          for (int i = DateTime.now().year; i > 1940; i--)
+                            DropdownMenuItem(
+                              value: i,
+                              child: Text(i.toString()),
+                            )
+                        ],
+                        onChanged: (value) {
+                          start = value.toString();
+                          if (isUploaded) {
+                            setState(() {
+                              isUploaded = false;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 15.w),
+                    Expanded(
+                      child: DropdownButtonFormField<int>(
+                        validator: (value) {
+                          if (value == null) {
+                            return 'введите год';
+                          }
+                          return null;
+                        },
+                        hint: Text(
+                          'Окончание',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        decoration:
+                            TextFieldDecorations.roundedDecoration(context),
+                        borderRadius: BorderRadius.circular(10),
+                        menuMaxHeight: 200.h,
+                        value: null,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        items: [
+                          for (int i = DateTime.now().year; i > 1940; i--)
+                            DropdownMenuItem(
+                              value: i,
+                              child: Text(i.toString()),
+                            )
+                        ],
+                        onChanged: (value) {
+                          end = value.toString();
+                          if (isUploaded) {
+                            setState(() {
+                              isUploaded = false;
+                            });
+                          }
+                        },
+                      ),
                     )
-                ],
-                onChanged: (value) {},
-              ),
-            ),
-            SizedBox(width: 15.w),
-            Expanded(
-              child: DropdownButtonFormField<int>(
-                hint: Text(
-                  'Окончание',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  ],
                 ),
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400,
-                ),
-                decoration: TextFieldDecorations.roundedDecoration(context),
-                borderRadius: BorderRadius.circular(10),
-                menuMaxHeight: 200.h,
-                value: null,
-                items: [
-                  for (int i = DateTime.now().year; i > 1940; i--)
-                    DropdownMenuItem(
-                      value: i,
-                      child: Text(i.toString()),
-                    )
-                ],
-                onChanged: (value) {},
-              ),
-            )
-          ],
-        ),
+              ],
+            )),
         SizedBox(height: 16.h),
         SizedBox(
           width: double.infinity,
@@ -372,18 +389,141 @@ class _ExperienceWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 13.h),
             borderRadius: BorderRadius.circular(8),
             color: const Color.fromRGBO(28, 79, 209, 0.1),
+            onPressed: isUploaded
+                ? null
+                : () {
+                    final verifyBloc = context.read<VerificationCubit>();
+                    if (verifyKey.currentState!.validate()) {
+                      final job = Job(title: name, startAt: start, endAt: end);
+                      verifyBloc.addJobExperences(job);
+                      setState(() {
+                        isUploaded = true;
+                      });
+                    }
+                  },
             child: Text(
-              'Добавить место учебы',
+              'Добавить место работы',
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.blue,
               ),
             ),
-            onPressed: () {},
           ),
         ),
       ],
     );
+  }
+}
+
+class AddInstutionWidget extends StatelessWidget {
+  AddInstutionWidget({Key? key, required this.verifyKey}) : super(key: key);
+  final GlobalKey<FormState> verifyKey;
+  String name = '';
+  String start = '';
+  String end = '';
+  bool isUploaded = false;
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        key: verifyKey,
+        child: Column(
+          children: [
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'не может быть пустым';
+                }
+                return null;
+              },
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+              decoration: TextFieldDecorations.roundedDecoration(context)
+                  .copyWith(hintText: 'Название организации'),
+              onChanged: (v) {
+                name = v;
+              },
+            ),
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField<int>(
+                    validator: (value) {
+                      if (value == null) {
+                        return 'введите год';
+                      }
+                      return null;
+                    },
+                    hint: Text(
+                      'Начало',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    decoration: TextFieldDecorations.roundedDecoration(context),
+                    borderRadius: BorderRadius.circular(10),
+                    menuMaxHeight: 200.h,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    value: null,
+                    items: [
+                      for (int i = DateTime.now().year; i > 1940; i--)
+                        DropdownMenuItem(
+                          value: i,
+                          child: Text(i.toString()),
+                        )
+                    ],
+                    onChanged: (value) {
+                      start = value.toString();
+                    },
+                  ),
+                ),
+                SizedBox(width: 15.w),
+                Expanded(
+                  child: DropdownButtonFormField<int>(
+                    validator: (value) {
+                      if (value == null) {
+                        return 'введите год';
+                      }
+                      return null;
+                    },
+                    hint: Text(
+                      'Окончание',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    decoration: TextFieldDecorations.roundedDecoration(context),
+                    borderRadius: BorderRadius.circular(10),
+                    menuMaxHeight: 200.h,
+                    value: null,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    items: [
+                      for (int i = DateTime.now().year; i > 1940; i--)
+                        DropdownMenuItem(
+                          value: i,
+                          child: Text(i.toString()),
+                        )
+                    ],
+                    onChanged: (value) {
+                      end = value.toString();
+                    },
+                  ),
+                )
+              ],
+            ),
+          ],
+        ));
   }
 }

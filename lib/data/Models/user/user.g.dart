@@ -23,6 +23,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           ?.map((e) => e as String)
           .toList(),
       regionId: json['region_id'] as int?,
+      id: json['id'] as String?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -40,6 +41,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'customer_favorite_count': instance.customerFavoriteCount,
       'problem_types': instance.problemTypes,
       'region_id': instance.regionId,
+      'id': instance.id,
     };
 
 const _$UserTypeEnumMap = {

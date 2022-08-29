@@ -20,4 +20,12 @@ class VerificationCubit extends Cubit<VerificationState> {
       verify.studies?.add(studie);
     }
   }
+
+  void addJobExperences(Job job) {
+    if (verify.jobs == null) {
+      verify.jobs = [job];
+    } else {
+      verify.jobs?.add(job);
+    }
+  }
 }

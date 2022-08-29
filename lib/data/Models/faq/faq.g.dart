@@ -21,21 +21,3 @@ Map<String, dynamic> _$FaqToJson(Faq instance) => <String, dynamic>{
       'title': instance.title.toJson(),
       'content': instance.content.toJson(),
     };
-
-MultiLanguageContent _$MultiLanguageContentFromJson(
-        Map<String, dynamic> json) =>
-    MultiLanguageContent(
-      ruRu: json['ru_ru'] as String,
-      uzUz: json['uz_uz'] as String,
-      usEn: json['us_en'] as String,
-      uzlat: json['uzlat'] as String,
-    );
-
-Map<String, dynamic> _$MultiLanguageContentToJson(
-        MultiLanguageContent instance) =>
-    <String, dynamic>{
-      'ru_ru': instance.ruRu,
-      'uz_uz': instance.uzUz,
-      'us_en': instance.usEn,
-      'uzlat': instance.uzlat,
-    };

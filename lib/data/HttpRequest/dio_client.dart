@@ -18,7 +18,10 @@ class DioClient {
     );
   }
 
-  Future<void> _onError(DioError error, handler) async {}
+  Future<void> _onError(DioError error, handler) async {
+    print(error);
+    return handler.next(error);
+  }
 
   Future<void> _onRequest(
     RequestOptions options,
