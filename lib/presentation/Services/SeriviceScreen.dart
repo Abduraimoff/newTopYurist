@@ -75,88 +75,83 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
                 itemBuilder: (context, i) {
 
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(ServiceDetail.routeName);
-                    },
-                    child: Card(
-                      margin: EdgeInsets.only(bottom: 12.h),
-                      // shadowColor: AppColors.shadow,
+                  return Card(
+                    margin: EdgeInsets.only(bottom: 12.h),
+                    // shadowColor: AppColors.shadow,
 
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
 
-                      ),
-                      color: AppColors.white,
-                      elevation: 2,
-                      child: Padding(
-                        padding: EdgeInsets.all(20.sp),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            LawyerChatScreen.routeName);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            // state.response![i].,
-                                            state.response[i].title?.ruRu ?? "NULL",
+                    ),
+                    color: AppColors.white,
+                    elevation: 2,
+                    child: Padding(
+                      padding: EdgeInsets.all(20.sp),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          LawyerChatScreen.routeName);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          // state.response![i].,
+                                          state.response[i].title?.ruRu ?? "NULL",
 
-                                            style: Theme
-                                                .of(context)
-                                                .textTheme
-                                                .headline3,
-                                          ),
-                                          SizedBox(width: 6.w),
-                                          // Container(
-                                          //   width: 16.w,
-                                          //   height: 16.h,
-                                          //   decoration: const BoxDecoration(
-                                          //     shape: BoxShape.circle,
-                                          //     color: AppColors.primary,
-                                          //   ),
-                                          //   child: const Center(
-                                          //     child: Text(
-                                          //       '1',
-                                          //       style: TextStyle(
-                                          //           color: Colors.white),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .headline3,
+                                        ),
+                                        SizedBox(width: 6.w),
+                                        // Container(
+                                        //   width: 16.w,
+                                        //   height: 16.h,
+                                        //   decoration: const BoxDecoration(
+                                        //     shape: BoxShape.circle,
+                                        //     color: AppColors.primary,
+                                        //   ),
+                                        //   child: const Center(
+                                        //     child: Text(
+                                        //       '1',
+                                        //       style: TextStyle(
+                                        //           color: Colors.white),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                      ],
                                     ),
-                                    SizedBox(height: 12.h),
-                                    Text(
-                                      'Количество запросов: ${state.response[i].application_count!}' ,
-                                      style:
-                                      Theme
-                                          .of(context)
-                                          .textTheme
-                                          .headline5,
-                                    ),
-                                  ],
-                                ),
-                                SvgPicture.asset("assets/svg/trash.svg"),
-                              ],
-                            )
-                          ],
-                        ),
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  Text(
+                                    'Количество запросов: ${state.response[i].application_count!}' ,
+                                    style:
+                                    Theme
+                                        .of(context)
+                                        .textTheme
+                                        .headline5,
+                                  ),
+                                ],
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    //remove category
+                                  },
+                                  child: SvgPicture.asset("assets/svg/trash.svg")),
+                            ],
+                          )
+                        ],
                       ),
-                    )
-                  // }
-                  // return const Center(child: CircularProgressIndicator());
-  // },
-// );
+                    ),
                   );
                 },
                 itemCount: state.response.length,
