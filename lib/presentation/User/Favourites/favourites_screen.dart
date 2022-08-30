@@ -47,7 +47,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                 builder: (context, state) {
                   if(state is UserFavoriteLoadedSuccessState){
                     data = state.response;
-    }
+                    }
                   if(state is UserFavoriteErrorState){
                     return Center(child: Text(state.error ?? "Something went wrong"),);
                   }

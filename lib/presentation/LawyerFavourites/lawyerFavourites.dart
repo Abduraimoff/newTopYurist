@@ -1,9 +1,28 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_yurist/bloc/Bloc/Lawyer/Favourites/yurist_favourites_list_bloc.dart';
+import 'package:top_yurist/data/Models/user/user_favorite.dart';
 import 'package:top_yurist/utils/colors.dart';
 
-class LawyerFavourites extends StatelessWidget {
+class LawyerFavourites extends StatefulWidget {
   const LawyerFavourites({Key? key}) : super(key: key);
+
+  @override
+  State<LawyerFavourites> createState() => _LawyerFavouritesState();
+}
+
+class _LawyerFavouritesState extends State<LawyerFavourites> {
+
+  final YuristFavBloc _bloc = YuristFavBloc();
+  UserFavoriteResponse? data;
+  @override
+  void initState() {
+    _bloc.add(GetYuristFavEvent());
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +33,44 @@ class LawyerFavourites extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Text('Избраное', style: Theme.of(context).textTheme.headline2,),
         ),
-        SizedBox(height: 15,),
+        const SizedBox(height: 15,),
         Expanded(
-          child: ListView.builder(itemBuilder: (context, i){
+          child: BlocListener(
+            bloc: _bloc,
+            listener: (context, state) {
+              if (state is YuristFavLoadedSuccess) {
+                data = state.response;
+              }
+
+            },
+          child: BlocBuilder(
+            bloc: _bloc,
+            builder: (context, state) {
+
+              if(state is YuristFavLoadedSuccess){
+                data = state.response;
+              }
+              if(state is YuristFavErrorState){
+                return Center(child: Text(state.error ?? "Something went wrong"),);
+              }
+              if(state is YuristFavListInitial){
+                return const Center(child: CupertinoActivityIndicator(),);
+              }
+
+
+              return ListView.builder(itemBuilder: (context, i){
             return  Card(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               child: Column(children: [
-                ListTile(leading: CircleAvatar(child: Image.asset('assets/images/userError.png'),
-                backgroundColor: Color.fromRGBO(28, 79, 209, 0.1),
+                ListTile(leading: CircleAvatar(backgroundColor: const Color.fromRGBO(28, 79, 209, 0.1),child: Image.asset('assets/images/userError.png'),
                 ),
-                title: Text("Альбина Юлдашева", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black),),
+                title: Text(data?.data![i]?.fullName ?? "NULL", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black),),
                   trailing: SvgPicture.asset("assets/svg/heart.svg"),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text("Нужна консультация юриста по уголовному праву. Цену можем обговорить лично приме...", style: Theme.of(context).textTheme.headline5,),
+                  child: Text(data?.data![i]?.description ?? "NULL", style: Theme.of(context).textTheme.headline5,),
 
                 ),
                 Padding(
@@ -40,7 +81,7 @@ class LawyerFavourites extends StatelessWidget {
                       Row(
                         children: [
                           SvgPicture.asset("assets/svg/location.svg"),
-                          SizedBox(width: 10,),
+                          const SizedBox(width: 10,),
                           Text("Toshkent", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black), )
                         ],
                       ),
@@ -50,8 +91,11 @@ class LawyerFavourites extends StatelessWidget {
               ],),
             );
           },
-          itemCount: 5,
-          ),
+          itemCount: data?.data?.length ?? 0,
+          );
+  },
+),
+),
         ),
       ],
     ));

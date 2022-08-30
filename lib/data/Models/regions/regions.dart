@@ -49,10 +49,10 @@ class Title {
   final String? uzUz;
 
   factory Title.fromJson(Map<String, dynamic> json) => Title(
-    usEn: json["us_en"],
-    ruRu: json["ru_ru"],
-    uzLat: json["uz_lat"],
-    uzUz: json["uz_uz"],
+    usEn:   json["us_en"],
+    ruRu:   json["ru_ru"],
+    uzLat:  json["uz_lat"],
+    uzUz:   json["uz_uz"],
   );
 
   Map<String, dynamic> toJson() => {

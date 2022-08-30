@@ -18,7 +18,7 @@ class UserFavoriteErrorState extends UserFavoriteState{
 
 }
 class UserFavoriteLoadedSuccessState extends UserFavoriteState{
-final UserFavoriteResponse response;
+  final UserFavoriteResponse response;
 
   const UserFavoriteLoadedSuccessState(this.response);
   @override
