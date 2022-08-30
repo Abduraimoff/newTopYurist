@@ -2,7 +2,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/data/HttpRequest/http_requests.dart';
-import 'package:top_yurist/data/Models/application/publish_aplication.dart';
 import '../../utils/config.dart';
 
 class LawyerFavRepository{
@@ -31,7 +30,7 @@ class LawyerFavRepository{
   }
 
 
-  Future<dynamic> applicationAddedToFavourite(String? id) async{
+  Future<dynamic> addToFavourite(String? id) async{
     try{
       final Response response = await ApiRequest().doPatchRequest(slug: "/api/application/favorite/add", queryParameters: {
         "id": id
@@ -39,7 +38,23 @@ class LawyerFavRepository{
           options: Options(headers: {
             "Authorization": await _storage.read(key:  Config.accessToken)
           }));
-      return PublishApplication.fromJson(response.data);
+      return response;
+    } on DioError catch(e){
+
+      rethrow;
+    }
+
+  }
+
+  Future<dynamic> removeToFavourite(String? id) async{
+    try{
+      final Response response = await ApiRequest().doPatchRequest(slug: "/api/application/favorite/remove", queryParameters: {
+        "id": id
+      },
+          options: Options(headers: {
+            "Authorization": await _storage.read(key:  Config.accessToken)
+          }));
+      return response;
     } on DioError catch(e){
 
       rethrow;

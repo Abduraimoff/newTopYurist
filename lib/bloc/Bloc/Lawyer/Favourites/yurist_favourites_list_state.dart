@@ -30,3 +30,17 @@ class YuristFavErrorState extends YuristFavState{
   List<Object?> get props => [];
 
 }
+
+class UnFavoriteSuccessState extends YuristFavState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class MakeFavoriteSuccessState extends YuristFavState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+

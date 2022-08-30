@@ -16,6 +16,7 @@ class LawyerFavourites extends StatefulWidget {
 class _LawyerFavouritesState extends State<LawyerFavourites> {
 
   final YuristFavBloc _bloc = YuristFavBloc();
+  bool isFav = true;
   UserFavoriteResponse? data;
   @override
   void initState() {
@@ -49,6 +50,8 @@ class _LawyerFavouritesState extends State<LawyerFavourites> {
 
               if(state is YuristFavLoadedSuccess){
                 data = state.response;
+              }else if (state is UnFavoriteSuccessState){
+                _bloc.add(GetYuristFavEvent());
               }
               if(state is YuristFavErrorState){
                 return Center(child: Text(state.error ?? "Something went wrong"),);
@@ -57,16 +60,27 @@ class _LawyerFavouritesState extends State<LawyerFavourites> {
                 return const Center(child: CupertinoActivityIndicator(),);
               }
 
-
-              return ListView.builder(itemBuilder: (context, i){
+            return data?.total == 0 ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Center(child: Text("Your favorites is empty")),
+              ],
+            ) : ListView.builder(itemBuilder: (context, i){
             return  Card(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               child: Column(children: [
                 ListTile(leading: CircleAvatar(backgroundColor: const Color.fromRGBO(28, 79, 209, 0.1),child: Image.asset('assets/images/userError.png'),
                 ),
-                title: Text(data?.data![i]?.fullName ?? "NULL", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black),),
-                  trailing: SvgPicture.asset("assets/svg/heart.svg"),
+                  title: Text(data?.data![i]?.fullName ?? "NULL", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black),),
+                  trailing: InkWell(
+                      onTap: () {
+                       // BlocProvider.of<YuristFavBloc>(context).add(UnFavoriteYuristEvent(data?.data?[i].id));
+                        _bloc.add(UnFavoriteYuristEvent(data?.data?[i].id));
+                      },
+                      child: SvgPicture.asset("assets/icons/heart.svg")
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
