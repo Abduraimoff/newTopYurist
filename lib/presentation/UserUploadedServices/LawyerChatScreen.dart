@@ -65,16 +65,18 @@ class _LawyerChatScreenState extends State<LawyerChatScreen> with SingleTickerPr
   create: (context) => ProblemTypeListBloc()..add(GetProblemListEvent(problemTypeId: data?["problemId"])),
   child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: BlocBuilder<ProblemTypeListBloc, ProblemTypeListState>(
-
+        child: BlocConsumer<ProblemTypeListBloc, ProblemTypeListState>(
+          listener: (context, state) {
+            if (state is MakeFavoriteSuccessState || state is UnFavoriteSuccessState){
+              ProblemTypeListBloc().add(GetProblemListEvent(problemTypeId: data?["problemId"]));
+            }
+          },
   builder: (context, state) {
     if(state is ProblemTypeListInitial){
       return const Center(child: CupertinoActivityIndicator(),);
     }
     if(state is ProblemTypeListLoadedStat){
       loadedData = state.response;
-    }else if (state is MakeFavoriteSuccessState || state is UnFavoriteSuccessState){
-      ProblemTypeListBloc().add(GetProblemListEvent(problemTypeId: data?["problemId"]));
     }
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

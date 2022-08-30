@@ -32,7 +32,7 @@ class ProblemTypeListBloc extends Bloc<ProblemTypeListEvent, ProblemTypeListStat
     on<UnFavoriteYuristEvent>((event, emit) async{
       try{
         final Response response = await repository2.removeToFavourite(event.id);
-        emit(UnFavoriteSuccessState(response));
+        emit(UnFavoriteSuccessState());
       } on DioError catch (e){
         if(e.response != null){
           emit(ProblemTypeListErrorState(e.response?.data["errors"]));
@@ -46,7 +46,7 @@ class ProblemTypeListBloc extends Bloc<ProblemTypeListEvent, ProblemTypeListStat
     on<MakeFavoriteYuristEven>((event, emit) async{
       try{
         final Response response = await repository2.addToFavourite(event.id);
-        emit(MakeFavoriteSuccessState(response));
+        emit(MakeFavoriteSuccessState());
       } on DioError catch (e){
         if(e.response != null){
           emit(ProblemTypeListErrorState(e.response?.data["errors"]));

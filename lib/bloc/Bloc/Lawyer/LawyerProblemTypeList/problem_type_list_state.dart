@@ -30,16 +30,13 @@ class ProblemTypeListErrorState extends ProblemTypeListState{
 }
 
 class UnFavoriteSuccessState extends ProblemTypeListState{
-  final Object? response;
-  UnFavoriteSuccessState(this.response);
+
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
 class MakeFavoriteSuccessState extends ProblemTypeListState{
-  final Object? response;
-  MakeFavoriteSuccessState(this.response);
   @override
   // TODO: implement props
   List<Object?> get props => [];
