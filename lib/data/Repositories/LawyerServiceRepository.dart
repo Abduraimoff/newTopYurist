@@ -19,4 +19,26 @@ class LawyerServiceRepository{
     }
 
   }
+  Future<Response> removeService(List<String> ids) async{
+    try{
+      final Response response = await ApiRequest().doPutRequest(slug: "/api/profile/lawyer/problem_type/remove_all", options: Options(headers: {
+        "Authorization": await _storage.read(key: Config.accessToken)
+      }), data: ids);
+      return response;
+    }catch(e){
+      rethrow;
+    }
+
+  }
+  Future<Response> addService(List<String> ids) async{
+    try{
+      final Response response = await ApiRequest().doPostRequest(slug: "/api/profile/lawyer/problem_type/add_all", options: Options(headers: {
+        "Authorization": await _storage.read(key: Config.accessToken)
+      }), data: ids);
+      return response;
+    }catch(e){
+      rethrow;
+    }
+
+  }
 }

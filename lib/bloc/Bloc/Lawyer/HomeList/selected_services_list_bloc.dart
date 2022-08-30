@@ -1,5 +1,6 @@
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:top_yurist/data/Models/regions/regions.dart';
@@ -12,6 +13,7 @@ class SelectedServicesListBloc extends Bloc<SelectedServicesListEvent, SelectedS
     final LawyerServiceRepository repository = LawyerServiceRepository();
 
         on<SelectedServicesListEvent>((event, emit) async {
+          emit(SelectedServicesListInitial());
             try{
               final response = await repository.getServiceList();
               emit(SelectedServicesListLoadedSuccess(response));
@@ -21,5 +23,25 @@ class SelectedServicesListBloc extends Bloc<SelectedServicesListEvent, SelectedS
         }
 
      });
+    on<GetRemoveServiceEvent>((event, emit) async {
+      try{
+        final response = await repository.removeService(event.ids);
+        emit(SuccessfullyRemovedState());
+      }on DioError catch(e){
+        emit(SelectedServicesErrorState(e));
+
+      }
+
+    });
+    on<AddServiceEvent>((event, emit) async {
+      try{
+        final response = await repository.addService(event.ids);
+        emit(SuccessFullyAddedState());
+      }on DioError catch(e){
+        emit(SelectedServicesErrorState(e));
+
+      }
+
+    });
   }
 }

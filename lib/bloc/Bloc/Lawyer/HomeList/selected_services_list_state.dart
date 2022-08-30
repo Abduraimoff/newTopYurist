@@ -26,3 +26,14 @@ class SelectedServicesErrorState extends SelectedServicesListState{
   List<Object?> get props => [];
 
 }
+class SuccessfullyRemovedState extends SelectedServicesListState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+class SuccessFullyAddedState extends SelectedServicesListState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

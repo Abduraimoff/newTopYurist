@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +6,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/bloc/Bloc/Lawyer/HomeList/selected_services_list_bloc.dart';
 
 import 'package:top_yurist/presentation/Services/select_category.dart';
-import 'package:top_yurist/presentation/Services/service_detail.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../../data/Models/regions/regions.dart';
 import '../UserUploadedServices/LawyerChatScreen.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class ServiceScreen extends StatefulWidget {
 
 class _ServiceScreenState extends State<ServiceScreen> {
   final SelectedServicesListBloc _bloc = SelectedServicesListBloc();
-
+  List<RegionsResponse>? data;
   @override
   void initState() {
     _bloc.add(GetSelectedServicesEvent());
@@ -34,8 +35,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
         bloc: _bloc,
         listener: (context, state) {
           if (state is SelectedServicesListLoadedSuccess) {
-
+            data = state.response;
+          } else if(state is SuccessfullyRemovedState){
+            _bloc.add(GetSelectedServicesEvent());
           }
+
         },
       child: SafeArea(
         child: Padding(
@@ -57,7 +61,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     color: AppColors.primary.withOpacity(0.1)),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(SelectCategory.routeName);
+                    Navigator.of(context).pushNamed(SelectCategory.routeName, arguments: _bloc).then((value) => _bloc.add(GetSelectedServicesEvent()) );
                   },
                   child: const Text(
                     'Выбрать категорию',
@@ -69,12 +73,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
             BlocBuilder<SelectedServicesListBloc, SelectedServicesListState>(
             bloc: _bloc,
             builder: (context, state) {
-            if (state is SelectedServicesListLoadedSuccess) {
+          if(state is SelectedServicesListInitial){
+            return const Center(child: CupertinoActivityIndicator(),);
+          }
+
             return Expanded(
                   child: ListView.builder(
-
                 itemBuilder: (context, i) {
-
                   return Card(
                     margin: EdgeInsets.only(bottom: 12.h),
                     // shadowColor: AppColors.shadow,
@@ -105,7 +110,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       children: [
                                         Text(
                                           // state.response![i].,
-                                          state.response[i].title?.ruRu ?? "NULL",
+                                          data?[i].title?.ruRu ?? "NULL",
 
                                           style: Theme
                                               .of(context)
@@ -132,7 +137,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     ),
                                     SizedBox(height: 12.h),
                                     Text(
-                                      'Количество запросов: ${state.response[i].application_count!}' ,
+                                      'Количество запросов: ${data?[i].application_count!}' ,
                                       style:
                                       Theme
                                           .of(context)
@@ -144,7 +149,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ),
                               InkWell(
                                   onTap: () {
-                                    //remove category
+                                    _bloc.add(GetRemoveServiceEvent([data?[i].id]));
                                   },
                                   child: SvgPicture.asset("assets/svg/trash.svg")),
                             ],
@@ -154,12 +159,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     ),
                   );
                 },
-                itemCount: state.response.length,
+                itemCount: data?.length,
               ));
     }
-    return const Center(child: CircularProgressIndicator());
-  },
-)
+
+    )
+
             ],
           ),
         ),
