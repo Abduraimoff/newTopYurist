@@ -26,7 +26,6 @@ class _LawyerChatScreenState extends State<LawyerChatScreen> with SingleTickerPr
   int selectedIndex = 0;
   LawyerSelectServiceDetailResponse? loadedData;
   Map<String, dynamic>? data;
-  final ProblemTypeListBloc _bloc = ProblemTypeListBloc();
 
 
   @override
@@ -74,6 +73,8 @@ class _LawyerChatScreenState extends State<LawyerChatScreen> with SingleTickerPr
     }
     if(state is ProblemTypeListLoadedStat){
       loadedData = state.response;
+    }else if (state is MakeFavoriteSuccessState || state is UnFavoriteSuccessState){
+      ProblemTypeListBloc().add(GetProblemListEvent(problemTypeId: data?["problemId"]));
     }
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +152,8 @@ class _LawyerChatScreenState extends State<LawyerChatScreen> with SingleTickerPr
                     ),
                     InkWell(
                         onTap: () {
-                          data?.data?[i].isFavorite ?? false ? _bloc.add(UnFavoriteYuristEvent(data?.data?[i].id)) : _bloc.add(MakeFavoriteYuristEven(data?.data?[i].id));
+
+                          data?.data?[i].isFavorite ?? false ? ProblemTypeListBloc().add(UnFavoriteYuristEvent(data?.data?[i].id)) : ProblemTypeListBloc().add(MakeFavoriteYuristEven(data?.data?[i].id));
                         },
                         child: SvgPicture.asset(data?.data?[i].isFavorite ?? false ? AppIcons.heart : AppIcons.heartOutlined)
                     )

@@ -6,10 +6,6 @@ import '../../utils/config.dart';
 
 class LawyerFavRepository{
 
-
-
-
-
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   Future<Response> getFavList() async{
     try{
