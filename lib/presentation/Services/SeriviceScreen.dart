@@ -101,7 +101,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                      LawyerChatScreen.routeName);
+                                      LawyerChatScreen.routeName, arguments: {
+                                        "problemId": data?[i].id,
+                                        "title": data?[i].title?.ruRu,
+                                  });
                                 },
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/create_template.dart';
 import 'package:top_yurist/utils/colors.dart';
+
+import '../../data/Models/Lawyer/lawyer_select_service_detail.dart';
 
 class UploadedServiceDetail extends StatelessWidget {
   static const routeName = "uploaded";
@@ -9,6 +13,8 @@ class UploadedServiceDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Datum data = ModalRoute.of(context)?.settings.arguments as Datum;
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: AppColors.grey),
@@ -32,9 +38,9 @@ class UploadedServiceDetail extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            const Text(
-              'Дильбар Адылова',
-              style: TextStyle(
+             Text(
+              data.ownerFullName?? "",
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
                 height: 2.4,
@@ -54,12 +60,12 @@ class UploadedServiceDetail extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 30),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Нужна консультация юриста по уголовному праву. Цену можем обговорить лично приме...',
+              data.description ?? "",
               style: TextStyle(color: Colors.grey),
-              maxLines: 2,
+
             ),
           ),
           const SizedBox(height: 16),
@@ -94,24 +100,14 @@ class UploadedServiceDetail extends StatelessWidget {
             height: 94,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 5,
+              itemCount: data.photos?.length ?? 0,
               itemBuilder: (_, index) {
                 return Padding(
                   padding: EdgeInsets.only(left: index == 0 ? 8 : 0, right: 8),
                   child: Container(
-                    width: 94,
-                    height: 94,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: const Color(0xFF858DA3),
-                        width: 1,
-                      ),
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/Rectangle106.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    width: 94.w,
+                    height: 94.w,
+                   child: CachedNetworkImage(imageUrl: data.photos?[index] ?? "",),
                   ),
                 );
               },
