@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:top_yurist/bloc/Bloc/ProblemType/problem_type_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/uploaded_service_detail.dart';
 import 'package:top_yurist/presentation/widgets/profileImage.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 import '../../bloc/Bloc/Lawyer/LawyerProblemTypeList/problem_type_list_bloc.dart';
 import '../../data/Models/Lawyer/lawyer_select_service_detail.dart';
+import '../../utils/icons.dart';
 import '../User/Requests/widget/requestMainScreen.dart';
 import 'filter_by_city.dart';
 
@@ -25,8 +26,9 @@ class _LawyerChatScreenState extends State<LawyerChatScreen> with SingleTickerPr
   int selectedIndex = 0;
   LawyerSelectServiceDetailResponse? loadedData;
   Map<String, dynamic>? data;
-  
-  
+  final ProblemTypeListBloc _bloc = ProblemTypeListBloc();
+
+
   @override
   void didChangeDependencies() {
     data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
@@ -147,7 +149,12 @@ class _LawyerChatScreenState extends State<LawyerChatScreen> with SingleTickerPr
                         ),
                       ],
                     ),
-                    const Icon(Icons.favorite_border_outlined)
+                    InkWell(
+                        onTap: () {
+                          data?.data?[i].isFavorite ?? false ? _bloc.add(UnFavoriteYuristEvent(data?.data?[i].id)) : _bloc.add(MakeFavoriteYuristEven(data?.data?[i].id));
+                        },
+                        child: SvgPicture.asset(data?.data?[i].isFavorite ?? false ? AppIcons.heart : AppIcons.heartOutlined)
+                    )
                   ],
                 ),
                 SizedBox(height: 10.h),
@@ -175,7 +182,7 @@ class _LawyerChatScreenState extends State<LawyerChatScreen> with SingleTickerPr
         ),
       );
     },
-    itemCount: data?.data?.length ?? 0,
+    itemCount: data?.total ?? 0,
     );
   }
 }

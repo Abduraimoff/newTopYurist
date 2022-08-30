@@ -13,3 +13,22 @@ class GetProblemListEvent extends ProblemTypeListEvent{
   List<Object?> get props => [regionId,problemTypeId ];
 
 }
+
+class UnFavoriteYuristEvent extends ProblemTypeListEvent{
+  final String? id;
+
+  UnFavoriteYuristEvent(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+
+}
+class MakeFavoriteYuristEven extends ProblemTypeListEvent{
+  final String? id;
+
+  MakeFavoriteYuristEven(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+
+}

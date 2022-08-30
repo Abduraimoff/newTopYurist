@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/bloc/Bloc/Lawyer/Favourites/yurist_favourites_list_bloc.dart';
 import 'package:top_yurist/data/Models/user/user_favorite.dart';
 import 'package:top_yurist/utils/colors.dart';
+import 'package:top_yurist/utils/icons.dart';
 
 class LawyerFavourites extends StatefulWidget {
   const LawyerFavourites({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _LawyerFavouritesState extends State<LawyerFavourites> {
   final YuristFavBloc _bloc = YuristFavBloc();
   bool isFav = true;
   UserFavoriteResponse? data;
+
   @override
   void initState() {
     _bloc.add(GetYuristFavEvent());
@@ -76,10 +78,9 @@ class _LawyerFavouritesState extends State<LawyerFavourites> {
                   title: Text(data?.data![i]?.fullName ?? "NULL", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black),),
                   trailing: InkWell(
                       onTap: () {
-                       // BlocProvider.of<YuristFavBloc>(context).add(UnFavoriteYuristEvent(data?.data?[i].id));
                         _bloc.add(UnFavoriteYuristEvent(data?.data?[i].id));
                       },
-                      child: SvgPicture.asset("assets/icons/heart.svg")
+                      child: SvgPicture.asset(AppIcons.heart)
                   ),
                 ),
                 Padding(
@@ -94,7 +95,7 @@ class _LawyerFavouritesState extends State<LawyerFavourites> {
                     children: [
                       Row(
                         children: [
-                          SvgPicture.asset("assets/svg/location.svg"),
+                          SvgPicture.asset(AppIcons.location),
                           const SizedBox(width: 10,),
                           Text("Toshkent", style: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black), )
                         ],

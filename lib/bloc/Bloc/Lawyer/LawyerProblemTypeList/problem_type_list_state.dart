@@ -28,3 +28,15 @@ class ProblemTypeListErrorState extends ProblemTypeListState{
   List<Object?> get props => [error];
 
 }
+
+class UnFavoriteSuccessState extends ProblemTypeListState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class MakeFavoriteSuccessState extends ProblemTypeListState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
