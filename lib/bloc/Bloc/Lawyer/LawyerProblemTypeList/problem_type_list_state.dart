@@ -8,6 +8,7 @@ class ProblemTypeListInitial extends ProblemTypeListState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+
 class ProblemTypeListLoadedStat extends ProblemTypeListState{
   final LawyerSelectServiceDetailResponse? response;
 
