@@ -6,7 +6,6 @@ abstract class OfferEvent extends Equatable {
 
 class GetOffers extends OfferEvent{
   final Map<String, dynamic> data;
-
   const GetOffers(this.data);
 
   @override

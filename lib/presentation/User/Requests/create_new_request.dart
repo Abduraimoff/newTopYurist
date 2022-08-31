@@ -17,7 +17,7 @@ import '../../../data/Models/regions/regions.dart';
 import '../../../data/Models/user/user_home_request_list.dart';
 
 class CreateNewRequest extends StatefulWidget {
-  static const String routeName = "create_request";
+  static const String routeName = "create/new/request";
 
   const CreateNewRequest({Key? key}) : super(key: key);
 

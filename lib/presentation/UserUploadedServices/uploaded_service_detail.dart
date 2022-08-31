@@ -1,15 +1,34 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:top_yurist/bloc/Bloc/MessageTemplate/message_template_bloc.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/create_template.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 import '../../data/Models/Lawyer/lawyer_select_service_detail.dart';
+import '../../data/Models/message_template/message_template.dart';
 
-class UploadedServiceDetail extends StatelessWidget {
+class UploadedServiceDetail extends StatefulWidget {
   static const routeName = "uploaded";
+
   const UploadedServiceDetail({Key? key}) : super(key: key);
+
+  @override
+  State<UploadedServiceDetail> createState() => _UploadedServiceDetailState();
+}
+
+class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
+  final MessageTemplateBloc _templateBloc = MessageTemplateBloc();
+  List<MessageTemplateResponse>? templates;
+
+  @override
+  void initState() {
+    _templateBloc.add( GetMessageTemplateEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +57,8 @@ class UploadedServiceDetail extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-             Text(
-              data.ownerFullName?? "",
+            Text(
+              data.ownerFullName ?? "",
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
@@ -60,12 +79,11 @@ class UploadedServiceDetail extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 30),
-           Padding(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               data.description ?? "",
-              style: TextStyle(color: Colors.grey),
-
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
           const SizedBox(height: 16),
@@ -104,10 +122,12 @@ class UploadedServiceDetail extends StatelessWidget {
               itemBuilder: (_, index) {
                 return Padding(
                   padding: EdgeInsets.only(left: index == 0 ? 8 : 0, right: 8),
-                  child: Container(
+                  child: SizedBox(
                     width: 94.w,
                     height: 94.w,
-                   child: CachedNetworkImage(imageUrl: data.photos?[index] ?? "",),
+                    child: CachedNetworkImage(
+                      imageUrl: data.photos?[index] ?? "",
+                    ),
                   ),
                 );
               },
@@ -123,15 +143,22 @@ class UploadedServiceDetail extends StatelessWidget {
               color: const Color(0xFF1C4FD1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: TextButton(
+            child: BlocListener<MessageTemplateBloc, MessageTemplateState>(
+              bloc: _templateBloc,
+  listener: (context, state) {
+   if(state is MessageTemplateListLoadedState){
+     templates = state.response;
+   }
+  },
+  child: TextButton(
               onPressed: () {
                 showModalBottomSheet(
                   backgroundColor: Colors.transparent,
                   context: context,
                   builder: (_) {
-                    return const FractionallySizedBox(
+                    return FractionallySizedBox(
                       heightFactor: 1.7,
-                      child: MessageModal(),
+                      child: MessageModal(templates: templates,),
                     );
                   },
                 );
@@ -145,6 +172,7 @@ class UploadedServiceDetail extends StatelessWidget {
                 ),
               ),
             ),
+),
           ),
           const SizedBox(height: 20),
         ],
@@ -154,123 +182,143 @@ class UploadedServiceDetail extends StatelessWidget {
 }
 
 class MessageModal extends StatelessWidget {
+  final List<MessageTemplateResponse>? templates;
   const MessageModal({
-    Key? key,
+    Key? key, this.templates
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            Center(
-              child: Container(
-                width: 50,
-                height: 3,
-                color: Colors.grey,
-              ),
+    ScreenUtil.init(context, designSize: const Size(375, 812));
+    final TextEditingController controller = TextEditingController();
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Container(
+          decoration:  BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30.sp),
+              topLeft: Radius.circular(30.sp),
             ),
-            const SizedBox(height: 28),
-            const Text(
-              'Cообщение',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              height: 180,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: const Color(0xFF858DA3),
-                  width: 1,
+          ),
+          child: Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                 SizedBox(height: 20.h),
+                Center(
+                  child: Container(
+                    width: 50.w,
+                    height: 3.h,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-              child: const TextField(
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Color(0xFF18181C)),
-                decoration: InputDecoration(
-                  hintText: 'Введите текст',
-                  hintStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: Color(0xFF18181C)),
-                  border: InputBorder.none,
+                 SizedBox(height: 28.h),
+                const Text(
+                  'Cообщение',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 28),
-            InkWell(
-              onTap: (){
-                Navigator.of(context).pushNamed(CreateTemplateScreen.routeName);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Шаблоны',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: Color(0xFF18181C),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  height: 180,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: const Color(0xFF858DA3),
+                      width: 1,
                     ),
                   ),
-                  Icon(Icons.keyboard_arrow_right_rounded, color: Colors.black),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: 102,
-              height: 98,
-              child: DottedBorder(
-                color: const Color(0xFF858DA3),
-                radius: const Radius.circular(5),
-                child: const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    'Здравствуйте, меня зовут Феруз Тахирович я адвокат с 5 летнем стажем. Могу помочь с вашей проблемой...',
+                  child:  TextField(
+                    controller: controller,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.sp,
+                        color: const Color(0xFF18181C)),
+                    decoration: InputDecoration(
+                      hintText: 'Введите текст',
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                          color: const Color(0xFF18181C)),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 130),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              height: 46,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1C4FD1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Отправить',
-                  style: TextStyle(color: Colors.white),
+                 SizedBox(height: 28.h),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(CreateTemplateScreen.routeName);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children:  [
+                      Text(
+                        'Шаблоны',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                          color: const Color(0xFF18181C),
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_right_rounded, color: Colors.black),
+                    ],
+                  ),
                 ),
-              ),
+                 SizedBox(height: 12.h),
+              Row(children: templates!.map((e) {
+                return Padding(
+                  padding:  EdgeInsets.only(right: 8.w),
+                  child: InkWell(
+                    onTap: (){
+                    setState((){
+                      controller.text = e.description ?? "";
+                    });
+                    },
+                    child: SizedBox(
+                      width: 102,
+                      height: 98,
+                      child: DottedBorder(
+                        color: const Color(0xFF858DA3),
+                        radius:  Radius.circular(5.sp),
+                        child:  Padding(
+                          padding: EdgeInsets.all(8.sp),
+                          child: Text(
+                            e.description ?? "",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),),
+                const SizedBox(height: 130),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  height: 46,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1C4FD1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Отправить',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 }

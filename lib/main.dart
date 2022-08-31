@@ -20,7 +20,8 @@ import 'package:top_yurist/presentation/User/Requests/create_new_request.dart';
 import 'package:top_yurist/presentation/User/Requests/lawyer_profile_screen.dart';
 import 'package:top_yurist/presentation/User/Requests/request_detail.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/LawyerChatScreen.dart';
-import 'package:top_yurist/presentation/UserUploadedServices/add_new_template.dart';
+import 'package:top_yurist/presentation/UserUploadedServices/chat_screen.dart';
+import 'package:top_yurist/presentation/UserUploadedServices/create_new_template.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/create_template.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/filter_by_city.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/uploaded_service_detail.dart';
@@ -112,7 +113,8 @@ class MyApp extends StatelessWidget {
                     CreateTemplateScreen.routeName: (context) =>
                         const CreateTemplateScreen(),
                     ChatScreen.routeName: (context) => const ChatScreen(),
-                    UserFilterOffer.routeName: (context) => const UserFilterOffer()
+                    UserFilterOffer.routeName: (context) => const UserFilterOffer(),
+                    CreateNewTemplate.routeName:(context) => const CreateNewTemplate()
                   },
                 )));
   }

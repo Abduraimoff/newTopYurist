@@ -42,6 +42,9 @@
   "sort": "Сортировка",
   "by_price": "По цене",
   "by_rating": "По рейтингу",
-  "by_reviews": "По отзывам"
+  "by_reviews": "По отзывам",
+  "create_template": "Добавить шаблон",
+  "new_template": "Новый шаблон",
+  "templates": "Шаблоны"
 
 }
