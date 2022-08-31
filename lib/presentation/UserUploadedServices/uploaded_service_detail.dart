@@ -3,6 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_yurist/bloc/Bloc/MessageTemplate/message_template_bloc.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/create_template.dart';
@@ -14,7 +15,7 @@ import '../../data/Models/message_template/message_template.dart';
 class UploadedServiceDetail extends StatefulWidget {
   static const routeName = "uploaded";
 
-  const UploadedServiceDetail({Key? key}) : super(key: key);
+  const UploadedServiceDetail({Key? key,}) : super(key: key);
 
   @override
   State<UploadedServiceDetail> createState() => _UploadedServiceDetailState();
@@ -23,11 +24,17 @@ class UploadedServiceDetail extends StatefulWidget {
 class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
   final MessageTemplateBloc _templateBloc = MessageTemplateBloc();
   List<MessageTemplateResponse>? templates;
-
+  String? id;
   @override
   void initState() {
     _templateBloc.add( GetMessageTemplateEvent());
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+   id = ModalRoute.of(context)?.settings.arguments as String;
+    super.didChangeDependencies();
   }
 
   @override
@@ -157,7 +164,7 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
                   context: context,
                   builder: (_) {
                     return FractionallySizedBox(
-                      heightFactor: 1.7,
+                      heightFactor: 1.9,
                       child: MessageModal(templates: templates,),
                     );
                   },
@@ -183,14 +190,15 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
 
 class MessageModal extends StatelessWidget {
   final List<MessageTemplateResponse>? templates;
-  const MessageModal({
+   MessageModal({
     Key? key, this.templates
   }) : super(key: key);
-
+  final TextEditingController controller = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    final TextEditingController controller = TextEditingController();
+
     return StatefulBuilder(
       builder: (context, setState) {
         return Container(
@@ -215,8 +223,8 @@ class MessageModal extends StatelessWidget {
                   ),
                 ),
                  SizedBox(height: 28.h),
-                const Text(
-                  'Cообщение',
+                const LocaleText(
+                  'message',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
@@ -225,7 +233,7 @@ class MessageModal extends StatelessWidget {
                 const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
-                  height: 180,
+                  height: 180.h,
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -235,22 +243,54 @@ class MessageModal extends StatelessWidget {
                     ),
                   ),
                   child:  TextField(
+
                     controller: controller,
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14.sp,
                         color: const Color(0xFF18181C)),
                     decoration: InputDecoration(
-                      hintText: 'Введите текст',
+                      hintText: context.localeString("type_text"),
                       hintStyle: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14.sp,
-                          color: const Color(0xFF18181C)),
+                          color: AppColors.black.withOpacity(0.5)),
                       border: InputBorder.none,
                     ),
                   ),
                 ),
                  SizedBox(height: 28.h),
+                LocaleText('approximately_price', style: Theme.of(context).textTheme.headline3),
+                Container(
+                  width: double.infinity,
+                  height: 48.h,
+                  padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.sp),
+                    border: Border.all(
+                      color: const Color(0xFF858DA3),
+                      width: 1.w,
+                    ),
+                  ),
+                  child: TextField(
+                    controller: priceController,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.sp,
+                        color: const Color(0xFF18181C)),
+                    decoration: InputDecoration(
+                      hintText: context.localeString("type_price_sum"),
+                      contentPadding: EdgeInsets.only(bottom: 10.h),
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12.sp,
+                          color: AppColors.black.withOpacity(0.5)),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12.h,),
+
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pushNamed(CreateTemplateScreen.routeName);

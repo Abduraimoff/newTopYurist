@@ -45,6 +45,10 @@
   "by_reviews": "По отзывам",
   "create_template": "Добавить шаблон",
   "new_template": "Новый шаблон",
-  "templates": "Шаблоны"
+  "templates": "Шаблоны",
+  "approximately_price": "Примерная цена *",
+  "type_price_sum": "Ведите цену в сумах",
+  "type_text": "Введите текст",
+  "message": "Cообщение *"
 
 }
