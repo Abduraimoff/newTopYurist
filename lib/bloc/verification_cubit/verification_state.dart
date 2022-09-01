@@ -8,3 +8,11 @@ abstract class VerificationState extends Equatable {
 }
 
 class VerificationInitial extends VerificationState {}
+
+class VerificationLoadedState extends VerificationState {
+  const VerificationLoadedState(this.verify);
+  final Verify verify;
+
+  @override
+  List<Object> get props => [verify];
+}

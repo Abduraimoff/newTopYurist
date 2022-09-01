@@ -29,7 +29,6 @@ import 'package:top_yurist/utils/theme.dart';
 import 'bloc/Cubit/Auth/auth_user_cubit.dart';
 
 void main() async {
-
   const storage = FlutterSecureStorage();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,12 +40,11 @@ void main() async {
 
   Widget defaultHomeScreen = const LoginScreen();
 
-    if(await storage.read(key: Config.userType) == "lawyer"){
-      defaultHomeScreen =  const HomeScreen();
-    } else if(await storage.read(key: Config.userType) == "user"){
-      defaultHomeScreen = const HomeScreenUser();
-    }
-
+  if (await storage.read(key: Config.userType) == "lawyer") {
+    defaultHomeScreen = const HomeScreen();
+  } else if (await storage.read(key: Config.userType) == "user") {
+    defaultHomeScreen = const HomeScreenUser();
+  }
 
   runApp(MyApp(
     defaultHome: defaultHomeScreen,
@@ -61,9 +59,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => ProfileCubit(),
-          ),
+          BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => AuthUserCubit(), lazy: false),
         ],
         child: LocaleBuilder(

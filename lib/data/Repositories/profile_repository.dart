@@ -5,6 +5,7 @@ import 'package:top_yurist/data/HttpRequest/dio_client.dart';
 import 'package:top_yurist/data/Models/auth/image_response.dart';
 import 'package:top_yurist/data/Models/faq/faq.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
+import 'package:top_yurist/data/Models/verify/verify.dart';
 
 class ProfileRepository {
   final _request = DioClient().getDio();
@@ -82,5 +83,22 @@ class ProfileRepository {
     final data = {"locale": language};
 
     final responce = await _request.patch(path, data: data);
+  }
+
+  Future<Verify> getLawyerStatus() async {
+    const path = '/api/profile/lawyer/state';
+    final responce = await _request.get(path);
+
+    final verify = Verify.fromJson(responce.data);
+    return verify;
+  }
+
+  Future<Verify?> verify(Verify value) async {
+    const path = '/api/profile/lawyer/verify';
+
+    final responce = await _request.post(path, data: value.toJson());
+
+    final verify = Verify.fromJson(responce.data);
+    return verify;
   }
 }

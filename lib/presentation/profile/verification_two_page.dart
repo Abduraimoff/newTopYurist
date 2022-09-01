@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:top_yurist/bloc/verification_cubit/verification_cubit.dart';
+import 'package:top_yurist/data/Models/verify/verify.dart';
+import 'package:top_yurist/data/Repositories/upload_image.dart';
 import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/get_image.dart';
@@ -29,6 +31,7 @@ class _VerificationTwoPageState extends State<VerificationTwoPage> {
               const _AppBarWidget(),
               Expanded(
                 child: SingleChildScrollView(
+                  padding: EdgeInsets.only(bottom: 20.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -143,6 +146,37 @@ class _PassportWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: 16.h),
+        BlocBuilder<VerificationCubit, VerificationState>(
+          builder: (context, state) {
+            state as VerificationLoadedState;
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    (state.verify.passportFrontPhoto != null)
+                        ? Expanded(
+                            child: Image.network(
+                              state.verify.passportFrontPhoto!,
+                              height: 174.h,
+                            ),
+                          )
+                        : const SizedBox(),
+                    (state.verify.passportBackPhoto != null)
+                        ? Expanded(
+                            child: Image.network(
+                              state.verify.passportBackPhoto!,
+                              height: 174.h,
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+              ],
+            );
+          },
+        ),
         SizedBox(
           width: double.infinity,
           child: CupertinoButton(
@@ -158,7 +192,10 @@ class _PassportWidget extends StatelessWidget {
               ),
             ),
             onPressed: () async {
-              final file = await pickImage();
+              final cubit = context.read<VerificationCubit>();
+              final file = await pickImage(context);
+              final imageUrl = await uploadImage(file: file);
+              cubit.addPassportFrontPhoto(imageUrl);
             },
           ),
         ),
@@ -170,7 +207,7 @@ class _PassportWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             color: const Color.fromRGBO(28, 79, 209, 0.1),
             child: Text(
-              'Добавьте лицевую сторону',
+              'Добавьте страницу с пропиской',
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
@@ -178,7 +215,10 @@ class _PassportWidget extends StatelessWidget {
               ),
             ),
             onPressed: () async {
-              final file = await pickImage();
+              final cubit = context.read<VerificationCubit>();
+              final file = await pickImage(context);
+              final imageUrl = await uploadImage(file: file);
+              cubit.addPassportBackPhoto(imageUrl);
             },
           ),
         ),
@@ -203,6 +243,22 @@ class _DiplomWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: 16.h),
+        BlocBuilder<VerificationCubit, VerificationState>(
+          builder: (context, state) {
+            state as VerificationLoadedState;
+            return Column(
+              children: [
+                (state.verify.diplomaPhoto != null)
+                    ? Image.network(
+                        state.verify.diplomaPhoto!,
+                        height: 174.h,
+                      )
+                    : const SizedBox(),
+                SizedBox(height: 16.h),
+              ],
+            );
+          },
+        ),
         SizedBox(
           width: double.infinity,
           child: CupertinoButton(
@@ -218,7 +274,10 @@ class _DiplomWidget extends StatelessWidget {
               ),
             ),
             onPressed: () async {
-              final file = await pickImage();
+              final cubit = context.read<VerificationCubit>();
+              final file = await pickImage(context);
+              final imageUrl = await uploadImage(file: file);
+              cubit.addDiplomPhoto(imageUrl);
             },
           ),
         ),
@@ -236,13 +295,29 @@ class _LicenseWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Лицензия',
+          'Лицензия*',
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(height: 16.h),
+        BlocBuilder<VerificationCubit, VerificationState>(
+          builder: (context, state) {
+            state as VerificationLoadedState;
+            return Column(
+              children: [
+                (state.verify.licensePhoto != null)
+                    ? Image.network(
+                        state.verify.licensePhoto!,
+                        height: 174.h,
+                      )
+                    : const SizedBox(),
+                SizedBox(height: 16.h),
+              ],
+            );
+          },
+        ),
         SizedBox(
           width: double.infinity,
           child: CupertinoButton(
@@ -258,7 +333,10 @@ class _LicenseWidget extends StatelessWidget {
               ),
             ),
             onPressed: () async {
-              final file = await pickImage();
+              final cubit = context.read<VerificationCubit>();
+              final file = await pickImage(context);
+              final imageUrl = await uploadImage(file: file);
+              cubit.addLicensePhotoPhoto(imageUrl);
             },
           ),
         ),
@@ -276,13 +354,29 @@ class _ExtractWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Выписка',
+          'Выписка*',
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(height: 16.h),
+        BlocBuilder<VerificationCubit, VerificationState>(
+          builder: (context, state) {
+            state as VerificationLoadedState;
+            return Column(
+              children: [
+                (state.verify.extractPhoto != null)
+                    ? Image.network(
+                        state.verify.extractPhoto!,
+                        height: 174.h,
+                      )
+                    : const SizedBox(),
+                SizedBox(height: 16.h),
+              ],
+            );
+          },
+        ),
         SizedBox(
           width: double.infinity,
           child: CupertinoButton(
@@ -298,7 +392,10 @@ class _ExtractWidget extends StatelessWidget {
               ),
             ),
             onPressed: () async {
-              final file = await pickImage();
+              final cubit = context.read<VerificationCubit>();
+              final file = await pickImage(context);
+              final imageUrl = await uploadImage(file: file);
+              cubit.addExtractPhotoPhoto(imageUrl);
             },
           ),
         ),
@@ -316,13 +413,29 @@ class _StateLicenseWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Государственную лицензию',
+          'Государственную лицензию*',
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(height: 16.h),
+        BlocBuilder<VerificationCubit, VerificationState>(
+          builder: (context, state) {
+            state as VerificationLoadedState;
+            return Column(
+              children: [
+                (state.verify.civilLicensePhoto != null)
+                    ? Image.network(
+                        state.verify.civilLicensePhoto!,
+                        height: 174.h,
+                      )
+                    : const SizedBox(),
+                SizedBox(height: 16.h),
+              ],
+            );
+          },
+        ),
         SizedBox(
           width: double.infinity,
           child: CupertinoButton(
@@ -330,7 +443,10 @@ class _StateLicenseWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             color: const Color.fromRGBO(28, 79, 209, 0.1),
             onPressed: () async {
-              final file = await pickImage();
+              final cubit = context.read<VerificationCubit>();
+              final file = await pickImage(context);
+              final imageUrl = await uploadImage(file: file);
+              cubit.addCivilLicensePhotoPhoto(imageUrl);
             },
             child: Text(
               'Добавьте фото лицензии',
@@ -356,57 +472,117 @@ class _AgreementsWidget extends StatefulWidget {
 
 class _AgreementsWidgetState extends State<_AgreementsWidget> {
   bool isActive = false;
+  bool isVerifyInProsses = false;
+
+  Future<void> verify() async {
+    final verifyCubit = context.read<VerificationCubit>();
+    setState(() {
+      isVerifyInProsses = true;
+    });
+    final isVerify = await verifyCubit.verify();
+    setState(() {
+      isVerifyInProsses = false;
+    });
+    showDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: Column(
+          children: [
+            Image.asset(
+              isVerify
+                  ? 'assets/images/accepted.png'
+                  : 'assets/images/rejected.png',
+              height: 57.h,
+              width: 44.w,
+            ),
+            Text(
+              isVerify ? 'Ваша заявка отпавлена' : 'Что-то пошло не так',
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700),
+            )
+          ],
+        ),
+        content: Text(
+          isVerify
+              ? 'Модерерация уже начала прокерку'
+              : 'Мы уже работаем над устранением проьлемы',
+          style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w400),
+        ),
+        actions: [
+          CupertinoButton(
+            child: const Text('Ок'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            SizedBox(
-              child: Checkbox(
-                activeColor: AppColors.blue,
-                value: isActive,
-                onChanged: (value) {
-                  setState(() {
-                    isActive = value ?? false;
-                  });
-                },
+    return BlocBuilder<VerificationCubit, VerificationState>(
+        builder: (context, state) {
+      state as VerificationLoadedState;
+      final canSubmit = isActive &&
+          state.verify.passportBackPhoto != null &&
+          state.verify.passportFrontPhoto != null &&
+          state.verify.diplomaPhoto != null &&
+          state.verify.licensePhoto != null &&
+          state.verify.extractPhoto != null &&
+          state.verify.civilLicensePhoto != null &&
+          !isVerifyInProsses;
+      return Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                child: Checkbox(
+                  activeColor: AppColors.blue,
+                  value: isActive,
+                  onChanged: (value) {
+                    setState(() {
+                      isActive = value ?? false;
+                    });
+                  },
+                ),
               ),
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Text(
+                  'Согласен на сбор, обработку персональных данных',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF858DA3),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 13.h),
+          SizedBox(
+            width: double.infinity,
+            child: CupertinoButton(
+              padding: EdgeInsets.symmetric(vertical: 13.h),
+              borderRadius: BorderRadius.circular(8),
+              color: canSubmit
+                  ? AppColors.blue
+                  : const Color.fromRGBO(28, 79, 209, 0.1),
+              onPressed: canSubmit ? verify : null,
               child: Text(
-                'Согласен на сбор, обработку персональных данных',
+                'Пройти верификацию',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
-                  color: const Color(0xFF858DA3),
+                  color: canSubmit ? Colors.white : AppColors.blue,
                 ),
               ),
             ),
-          ],
-        ),
-        SizedBox(height: 13.h),
-        SizedBox(
-          width: double.infinity,
-          child: CupertinoButton(
-            padding: EdgeInsets.symmetric(vertical: 13.h),
-            borderRadius: BorderRadius.circular(8),
-            color: isActive
-                ? AppColors.blue
-                : const Color.fromRGBO(28, 79, 209, 0.1),
-            onPressed: isActive ? () {} : null,
-            child: Text(
-              'Пройти верификацию',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
-                color: isActive ? Colors.white : AppColors.blue,
-              ),
-            ),
-          ),
-        )
-      ],
-    );
+          )
+        ],
+      );
+    });
   }
 }
