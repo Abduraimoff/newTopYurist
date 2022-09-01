@@ -10,3 +10,23 @@ class GetYuristFavEvent extends YuristFavEvent{
   List<Object?> get props => [];
 }
 
+
+
+class UnFavoriteYuristEvent extends YuristFavEvent{
+  final String? id;
+
+  UnFavoriteYuristEvent(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+
+}
+class MakeFavoriteYuristEven extends YuristFavEvent{
+  final String? id;
+
+  MakeFavoriteYuristEven(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+
+}

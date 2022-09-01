@@ -12,21 +12,53 @@ class YuristFavBloc extends Bloc<YuristFavEvent, YuristFavState> {
   YuristFavBloc() : super(YuristFavListInitial()) {
     final LawyerFavRepository repository = LawyerFavRepository();
 
-        on<YuristFavEvent>((event, emit) async {
-          emit(YuristFavListInitial());
-              try{
-                final Response response = await repository.getFavList();
-                emit(YuristFavLoadedSuccess(UserFavoriteResponse.fromJson(response.data)));
-              } on DioError catch (e){
-                if(e.response != null){
-                  emit(YuristFavErrorState(e.response?.data["errors"]));
-                } else{
-                  emit(YuristFavErrorState(e.message));
-                }
-
-              }
-            });
-
+    on<YuristFavEvent>((event, emit) async {
+      emit(YuristFavListInitial());
+          try{
+            final Response response = await repository.getFavList();
+            emit(YuristFavLoadedSuccess(UserFavoriteResponse.fromJson(response.data)));
+          } on DioError catch (e){
+            if(e.response != null){
+              emit(YuristFavErrorState(e.response?.data["errors"]));
+            } else{
+              emit(YuristFavErrorState(e.message));
+            }
+          }
+        });
+    on<UnFavoriteYuristEvent>((event, emit) async{
+      try{
+        final Response response = await repository.removeToFavourite(event.id);
+        emit(UnFavoriteSuccessState());
+      } on DioError catch (e){
+        if(e.response != null){
+          emit(YuristFavErrorState(e.response?.data["errors"]));
+        } else{
+          emit(YuristFavErrorState(e.message));
         }
 
+      }
+    });
+
+    on<MakeFavoriteYuristEven>((event, emit) async{
+      try{
+        final Response response = await repository.addToFavourite(event.id);
+        emit(MakeFavoriteSuccessState());
+      } on DioError catch (e){
+        if(e.response != null){
+          emit(YuristFavErrorState(e.response?.data["errors"]));
+        } else{
+          emit(YuristFavErrorState(e.message));
+        }
+
+      }
+    });
+
+
+    }
+
+
+
+
+
 }
+

@@ -7,6 +7,7 @@ import 'package:top_yurist/bloc/Bloc/Lawyer/HomeList/selected_services_list_bloc
 
 import 'package:top_yurist/presentation/Services/select_category.dart';
 import 'package:top_yurist/utils/colors.dart';
+import 'package:top_yurist/utils/icons.dart';
 
 import '../../data/Models/regions/regions.dart';
 import '../UserUploadedServices/LawyerChatScreen.dart';
@@ -154,7 +155,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   onTap: () {
                                     _bloc.add(GetRemoveServiceEvent([data?[i].id]));
                                   },
-                                  child: SvgPicture.asset("assets/svg/trash.svg")),
+                                  child: SvgPicture.asset(AppIcons.trash)),
                             ],
                           )
                         ],
