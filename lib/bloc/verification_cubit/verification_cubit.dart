@@ -17,7 +17,7 @@ class VerificationCubit extends Cubit<VerificationState> {
       final verify = await _profileRepository.getLawyerStatus();
       emit(VerificationLoadedState(verify));
     } catch (e) {
-      var verify = const Verify();
+      var verify = Verify();
       emit(VerificationLoadedState(verify));
     }
   }
@@ -45,14 +45,32 @@ class VerificationCubit extends Cubit<VerificationState> {
     emit(VerificationLoadedState(newVerify));
   }
 
-  void addEducation(Instution studie) {
+  void setEducationTitle(String title) {
     final verify = (state as VerificationLoadedState).verify;
-    if (verify.studies == null) {
-      final newVerify = verify.copyWith(studies: [studie]);
+    if (verify.studies == null || verify.studies!.isEmpty) {
+      final instution = Instution(title: title);
+      final newVerify = verify.copyWith(studies: [instution]);
       emit(VerificationLoadedState(newVerify));
     } else {
-      final newVerify =
-          verify.copyWith(studies: List.of(verify.studies!)..add(studie));
+      final newVerify = verify
+          .copyWith(studies: [verify.studies!.first.copyWith(title: title)]);
+      emit(VerificationLoadedState(newVerify));
+    }
+  }
+
+  void setEducatioYear(String? value) {
+    if (value == null) {
+      return;
+    }
+    final date = '$value-01-01';
+    final verify = (state as VerificationLoadedState).verify;
+    if (verify.studies == null || verify.studies!.isEmpty) {
+      final instution = Instution(title: '', startAt: date);
+      final newVerify = verify.copyWith(studies: [instution]);
+      emit(VerificationLoadedState(newVerify));
+    } else {
+      final newVerify = verify
+          .copyWith(studies: [verify.studies!.first.copyWith(startAt: date)]);
       emit(VerificationLoadedState(newVerify));
     }
   }

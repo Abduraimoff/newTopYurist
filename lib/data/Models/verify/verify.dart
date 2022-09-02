@@ -7,17 +7,17 @@ enum InstutionType { study, job }
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Verify extends Equatable {
-  final String? title;
-  final String? description;
-  final String? passportFrontPhoto;
-  final String? passportBackPhoto;
-  final String? diplomaPhoto;
-  final String? licensePhoto;
-  final String? extractPhoto;
-  final String? civilLicensePhoto;
-  final List<Instution>? studies;
-  final List<Instution>? jobs;
-  const Verify({
+  String? title;
+  String? description;
+  String? passportFrontPhoto;
+  String? passportBackPhoto;
+  String? diplomaPhoto;
+  String? licensePhoto;
+  String? extractPhoto;
+  String? civilLicensePhoto;
+  List<Instution>? studies;
+  List<Instution>? jobs;
+  Verify({
     this.title,
     this.description,
     this.passportFrontPhoto,
@@ -76,12 +76,12 @@ class Verify extends Equatable {
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Instution extends Equatable {
-  final String? id;
-  final String title;
-  final int? sort;
-  final String? startAt;
-  final String? endAt;
-  const Instution({
+  String? id;
+  String title;
+  int? sort;
+  String? startAt;
+  String? endAt;
+  Instution({
     this.id,
     required this.title,
     this.sort,
@@ -95,4 +95,20 @@ class Instution extends Equatable {
 
   @override
   List<Object?> get props => [id, title, sort, startAt, endAt];
+
+  Instution copyWith({
+    String? id,
+    String? title,
+    int? sort,
+    String? startAt,
+    String? endAt,
+  }) {
+    return Instution(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      sort: sort ?? this.sort,
+      startAt: startAt ?? this.startAt,
+      endAt: endAt ?? this.endAt,
+    );
+  }
 }

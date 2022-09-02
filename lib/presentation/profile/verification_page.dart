@@ -5,9 +5,10 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/verification_cubit/verification_cubit.dart';
-import 'package:top_yurist/data/Models/verify/verify.dart';
+import 'package:top_yurist/data/Repositories/upload_image.dart';
 import 'package:top_yurist/presentation/profile/verification_two_page.dart';
 import 'package:top_yurist/utils/decorations.dart';
+import 'package:top_yurist/utils/get_image.dart';
 import 'package:top_yurist/utils/icons.dart';
 
 import '../../utils/colors.dart';
@@ -52,10 +53,9 @@ class VerificationPageState extends State<VerificationPage> {
           state as VerificationLoadedState;
           final canSubmit = state.verify.studies != null &&
               state.verify.studies!.isNotEmpty &&
-              state.verify.jobs != null &&
-              state.verify.jobs!.isNotEmpty &&
               state.verify.title != null &&
-              state.verify.title!.isNotEmpty;
+              state.verify.title!.isNotEmpty &&
+              state.verify.diplomaPhoto != null;
           return Scaffold(
             body: SafeArea(
               child: Padding(
@@ -74,7 +74,7 @@ class VerificationPageState extends State<VerificationPage> {
                             SizedBox(height: 24.h),
                             const _EducationWidget(),
                             SizedBox(height: 24.h),
-                            const _ExperienceWidget(),
+                            const _DiplomPhotoEidget(),
                             SizedBox(height: 19.h),
                             SizedBox(
                               width: double.infinity,
@@ -171,7 +171,7 @@ class _AboutInstutionWidget extends StatelessWidget {
         TextField(
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
           decoration: TextFieldDecorations.roundedDecoration(context)
-              .copyWith(hintText: 'Ваше имя или название организации'),
+              .copyWith(hintText: 'Название бюро, компании или коллегии*'),
           controller: titleController,
           onChanged: context.read<VerificationCubit>().setTitle,
         ),
@@ -186,7 +186,7 @@ class _AboutInstutionWidget extends StatelessWidget {
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
             decoration:
                 TextFieldDecorations.roundedDecoration(context).copyWith(
-              hintText: 'О себе',
+              hintText: 'Коротко о деятельности и предоставляемых услугах',
             ),
             controller: descriptionController,
             onChanged: context.read<VerificationCubit>().setDescription,
@@ -197,363 +197,163 @@ class _AboutInstutionWidget extends StatelessWidget {
   }
 }
 
-class _EducationWidget extends StatefulWidget {
+class _EducationWidget extends StatelessWidget {
   const _EducationWidget({Key? key}) : super(key: key);
 
   @override
-  State<_EducationWidget> createState() => __EducationWidgetState();
-}
-
-class __EducationWidgetState extends State<_EducationWidget> {
-  final verifyKey = GlobalKey<FormState>();
-  String name = '';
-  String start = '';
-  String end = '';
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VerificationCubit, VerificationState>(
-        builder: (context, state) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Обучение*',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-          ),
-          SizedBox(height: 16.h),
-          Builder(
-            builder: (context) {
-              state as VerificationLoadedState;
-              if (state.verify.studies == null ||
-                  state.verify.studies!.isEmpty) {
-                return const SizedBox();
-              }
-
-              return SizedBox(
-                child: Column(children: [
-                  for (int i = 0; i < state.verify.studies!.length; i++)
-                    Column(
-                      children: [
-                        InstutionInfoWidget(
-                          index: i,
-                          instutionType: InstutionType.study,
-                        ),
-                        SizedBox(height: 10.h),
-                      ],
-                    ),
-                  Divider(height: 32.h),
-                ]),
-              );
-            },
-          ),
-          AddInstutionWidget(
-            onEndChanged: (value) {
-              end = value.toString();
-            },
-            onNameChanged: (value) {
-              name = value;
-            },
-            onStartChanged: (value) {
-              start = value.toString();
-            },
-            verifyKey: verifyKey,
-          ),
-          SizedBox(height: 16.h),
-          SizedBox(
-            width: double.infinity,
-            child: CupertinoButton(
-              padding: EdgeInsets.symmetric(vertical: 13.h),
-              borderRadius: BorderRadius.circular(8),
-              color: const Color.fromRGBO(28, 79, 209, 0.1),
-              onPressed: () {
-                final verifyBloc = context.read<VerificationCubit>();
-                if (verifyKey.currentState!.validate()) {
-                  final studie =
-                      Instution(title: name, startAt: start, endAt: end);
-                  verifyBloc.addEducation(studie);
-                }
-              },
-              child: Text(
-                'Добавить место учебы',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.blue,
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    });
-  }
-}
-
-class _ExperienceWidget extends StatefulWidget {
-  const _ExperienceWidget({Key? key}) : super(key: key);
-
-  @override
-  State<_ExperienceWidget> createState() => _ExperienceWidgetState();
-}
-
-class _ExperienceWidgetState extends State<_ExperienceWidget> {
-  final verifyKey = GlobalKey<FormState>();
-  String name = '';
-  String start = '';
-  String end = '';
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<VerificationCubit, VerificationState>(
-        builder: (context, state) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Опыт работы*',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-          ),
-          SizedBox(height: 16.h),
-          Builder(
-            builder: (context) {
-              state as VerificationLoadedState;
-              if (state.verify.jobs == null || state.verify.jobs!.isEmpty) {
-                return const SizedBox();
-              }
-              return SizedBox(
-                child: Column(children: [
-                  for (int i = 0; i < state.verify.jobs!.length; i++)
-                    Column(
-                      children: [
-                        InstutionInfoWidget(
-                          index: i,
-                          instutionType: InstutionType.job,
-                        ),
-                        SizedBox(height: 10.h),
-                      ],
-                    ),
-                  Divider(height: 32.h),
-                ]),
-              );
-            },
-          ),
-          AddInstutionWidget(
-            onEndChanged: (value) {
-              end = value.toString();
-            },
-            onNameChanged: (value) {
-              name = value;
-            },
-            onStartChanged: (value) {
-              start = value.toString();
-            },
-            verifyKey: verifyKey,
-          ),
-          SizedBox(height: 16.h),
-          SizedBox(
-            width: double.infinity,
-            child: CupertinoButton(
-              padding: EdgeInsets.symmetric(vertical: 13.h),
-              borderRadius: BorderRadius.circular(8),
-              color: const Color.fromRGBO(28, 79, 209, 0.1),
-              onPressed: () {
-                final verifyBloc = context.read<VerificationCubit>();
-                if (verifyKey.currentState!.validate()) {
-                  final job =
-                      Instution(title: name, startAt: start, endAt: end);
-                  verifyBloc.addJobExperences(job);
-                }
-              },
-              child: Text(
-                'Добавить место работы',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.blue,
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    });
-  }
-}
-
-class InstutionInfoWidget extends StatelessWidget {
-  const InstutionInfoWidget(
-      {Key? key, required this.index, required this.instutionType})
-      : super(key: key);
-
-  final int index;
-  final InstutionType instutionType;
-
-  @override
-  Widget build(BuildContext context) {
-    late Instution instution;
-    final state =
+    final blocState =
         context.read<VerificationCubit>().state as VerificationLoadedState;
 
-    if (instutionType == InstutionType.job) {
-      instution = state.verify.jobs![index];
-    } else {
-      instution = state.verify.studies![index];
-    }
+    final name = blocState.verify.studies?.first.title;
+    final nameController = TextEditingController(text: name);
 
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    final start = blocState.verify.studies?.first.startAt?.substring(0, 4);
+
+    return BlocBuilder<VerificationCubit, VerificationState>(
+        builder: (context, state) {
+      state as VerificationLoadedState;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Высшее образование*',
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 16.h),
+          Column(
             children: [
-              Text(
-                instution.title,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'не может быть пустым';
+                  }
+                  return null;
+                },
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+                decoration: TextFieldDecorations.roundedDecoration(context)
+                    .copyWith(hintText: 'Название ВУЗа'),
+                onChanged: (v) {
+                  context.read<VerificationCubit>().setEducationTitle(v);
+                },
+                controller: nameController,
               ),
-              SizedBox(height: 8.h),
-              Text(
-                '${instution.startAt}-${instution.endAt ?? ''}',
+              SizedBox(height: 16.h),
+              DropdownButtonFormField<String>(
+                validator: (value) {
+                  if (value == null) {
+                    return 'введите год';
+                  }
+                  return null;
+                },
+                hint: Text(
+                  'Год начала обчучения',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                decoration: TextFieldDecorations.roundedDecoration(context),
+                borderRadius: BorderRadius.circular(10),
+                menuMaxHeight: 200.h,
                 style: TextStyle(
                   fontSize: 14.sp,
+                  color: Colors.grey,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.grey,
                 ),
+                value: start,
+                items: [
+                  for (int i = DateTime.now().year; i > 1940; i--)
+                    DropdownMenuItem(
+                      value: i.toString(),
+                      child: Text(i.toString()),
+                    )
+                ],
+                onChanged: (v) {
+                  context.read<VerificationCubit>().setEducatioYear(v);
+                },
               ),
             ],
           ),
+          SizedBox(height: 16.h),
+        ],
+      );
+    });
+  }
+}
+
+class _DiplomPhotoEidget extends StatefulWidget {
+  const _DiplomPhotoEidget({Key? key}) : super(key: key);
+
+  @override
+  State<_DiplomPhotoEidget> createState() => __DiplomPhotoEidgetState();
+}
+
+class __DiplomPhotoEidgetState extends State<_DiplomPhotoEidget> {
+  bool isImageLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Диплом *',
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              final verificationCubit = context.read<VerificationCubit>();
-              if (instutionType == InstutionType.job) {
-                verificationCubit.deleteJobExperences(index);
-              } else {
-                verificationCubit.deleteEducation(index);
-              }
-            },
-            child: SvgPicture.asset(AppIcons.trash),
+        SizedBox(height: 16.h),
+        BlocBuilder<VerificationCubit, VerificationState>(
+          builder: (context, state) {
+            state as VerificationLoadedState;
+            return Column(
+              children: [
+                (state.verify.diplomaPhoto != null)
+                    ? Image.network(
+                        state.verify.diplomaPhoto!,
+                        height: 174.h,
+                      )
+                    : const SizedBox(),
+                SizedBox(height: 16.h),
+              ],
+            );
+          },
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: CupertinoButton(
+            padding: EdgeInsets.symmetric(vertical: 13.h),
+            borderRadius: BorderRadius.circular(8),
+            color: const Color.fromRGBO(28, 79, 209, 0.1),
+            onPressed: isImageLoading
+                ? null
+                : () async {
+                    final cubit = context.read<VerificationCubit>();
+                    final file = await pickImage(context);
+                    setState(() {
+                      isImageLoading = true;
+                    });
+                    final imageUrl = await uploadImage(file: file);
+                    cubit.addDiplomPhoto(imageUrl);
+                    setState(() {
+                      isImageLoading = false;
+                    });
+                  },
+            child: isImageLoading
+                ? const CircularProgressIndicator.adaptive()
+                : Text(
+                    'Добавить фото диплома',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.blue,
+                    ),
+                  ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class AddInstutionWidget extends StatelessWidget {
-  const AddInstutionWidget({
-    Key? key,
-    required this.verifyKey,
-    required this.onStartChanged,
-    required this.onEndChanged,
-    required this.onNameChanged,
-  }) : super(key: key);
-
-  final GlobalKey<FormState> verifyKey;
-  final Function(String) onNameChanged;
-  final Function(int?) onStartChanged;
-  final Function(int?) onEndChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: verifyKey,
-      child: Column(
-        children: [
-          TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'не может быть пустым';
-              }
-              return null;
-            },
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
-            decoration: TextFieldDecorations.roundedDecoration(context)
-                .copyWith(hintText: 'Название организации'),
-            onChanged: onNameChanged,
-          ),
-          SizedBox(height: 16.h),
-          DropdownButtonFormField<int>(
-            key: UniqueKey(),
-            validator: (value) {
-              if (value == null) {
-                return 'введите год';
-              }
-              return null;
-            },
-            hint: Text(
-              'Начало',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            decoration: TextFieldDecorations.roundedDecoration(context),
-            borderRadius: BorderRadius.circular(10),
-            menuMaxHeight: 200.h,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey,
-              fontWeight: FontWeight.w400,
-            ),
-            value: null,
-            items: [
-              for (int i = DateTime.now().year; i > 1940; i--)
-                DropdownMenuItem(
-                  value: i,
-                  child: Text(i.toString()),
-                )
-            ],
-            onChanged: onStartChanged,
-          ),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child:
-          //     ),
-          //     SizedBox(width: 15.w),
-          //     Expanded(
-          //       child: DropdownButtonFormField<int>(
-          //         key: UniqueKey(),
-          //         validator: (value) {
-          //           if (value == null) {
-          //             return 'введите год';
-          //           }
-          //           return null;
-          //         },
-          //         hint: Text(
-          //           'Окончание',
-          //           style: TextStyle(
-          //             fontSize: 14.sp,
-          //             color: Colors.grey,
-          //             fontWeight: FontWeight.w400,
-          //           ),
-          //         ),
-          //         decoration: TextFieldDecorations.roundedDecoration(context),
-          //         borderRadius: BorderRadius.circular(10),
-          //         menuMaxHeight: 200.h,
-          //         value: null,
-          //         style: TextStyle(
-          //           fontSize: 14.sp,
-          //           color: Colors.grey,
-          //           fontWeight: FontWeight.w400,
-          //         ),
-          //         items: [
-          //           for (int i = DateTime.now().year; i > 1940; i--)
-          //             DropdownMenuItem(
-          //               value: i,
-          //               child: Text(i.toString()),
-          //             )
-          //         ],
-          //         onChanged: onEndChanged,
-          //       ),
-          //     )
-          //   ],
-          // ),
-        ],
-      ),
     );
   }
 }

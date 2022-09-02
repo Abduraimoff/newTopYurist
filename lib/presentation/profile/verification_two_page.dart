@@ -5,12 +5,12 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/verification_cubit/verification_cubit.dart';
-import 'package:top_yurist/data/Models/verify/verify.dart';
 import 'package:top_yurist/data/Repositories/upload_image.dart';
 import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/get_image.dart';
 import 'package:top_yurist/utils/icons.dart';
+import 'package:top_yurist/utils/upload_image_types.dart';
 
 class VerificationTwoPage extends StatefulWidget {
   const VerificationTwoPage({Key? key}) : super(key: key);
@@ -38,15 +38,33 @@ class _VerificationTwoPageState extends State<VerificationTwoPage> {
                       SizedBox(height: 25.h),
                       const _InformationWidget(),
                       SizedBox(height: 25.h),
-                      const _PassportWidget(),
+                      const _UploadImageWidget(
+                        buttonNameWithImage: 'Добавить фото паспорта',
+                        buttonNameWithoutImage: 'Изменить фото паспорта или ID',
+                        title: 'Парспорт или ID*',
+                        uploadImageType: UploadImageTypes.passport,
+                      ),
                       SizedBox(height: 28.h),
-                      const _DiplomWidget(),
+                      const _UploadImageWidget(
+                        buttonNameWithImage: 'Сделать селфи',
+                        buttonNameWithoutImage: 'Изменить фото',
+                        title: 'Фото (Селфи)*',
+                        uploadImageType: UploadImageTypes.selfi,
+                      ),
                       SizedBox(height: 28.h),
-                      const _LicenseWidget(),
+                      const _UploadImageWidget(
+                        buttonNameWithImage: 'Добавить фото лицензии',
+                        buttonNameWithoutImage: 'Изменить  фото лицензии',
+                        title: 'Лицензия на вид деятельности*',
+                        uploadImageType: UploadImageTypes.license,
+                      ),
                       SizedBox(height: 28.h),
-                      const _ExtractWidget(),
-                      SizedBox(height: 28.h),
-                      const _StateLicenseWidget(),
+                      const _UploadImageWidget(
+                        buttonNameWithImage: 'Добавить фото лицензии',
+                        buttonNameWithoutImage: 'Изменить  фото лицензии',
+                        title: 'Свидетельство о создании юр. лица',
+                        uploadImageType: UploadImageTypes.civilLicense,
+                      ),
                       SizedBox(height: 30.h),
                       const _AgreementsWidget(),
                     ],
@@ -125,103 +143,6 @@ class _AppBarWidget extends StatelessWidget {
           ],
         ),
         const SizedBox.shrink(),
-      ],
-    );
-  }
-}
-
-class _PassportWidget extends StatelessWidget {
-  const _PassportWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Парспорт',
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(height: 16.h),
-        BlocBuilder<VerificationCubit, VerificationState>(
-          builder: (context, state) {
-            state as VerificationLoadedState;
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    (state.verify.passportFrontPhoto != null)
-                        ? Expanded(
-                            child: Image.network(
-                              state.verify.passportFrontPhoto!,
-                              height: 174.h,
-                            ),
-                          )
-                        : const SizedBox(),
-                    (state.verify.passportBackPhoto != null)
-                        ? Expanded(
-                            child: Image.network(
-                              state.verify.passportBackPhoto!,
-                              height: 174.h,
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
-                ),
-                SizedBox(height: 16.h),
-              ],
-            );
-          },
-        ),
-        SizedBox(
-          width: double.infinity,
-          child: CupertinoButton(
-            padding: EdgeInsets.symmetric(vertical: 13.h),
-            borderRadius: BorderRadius.circular(8),
-            color: const Color.fromRGBO(28, 79, 209, 0.1),
-            child: Text(
-              'Добавьте лицевую сторону',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.blue,
-              ),
-            ),
-            onPressed: () async {
-              final cubit = context.read<VerificationCubit>();
-              final file = await pickImage(context);
-              final imageUrl = await uploadImage(file: file);
-              cubit.addPassportFrontPhoto(imageUrl);
-            },
-          ),
-        ),
-        SizedBox(height: 16.h),
-        SizedBox(
-          width: double.infinity,
-          child: CupertinoButton(
-            padding: EdgeInsets.symmetric(vertical: 13.h),
-            borderRadius: BorderRadius.circular(8),
-            color: const Color.fromRGBO(28, 79, 209, 0.1),
-            child: Text(
-              'Добавьте страницу с пропиской',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.blue,
-              ),
-            ),
-            onPressed: () async {
-              final cubit = context.read<VerificationCubit>();
-              final file = await pickImage(context);
-              final imageUrl = await uploadImage(file: file);
-              cubit.addPassportBackPhoto(imageUrl);
-            },
-          ),
-        ),
       ],
     );
   }
@@ -584,5 +505,123 @@ class _AgreementsWidgetState extends State<_AgreementsWidget> {
         ],
       );
     });
+  }
+}
+
+class _UploadImageWidget extends StatefulWidget {
+  const _UploadImageWidget({
+    Key? key,
+    required this.buttonNameWithImage,
+    required this.buttonNameWithoutImage,
+    required this.uploadImageType,
+    required this.title,
+  }) : super(key: key);
+
+  final UploadImageTypes uploadImageType;
+  final String buttonNameWithImage;
+  final String buttonNameWithoutImage;
+  final String title;
+
+  @override
+  State<_UploadImageWidget> createState() => _UploadImageWidgetState();
+}
+
+class _UploadImageWidgetState extends State<_UploadImageWidget> {
+  bool isImageLoading = false;
+
+  Future<void> onButtonTap() async {
+    final cubit = context.read<VerificationCubit>();
+    final file = await pickImage(context);
+    setState(() {
+      isImageLoading = true;
+    });
+    final imageUrl = await uploadImage(file: file);
+    switch (widget.uploadImageType) {
+      case UploadImageTypes.civilLicense:
+        {
+          cubit.addCivilLicensePhotoPhoto(imageUrl);
+        }
+        break;
+      case UploadImageTypes.license:
+        {
+          cubit.addLicensePhotoPhoto(imageUrl);
+        }
+        break;
+      case UploadImageTypes.diplom:
+        {
+          cubit.addDiplomPhoto(imageUrl);
+        }
+        break;
+      case UploadImageTypes.passport:
+        {
+          cubit.addPassportFrontPhoto(imageUrl);
+        }
+        break;
+      case UploadImageTypes.selfi:
+        {
+          cubit.addPassportBackPhoto(imageUrl);
+        }
+        break;
+    }
+    cubit.addExtractPhotoPhoto(imageUrl);
+    setState(() {
+      isImageLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<VerificationCubit, VerificationState>(
+        builder: (context, state) {
+      state as VerificationLoadedState;
+      final photo = getImageFromObject(
+          type: widget.uploadImageType, verify: state.verify);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 16.h),
+          Column(
+            children: [
+              (photo != null)
+                  ? Image.network(
+                      photo,
+                      height: 174.h,
+                    )
+                  : const SizedBox(),
+              SizedBox(height: 16.h),
+            ],
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: CupertinoButton(
+              padding: EdgeInsets.symmetric(vertical: 13.h),
+              borderRadius: BorderRadius.circular(8),
+              color: const Color.fromRGBO(28, 79, 209, 0.1),
+              onPressed: isImageLoading ? null : onButtonTap,
+              child: isImageLoading
+                  ? const CircularProgressIndicator.adaptive()
+                  : Text(
+                      (photo == null)
+                          ? widget.buttonNameWithoutImage
+                          : widget.buttonNameWithImage,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.blue,
+                      ),
+                    ),
+            ),
+          ),
+        ],
+      );
+    });
+    ;
   }
 }
