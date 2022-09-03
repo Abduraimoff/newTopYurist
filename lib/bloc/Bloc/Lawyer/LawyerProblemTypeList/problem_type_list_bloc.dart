@@ -22,7 +22,6 @@ class ProblemTypeListBloc extends Bloc<ProblemTypeListEvent, ProblemTypeListStat
        print(event.problemTypeId);
        final Response response = await repository.getProblems(regionId: event.regionId, problemT: event.problemTypeId);
        emit(ProblemTypeListLoadedStat(LawyerSelectServiceDetailResponse.fromJson(response.data)));
-
      } on DioError catch(e){
        emit(ProblemTypeListErrorState(e.response?.data["error"]));
      }

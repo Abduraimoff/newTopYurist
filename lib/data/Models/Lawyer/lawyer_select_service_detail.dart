@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import '../user/user_home_request_list.dart';
+
 LawyerSelectServiceDetailResponse lawyerSelectServiceDetailResponseFromJson(String str) => LawyerSelectServiceDetailResponse.fromJson(json.decode(str));
 
 String lawyerSelectServiceDetailResponseToJson(LawyerSelectServiceDetailResponse data) => json.encode(data.toJson());
@@ -34,6 +36,8 @@ class Datum {
     this.problemType,
     this.ownerProfilePhoto,
     this.ownerFullName,
+    this.regionTitle,
+    this.regionId,
     this.id,
     this.createdAt,
     this.updatedAt,
@@ -52,14 +56,16 @@ class Datum {
   final ProblemType? problemType;
   final String? ownerProfilePhoto;
   final String? ownerFullName;
+  final ProblemType? regionTitle;
+  final int? regionId;
   final String? id;
   final int? createdAt;
-  final dynamic updatedAt;
+  final int? updatedAt;
   final dynamic updatedId;
   final bool? deleted;
   final String? state;
   final String? ownerId;
-  final dynamic lawyerId;
+  final String? lawyerId;
   final String? problemTypeId;
   final String? description;
   final List<String>? photos;
@@ -70,6 +76,8 @@ class Datum {
     problemType: ProblemType.fromJson(json["problem_type"]),
     ownerProfilePhoto: json["owner_profile_photo"],
     ownerFullName: json["owner_full_name"],
+    regionTitle: ProblemType.fromJson(json["region_title"]),
+    regionId: json["region_id"],
     id: json["id"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
@@ -89,6 +97,8 @@ class Datum {
     "problem_type": problemType?.toJson(),
     "owner_profile_photo": ownerProfilePhoto,
     "owner_full_name": ownerFullName,
+    "region_title": regionTitle?.toJson(),
+    "region_id": regionId,
     "id": id,
     "created_at": createdAt,
     "updated_at": updatedAt,
@@ -104,30 +114,4 @@ class Datum {
   };
 }
 
-class ProblemType {
-  ProblemType({
-    this.usEn,
-    this.ruRu,
-    this.uzLat,
-    this.uzUz,
-  });
 
-  final String? usEn;
-  final String? ruRu;
-  final String? uzLat;
-  final String? uzUz;
-
-  factory ProblemType.fromJson(Map<String, dynamic> json) => ProblemType(
-    usEn: json["us_en"],
-    ruRu: json["ru_ru"],
-    uzLat: json["uz_lat"],
-    uzUz: json["uz_uz"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "us_en": usEn,
-    "ru_ru": ruRu,
-    "uz_lat": uzLat,
-    "uz_uz": uzUz,
-  };
-}

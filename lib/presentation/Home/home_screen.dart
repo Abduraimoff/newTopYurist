@@ -20,10 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
-    ServiceScreen(),
-    ChatsPage(),
-    LawyerFavourites(),
-    UserProfilePage(),
+    const ServiceScreen(),
+    const ChatsPage(),
+    const LawyerFavourites(),
+    const UserProfilePage(),
   ];
 
   void _onItemTapped(int index) {

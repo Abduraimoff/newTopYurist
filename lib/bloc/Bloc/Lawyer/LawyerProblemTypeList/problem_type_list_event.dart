@@ -4,7 +4,7 @@ part of 'problem_type_list_bloc.dart';
 abstract class ProblemTypeListEvent extends Equatable{}
 
 class GetProblemListEvent extends ProblemTypeListEvent{
-  final String? regionId;
+  final int? regionId;
   final String? problemTypeId;
 
   GetProblemListEvent({this.regionId, this.problemTypeId});

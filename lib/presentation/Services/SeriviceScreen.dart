@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/bloc/Bloc/Lawyer/HomeList/selected_services_list_bloc.dart';
@@ -49,8 +50,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 30.h),
-              Text(
-                'Услуги',
+              LocaleText(
+                'services',
                 style: Theme.of(context).textTheme.headline2,
               ),
               SizedBox(height: 20.h),
@@ -64,9 +65,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(SelectCategory.routeName, arguments: _bloc).then((value) => _bloc.add(GetSelectedServicesEvent()) );
                   },
-                  child: const Text(
-                    'Выбрать категорию',
-                    style: TextStyle(color: AppColors.primary),
+                  child:  LocaleText(
+                    'select_category',
+                    style: Theme.of(context).textTheme.headline3?.copyWith(color: AppColors.primary),
                   ),
                 ),
               ),
@@ -141,7 +142,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     ),
                                     SizedBox(height: 12.h),
                                     Text(
-                                      'Количество запросов: ${data?[i].application_count!}' ,
+                                      '${context.localeString("number_of_requests")}: ${data?[i].application_count!}' ,
                                       style:
                                       Theme
                                           .of(context)
@@ -153,7 +154,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               ),
                               InkWell(
                                   onTap: () {
-                                    _bloc.add(GetRemoveServiceEvent([data?[i].id]));
+                                    _bloc.add(GetRemoveServiceEvent([data?[i].id ?? ""]));
                                   },
                                   child: SvgPicture.asset(AppIcons.trash)),
                             ],

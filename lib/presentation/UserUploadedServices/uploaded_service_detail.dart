@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +14,9 @@ import '../../data/Models/message_template/message_template.dart';
 class UploadedServiceDetail extends StatefulWidget {
   static const routeName = "uploaded";
 
-  const UploadedServiceDetail({Key? key,}) : super(key: key);
+  const UploadedServiceDetail({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<UploadedServiceDetail> createState() => _UploadedServiceDetailState();
@@ -24,17 +25,11 @@ class UploadedServiceDetail extends StatefulWidget {
 class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
   final MessageTemplateBloc _templateBloc = MessageTemplateBloc();
   List<MessageTemplateResponse>? templates;
-  String? id;
-  @override
-  void initState() {
-    _templateBloc.add( GetMessageTemplateEvent());
-    super.initState();
-  }
 
   @override
-  void didChangeDependencies() {
-   id = ModalRoute.of(context)?.settings.arguments as String;
-    super.didChangeDependencies();
+  void initState() {
+    _templateBloc.add(GetMessageTemplateEvent());
+    super.initState();
   }
 
   @override
@@ -152,36 +147,34 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
             ),
             child: BlocListener<MessageTemplateBloc, MessageTemplateState>(
               bloc: _templateBloc,
-  listener: (context, state) {
-   if(state is MessageTemplateListLoadedState){
-     templates = state.response;
-   }
-  },
-  child: TextButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (_) {
-                    return FractionallySizedBox(
-                      heightFactor: 1.9,
-                      child: MessageModal(templates: templates,),
-                    );
-                  },
-                );
+              listener: (context, state) {
+                if (state is MessageTemplateListLoadedState) {
+                  templates = state.response;
+                }
               },
-              child: const Text(
-                'Отправить сообщение',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  color: Colors.white,
+              child: TextButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (_) {
+                      return FractionallySizedBox(
+                        heightFactor: 1.9,
+                        child: MessageModal(
+                          templates: templates,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: LocaleText(
+                  'send_message',
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
             ),
-),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
         ],
       ),
     );
@@ -190,175 +183,172 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
 
 class MessageModal extends StatelessWidget {
   final List<MessageTemplateResponse>? templates;
-   MessageModal({
-    Key? key, this.templates
-  }) : super(key: key);
+
+  MessageModal({Key? key, this.templates}) : super(key: key);
   final TextEditingController controller = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
 
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return Container(
-          decoration:  BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30.sp),
-              topLeft: Radius.circular(30.sp),
-            ),
+    return StatefulBuilder(builder: (context, setState) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30.sp),
+            topLeft: Radius.circular(30.sp),
           ),
-          child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                 SizedBox(height: 20.h),
-                Center(
-                  child: Container(
-                    width: 50.w,
-                    height: 3.h,
-                    color: Colors.grey,
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20.h),
+              Center(
+                child: Container(
+                  width: 50.w,
+                  height: 3.h,
+                  color: Colors.grey,
+                ),
+              ),
+              SizedBox(height: 28.h),
+               LocaleText(
+                'message',
+                style: Theme.of(context).textTheme.headline3,
+              ),
+               SizedBox(height: 12.h),
+              Container(
+                width: double.infinity,
+                height: 180.h,
+                padding:
+                     EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.sp),
+                  border: Border.all(
+                    color: const Color(0xFF858DA3),
+                    width: 1.w,
                   ),
                 ),
-                 SizedBox(height: 28.h),
-                const LocaleText(
-                  'message',
+                child: TextField(
+                  controller: controller,
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  width: double.infinity,
-                  height: 180.h,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: const Color(0xFF858DA3),
-                      width: 1,
-                    ),
-                  ),
-                  child:  TextField(
-
-                    controller: controller,
-                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                      color: const Color(0xFF18181C)),
+                  decoration: InputDecoration(
+                    hintText: context.localeString("type_text"),
+                    hintStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14.sp,
-                        color: const Color(0xFF18181C)),
-                    decoration: InputDecoration(
-                      hintText: context.localeString("type_text"),
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                          color: AppColors.black.withOpacity(0.5)),
-                      border: InputBorder.none,
-                    ),
+                        color: AppColors.black.withOpacity(0.5)),
+                    border: InputBorder.none,
                   ),
                 ),
-                 SizedBox(height: 28.h),
-                LocaleText('approximately_price', style: Theme.of(context).textTheme.headline3),
-                Container(
-                  width: double.infinity,
-                  height: 48.h,
-                  padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.sp),
-                    border: Border.all(
-                      color: const Color(0xFF858DA3),
-                      width: 1.w,
-                    ),
+              ),
+              SizedBox(height: 28.h),
+              LocaleText('approximately_price',
+                  style: Theme.of(context).textTheme.headline3),
+              Container(
+                width: double.infinity,
+                height: 48.h,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.sp),
+                  border: Border.all(
+                    color: const Color(0xFF858DA3),
+                    width: 1.w,
                   ),
-                  child: TextField(
-                    controller: priceController,
-                    style: TextStyle(
+                ),
+                child: TextField(
+                  controller: priceController,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      color: const Color(0xFF18181C)),
+                  decoration: InputDecoration(
+                    hintText: context.localeString("type_price_sum"),
+                    contentPadding: EdgeInsets.only(bottom: 10.h),
+                    hintStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 12.sp,
-                        color: const Color(0xFF18181C)),
-                    decoration: InputDecoration(
-                      hintText: context.localeString("type_price_sum"),
-                      contentPadding: EdgeInsets.only(bottom: 10.h),
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                          color: AppColors.black.withOpacity(0.5)),
-                      border: InputBorder.none,
+                        color: AppColors.black.withOpacity(0.5)),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(CreateTemplateScreen.routeName);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    LocaleText(
+                      'templates',
+                      style: Theme.of(context).textTheme.headline5,
                     ),
-                  ),
+                    const Icon(Icons.keyboard_arrow_right_rounded,
+                        color: Colors.black),
+                  ],
                 ),
-                SizedBox(height: 12.h,),
-
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(CreateTemplateScreen.routeName);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:  [
-                      Text(
-                        'Шаблоны',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                          color: const Color(0xFF18181C),
-                        ),
-                      ),
-                      const Icon(Icons.keyboard_arrow_right_rounded, color: Colors.black),
-                    ],
-                  ),
-                ),
-                 SizedBox(height: 12.h),
-              Row(children: templates!.map((e) {
-                return Padding(
-                  padding:  EdgeInsets.only(right: 8.w),
-                  child: InkWell(
-                    onTap: (){
-                    setState((){
-                      controller.text = e.description ?? "";
-                    });
-                    },
-                    child: SizedBox(
-                      width: 102,
-                      height: 98,
-                      child: DottedBorder(
-                        color: const Color(0xFF858DA3),
-                        radius:  Radius.circular(5.sp),
-                        child:  Padding(
-                          padding: EdgeInsets.all(8.sp),
-                          child: Text(
-                            e.description ?? "",
+              ),
+              SizedBox(height: 12.h),
+              Row(
+                children: templates!.map((e) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          controller.text = e.description ?? "";
+                        });
+                      },
+                      child: SizedBox(
+                        width: 102.w,
+                        height: 98.h,
+                        child: DottedBorder(
+                          color: const Color(0xFF858DA3),
+                          radius: Radius.circular(5.sp),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.sp),
+                            child: Text(
+                              e.description ?? "",
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),),
-                const SizedBox(height: 130),
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1C4FD1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Отправить',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  );
+                }).toList(),
+              ),
+               SizedBox(height: 130.h),
+              Container(
+                width: double.infinity,
+                margin:  EdgeInsets.symmetric(horizontal: 16.w),
+                height: 46.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1C4FD1),
+                  borderRadius: BorderRadius.circular(8.sp),
+                ),
+                child: TextButton(
+                  onPressed: () {},
+                  child:  LocaleText(
+                    'send',
+                    style: Theme.of(context).textTheme.headline3?.copyWith(color: AppColors.white),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }

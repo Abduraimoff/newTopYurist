@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProfileImage extends StatelessWidget {
   final double? width;
@@ -10,11 +12,15 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(imageUrl: imageUrl ?? "",
-    width: width,
-    height: height,
-    fit: BoxFit.cover,
-    errorWidget: (context, url, error) => Icon(Icons.person_outline, size: width,),
+    ScreenUtil.init(context, designSize: const Size(375, 812));
+    return ClipRRect(
+      borderRadius: BorderRadius.circular((width?? 0)/2),
+      child: CachedNetworkImage(imageUrl: imageUrl ?? "",
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      errorWidget: (context, url, error) => SvgPicture.asset("assets/svg/frame.svg", height: 17.h, width: 11.w, fit: BoxFit.cover,),
+      ),
     );
   }
 }

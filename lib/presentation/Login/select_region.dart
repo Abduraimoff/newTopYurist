@@ -83,7 +83,7 @@ class _SelectRegionState extends State<SelectRegion> {
                                           context
                                               .read<AuthUserCubit>()
                                               .getRegionId(
-                                                  e.title?.ruRu ?? '', e.id ?? 0);
+                                                  e.title?.ruRu ?? '', e.id!);
 
                                         },
                                         child: Row(
