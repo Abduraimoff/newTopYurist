@@ -31,7 +31,6 @@ import 'package:top_yurist/utils/theme.dart';
 import 'bloc/Cubit/Auth/auth_user_cubit.dart';
 
 void main() async {
-
   const storage = FlutterSecureStorage();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +47,7 @@ void main() async {
       defaultHomeScreen = const HomeScreenUser();
     }
 
+
   runApp(MyApp(
     defaultHome: defaultHomeScreen,
   ));
@@ -61,9 +61,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => ProfileCubit(),
-          ),
+          BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => AuthUserCubit(), lazy: false),
           BlocProvider(create: (context) => UserOfferFilterCubit(), lazy: false),
         ],

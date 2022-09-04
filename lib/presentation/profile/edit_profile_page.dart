@@ -10,6 +10,7 @@ import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/decorations.dart';
+import 'package:top_yurist/utils/get_image.dart';
 import 'package:top_yurist/utils/icons.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -38,16 +39,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
   }
 
-  Future pickImage() async {
+  Future getImage() async {
     setState(() {
       isImageLoading = true;
     });
     final profileCubit = context.read<ProfileCubit>();
     try {
-      final XFile? image = await _picker.pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 30,
-      );
+      final image = await pickImage(context);
       setState(() {
         isImageLoading = true;
       });
@@ -57,8 +55,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         });
         return;
       }
-      final temporaryImage = File(image.path);
-      newImage = await profileCubit.uploadImage(image: temporaryImage);
+      newImage = await profileCubit.uploadImage(image: image);
     } catch (e) {
       print("filed to pick image: $e");
     }
@@ -170,7 +167,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   // SizedBox(height: 12.h),
                   TextButton(
-                    onPressed: pickImage,
+                    onPressed: getImage,
                     child: Text(
                       'Добавить фото',
                       style: TextStyle(

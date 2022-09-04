@@ -13,7 +13,6 @@ class DioClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: _onRequest,
-        onError: _onError,
       ),
     );
   }

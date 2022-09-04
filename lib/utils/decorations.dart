@@ -9,15 +9,21 @@ abstract class TextFieldDecorations {
       hintStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
       isCollapsed: true,
-      border: const OutlineInputBorder(),
+      border: OutlineInputBorder(
+        borderSide:
+            const BorderSide(color: Color.fromRGBO(133, 141, 163, 1), width: 1),
+        borderRadius: BorderRadius.circular(8.h),
+      ),
       enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Color.fromRGBO(133, 141, 163, 1)),
+        borderSide:
+            const BorderSide(color: Color.fromRGBO(133, 141, 163, 1), width: 1),
         borderRadius: BorderRadius.circular(8.h),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.blue),
         borderRadius: BorderRadius.circular(8.h),
       ),
+      hintMaxLines: 3,
     );
   }
 }
