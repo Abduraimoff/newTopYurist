@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
                         const LawyerChatScreen(),
                     FilterByCity.routeName: (context) => const FilterByCity(),
                     UploadedServiceDetail.routeName: (context) =>
-                        const UploadedServiceDetail(),
+                         UploadedServiceDetail(),
                     CreateTemplateScreen.routeName: (context) =>
                         const CreateTemplateScreen(),
                     ChatScreen.routeName: (context) => const ChatScreen(),

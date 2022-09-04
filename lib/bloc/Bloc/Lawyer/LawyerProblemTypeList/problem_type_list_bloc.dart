@@ -17,9 +17,8 @@ class ProblemTypeListBloc extends Bloc<ProblemTypeListEvent, ProblemTypeListStat
 
   ProblemTypeListBloc() : super(ProblemTypeListInitial()) {
     on<GetProblemListEvent>((event, emit) async {
-
      try{
-       print(event.problemTypeId);
+       emit(ProblemTypeLoadingState());
        final Response response = await repository.getProblems(regionId: event.regionId, problemT: event.problemTypeId);
        emit(ProblemTypeListLoadedStat(LawyerSelectServiceDetailResponse.fromJson(response.data)));
      } on DioError catch(e){

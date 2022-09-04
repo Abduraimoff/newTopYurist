@@ -11,7 +11,7 @@ class OfferInitial extends OfferState {
 class OfferErrorState extends OfferState{
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 
 }
 class OfferSuccessState extends OfferState{
@@ -21,5 +21,13 @@ class OfferSuccessState extends OfferState{
   @override
   // TODO: implement props
   List<Object?> get props => [response];
+
+}
+
+class OfferSuccessfullySend extends OfferState{
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
 
 }

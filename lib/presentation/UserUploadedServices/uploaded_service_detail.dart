@@ -1,36 +1,23 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:top_yurist/bloc/Bloc/MessageTemplate/message_template_bloc.dart';
+import 'package:top_yurist/bloc/Offer/offer_bloc.dart';
 import 'package:top_yurist/presentation/UserUploadedServices/create_template.dart';
 import 'package:top_yurist/utils/colors.dart';
 
 import '../../data/Models/Lawyer/lawyer_select_service_detail.dart';
-import '../../data/Models/message_template/message_template.dart';
+import '../widgets/message_bottom_sheet.dart';
 
-class UploadedServiceDetail extends StatefulWidget {
-  static const routeName = "uploaded";
+class UploadedServiceDetail extends StatelessWidget {
+  static const String routeName = "uploaded/route";
+   UploadedServiceDetail({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
 
-  const UploadedServiceDetail({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<UploadedServiceDetail> createState() => _UploadedServiceDetailState();
-}
-
-class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
-  final MessageTemplateBloc _templateBloc = MessageTemplateBloc();
-  List<MessageTemplateResponse>? templates;
-
-  @override
-  void initState() {
-    _templateBloc.add(GetMessageTemplateEvent());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +32,8 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
-              height: 32,
-              width: 32,
+              height: 32.h,
+              width: 32.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.grey[300],
@@ -58,29 +45,29 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Text(
               data.ownerFullName ?? "",
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
+                fontSize: 16.sp,
                 height: 2.4,
                 color: Colors.black,
               ),
             ),
           ],
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.phone, color: Colors.black),
+            padding: EdgeInsets.only(right: 16.w),
+            child: const Icon(Icons.phone, color: Colors.black),
           )
         ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 30),
+          SizedBox(height: 30.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
@@ -88,36 +75,38 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
               style: const TextStyle(color: Colors.grey),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  children: const [
-                    Icon(Icons.location_on_outlined),
-                    Text('Ташкент')
+                  children: [
+                    const Icon(Icons.location_on_outlined),
+                    Text(data.regionTitle?.ruRu ?? "")
                   ],
                 ),
-                const Text('15.07.2022')
+                Text(DateFormat("dd.MM.yyyy", 'en').format(
+                    DateTime.fromMicrosecondsSinceEpoch(
+                        (data.createdAt ?? 0000000000000) * 1000)))
               ],
             ),
           ),
           const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Фото',
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: LocaleText(
+              'photo',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
+                fontSize: 16.sp,
               ),
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           SizedBox(
-            height: 94,
+            height: 94.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: data.photos?.length ?? 0,
@@ -127,50 +116,45 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
                   child: SizedBox(
                     width: 94.w,
                     height: 94.w,
-                    child: CachedNetworkImage(
-                      imageUrl: data.photos?[index] ?? "",
-                    ),
+                    // child: CachedNetworkImage(
+                    //   imageUrl: data.photos?[index] ?? "",
+                    // ),
                   ),
                 );
               },
             ),
           ),
           const Spacer(),
-          const SizedBox(height: 33),
+          SizedBox(height: 33.h),
           Container(
             width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            height: 46,
+            margin: EdgeInsets.symmetric(horizontal: 16.w),
+            height: 48.h,
             decoration: BoxDecoration(
               color: const Color(0xFF1C4FD1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: BlocListener<MessageTemplateBloc, MessageTemplateState>(
-              bloc: _templateBloc,
-              listener: (context, state) {
-                if (state is MessageTemplateListLoadedState) {
-                  templates = state.response;
-                }
+            child: TextButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  isScrollControlled: true,
+                  isDismissible: false,
+                  builder: (context) {
+                    return MessageModal(
+                      key: _formKey,
+                      applicationId: data.id,
+                    );
+                  },
+                );
               },
-              child: TextButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (_) {
-                      return FractionallySizedBox(
-                        heightFactor: 1.9,
-                        child: MessageModal(
-                          templates: templates,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: LocaleText(
-                  'send_message',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
+              child: LocaleText(
+                'send_message',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline3
+                    ?.copyWith(color: AppColors.white),
               ),
             ),
           ),
@@ -178,177 +162,5 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
         ],
       ),
     );
-  }
-}
-
-class MessageModal extends StatelessWidget {
-  final List<MessageTemplateResponse>? templates;
-
-  MessageModal({Key? key, this.templates}) : super(key: key);
-  final TextEditingController controller = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
-
-    return StatefulBuilder(builder: (context, setState) {
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30.sp),
-            topLeft: Radius.circular(30.sp),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20.h),
-              Center(
-                child: Container(
-                  width: 50.w,
-                  height: 3.h,
-                  color: Colors.grey,
-                ),
-              ),
-              SizedBox(height: 28.h),
-               LocaleText(
-                'message',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-               SizedBox(height: 12.h),
-              Container(
-                width: double.infinity,
-                height: 180.h,
-                padding:
-                     EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.sp),
-                  border: Border.all(
-                    color: const Color(0xFF858DA3),
-                    width: 1.w,
-                  ),
-                ),
-                child: TextField(
-                  controller: controller,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                      color: const Color(0xFF18181C)),
-                  decoration: InputDecoration(
-                    hintText: context.localeString("type_text"),
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                        color: AppColors.black.withOpacity(0.5)),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              SizedBox(height: 28.h),
-              LocaleText('approximately_price',
-                  style: Theme.of(context).textTheme.headline3),
-              Container(
-                width: double.infinity,
-                height: 48.h,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.sp),
-                  border: Border.all(
-                    color: const Color(0xFF858DA3),
-                    width: 1.w,
-                  ),
-                ),
-                child: TextField(
-                  controller: priceController,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.sp,
-                      color: const Color(0xFF18181C)),
-                  decoration: InputDecoration(
-                    hintText: context.localeString("type_price_sum"),
-                    contentPadding: EdgeInsets.only(bottom: 10.h),
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        color: AppColors.black.withOpacity(0.5)),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context)
-                      .pushNamed(CreateTemplateScreen.routeName);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    LocaleText(
-                      'templates',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    const Icon(Icons.keyboard_arrow_right_rounded,
-                        color: Colors.black),
-                  ],
-                ),
-              ),
-              SizedBox(height: 12.h),
-              Row(
-                children: templates!.map((e) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          controller.text = e.description ?? "";
-                        });
-                      },
-                      child: SizedBox(
-                        width: 102.w,
-                        height: 98.h,
-                        child: DottedBorder(
-                          color: const Color(0xFF858DA3),
-                          radius: Radius.circular(5.sp),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.sp),
-                            child: Text(
-                              e.description ?? "",
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-               SizedBox(height: 130.h),
-              Container(
-                width: double.infinity,
-                margin:  EdgeInsets.symmetric(horizontal: 16.w),
-                height: 46.h,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1C4FD1),
-                  borderRadius: BorderRadius.circular(8.sp),
-                ),
-                child: TextButton(
-                  onPressed: () {},
-                  child:  LocaleText(
-                    'send',
-                    style: Theme.of(context).textTheme.headline3?.copyWith(color: AppColors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    });
   }
 }

@@ -33,7 +33,7 @@ class _LawyerChatScreenState extends State<LawyerChatScreen>
   int? regionId;
   ValueChanged<int>? filterByRegion(int? id){
    regionId = id;
-   return null;
+
   }
 
   @override
@@ -91,7 +91,7 @@ class _LawyerChatScreenState extends State<LawyerChatScreen>
             if (state is ProblemTypeListLoadedStat) {
               loadedData = state.response;
             }
-            return Column(
+            return (loadedData?.data?.isEmpty ?? true) ? Center(child: Text("There are no application "),) : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                  SizedBox(height: 25.h),

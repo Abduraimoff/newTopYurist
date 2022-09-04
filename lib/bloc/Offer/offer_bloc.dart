@@ -26,5 +26,14 @@ class OfferBloc extends Bloc<OfferEvent, OfferState> {
       }
 
     });
+    on<CreateOffer>((event, emit) async{
+      try{
+        final Response response = await repository.createOffer(id: event.id, description: event.description, price: event.offerPrice);
+          emit(OfferSuccessfullySend());
+      }on DioError catch(e){
+        emit(OfferErrorState());
+      }
+
+    });
   }
 }

@@ -12,3 +12,14 @@ class GetOffers extends OfferEvent{
   // TODO: implement props
   List<Object?> get props => [];
 }
+class CreateOffer extends OfferEvent{
+  final String? id;
+  final String? description;
+  final String? offerPrice;
+
+  const CreateOffer({required this.id, required this.description, required this.offerPrice});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, description, offerPrice];
+
+}

@@ -21,10 +21,12 @@ class _CreateNewTemplateState extends State<CreateNewTemplate> {
 
   @override
   void didChangeDependencies() {
-    data = ModalRoute.of(context)?.settings.arguments == null
-        ? null
-        : ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    _controller.text = data?["description"];
+    if(ModalRoute.of(context)?.settings.arguments != null){
+      data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      _controller.text = data?["description"];
+    }
+
+
     super.didChangeDependencies();
   }
 

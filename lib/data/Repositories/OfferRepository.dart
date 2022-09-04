@@ -17,4 +17,20 @@ class OfferRepository{
       rethrow;
     }
   }
+  Future<Response> createOffer({String? id, String? description, String? price } ) async{
+    try{
+      final Response response = await ApiRequest().doPostRequest(slug: "/api/application/create_offer", queryParameters: {
+        "id": id
+      }, options: Options(headers: {
+        "Authorization": await _storage.read(key: Config.accessToken),
+      }), data: {
+        "description": description,
+        "offer_price": price
+      });
+      print(response.data);
+      return response;
+    }catch(e){
+      rethrow;
+    }
+  }
 }

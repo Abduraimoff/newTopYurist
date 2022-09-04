@@ -52,7 +52,7 @@ class _FilterByCityState extends State<FilterByCity> {
                   return InkWell(
                     onTap: (){
                       widget.onChanged!(state.response[i].id );
-                      Navigator.of(context).pop();
+                      Navigator.of(context).maybePop();
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
