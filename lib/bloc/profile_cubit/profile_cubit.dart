@@ -8,16 +8,11 @@ import 'package:top_yurist/data/Repositories/profile_repository.dart';
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileInitial()) {
-    loadUser();
-  }
+  ProfileCubit() : super(ProfileInitial());
 
   final _request = ProfileRepository();
 
   Future<void> loadUser() async {
-    if (state is! ProfileInitial) {
-      return;
-    }
     final user = await _request.getUser();
     try {
       if (user == null) {
