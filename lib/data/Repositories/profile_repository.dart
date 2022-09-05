@@ -1,13 +1,16 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/data/HttpRequest/dio_client.dart';
 import 'package:top_yurist/data/Models/auth/image_response.dart';
 import 'package:top_yurist/data/Models/faq/faq.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/data/Models/verify/verify.dart';
+import 'package:top_yurist/utils/config.dart';
 
 class ProfileRepository {
   final _request = DioClient().getDio();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   Future<List<Faq>> getFAQ() async {
     const path = '/api/profile/faq';
@@ -98,6 +101,7 @@ class ProfileRepository {
     final responce = await _request.post(path, data: value.toJson());
 
     final verify = Verify.fromJson(responce.data);
+
     return verify;
   }
 }

@@ -1,23 +1,44 @@
-import 'package:dotted_border/dotted_border.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:top_yurist/bloc/Bloc/MessageTemplate/message_template_bloc.dart';
-import 'package:top_yurist/bloc/Offer/offer_bloc.dart';
-import 'package:top_yurist/presentation/UserUploadedServices/create_template.dart';
+import 'package:top_yurist/presentation/profile/verification_page.dart';
 import 'package:top_yurist/utils/colors.dart';
-
 import '../../data/Models/Lawyer/lawyer_select_service_detail.dart';
+import '../../utils/config.dart';
 import '../widgets/message_bottom_sheet.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class UploadedServiceDetail extends StatelessWidget {
+class UploadedServiceDetail extends StatefulWidget {
   static const String routeName = "uploaded/route";
-   UploadedServiceDetail({Key? key}) : super(key: key);
+   const UploadedServiceDetail({Key? key}) : super(key: key);
+
+  @override
+  State<UploadedServiceDetail> createState() => _UploadedServiceDetailState();
+}
+
+class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
   final _formKey = GlobalKey<FormState>();
 
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  String? lawyerStatus;
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+
+@override
+  void didChangeDependencies() async{
+  lawyerStatus = await _storage.read(key: Config.lawyerStatus);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +81,9 @@ class UploadedServiceDetail extends StatelessWidget {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16.w),
-            child: const Icon(Icons.phone, color: Colors.black),
+            child: IconButton(icon: SvgPicture.asset("assets/svg/call.svg"), onPressed: (){
+              _makePhoneCall("+998907777777");
+            },)
           )
         ],
       ),
@@ -116,26 +139,34 @@ class UploadedServiceDetail extends StatelessWidget {
                   child: SizedBox(
                     width: 94.w,
                     height: 94.w,
-                    // child: CachedNetworkImage(
-                    //   imageUrl: data.photos?[index] ?? "",
-                    // ),
+                    child: CachedNetworkImage(
+                      imageUrl: data.photos?[index] ?? "",
+                    ),
                   ),
                 );
               },
             ),
           ),
           const Spacer(),
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 18.w),
+            child: Visibility(
+                visible: lawyerStatus == null,
+                child: LocaleText("lawyer_not_verified", style: Theme.of(context).textTheme.headline5,)),
+          ),
           SizedBox(height: 33.h),
           Container(
             width: double.infinity,
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             height: 48.h,
             decoration: BoxDecoration(
-              color: const Color(0xFF1C4FD1),
+              color: lawyerStatus == null ? AppColors.green : const Color(0xFF1C4FD1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: TextButton(
-              onPressed: () {
+              onPressed: lawyerStatus == null ? (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const VerificationPage()));
+              } : () {
                 showModalBottomSheet(
                   backgroundColor: Colors.transparent,
                   context: context,

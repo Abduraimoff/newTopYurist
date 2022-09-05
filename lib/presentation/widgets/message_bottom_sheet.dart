@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../bloc/Bloc/MessageTemplate/message_template_bloc.dart';
 import '../../bloc/Offer/offer_bloc.dart';
@@ -26,27 +27,24 @@ class _MessageModalState extends State<MessageModal> {
 
   TextEditingController? priceController;
 
-   OfferBloc? _bloc;
+  final OfferBloc _bloc = OfferBloc();
 
 
   @override
   void initState() {
     controller = TextEditingController();
     priceController = TextEditingController();
-    _bloc = OfferBloc();
     super.initState();
   }
   @override
   void dispose() {
     controller?.dispose();
     priceController?.dispose();
-
-
     super.dispose();
   }
   @override
   Widget build(BuildContext context) {
-
+    ScreenUtil.init(context, designSize: const Size(375, 812));
 
     return BlocProvider<MessageTemplateBloc>(
       create: (context) =>
@@ -64,42 +62,43 @@ class _MessageModalState extends State<MessageModal> {
                 bloc: _bloc,
                 listener: (context, state) {
                   if (state is OfferSuccessfullySend) {
-                    print("hello");
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Your offer succesfully send ")));
                   }
                 },
                 child: Container(
                   decoration: BoxDecoration(
                       color: AppColors.white,
-                      borderRadius: BorderRadius.circular(30)),
+                      borderRadius: BorderRadius.circular(30.sp)),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         Center(
                           child: Container(
-                            width: 50,
-                            height: 3,
+                            width: 50.w,
+                            height: 3.h,
                             color: Colors.grey,
                           ),
                         ),
-                        SizedBox(height: 28),
+                        SizedBox(height: 28.h),
                         LocaleText(
                           'message',
                           style: Theme.of(context).textTheme.headline3,
                         ),
-                        SizedBox(height: 12),
+                        SizedBox(height: 12.h),
                         Container(
                           width: double.infinity,
                           height: 180,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
+                              horizontal: 16.w, vertical: 16.h),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.sp),
                             border: Border.all(
                               color: const Color(0xFF858DA3),
-                              width: 1,
+                              width: 1.w,
                             ),
                           ),
                           child: TextField(
@@ -110,28 +109,28 @@ class _MessageModalState extends State<MessageModal> {
                             },
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: const Color(0xFF18181C)),
                             maxLines: 10,
                             decoration: InputDecoration(
                               hintText: context.localeString("type_text"),
-                              contentPadding: EdgeInsets.only(bottom: 10),
+                              contentPadding: EdgeInsets.only(bottom: 10.h),
                               hintStyle: TextStyle(
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   color: AppColors.black.withOpacity(0.5)),
                               border: InputBorder.none,
                             ),
                           ),
                         ),
-                        SizedBox(height: 28),
+                        SizedBox(height: 28.h),
                         LocaleText('approximately_price',
                             style: Theme.of(context).textTheme.headline3),
                         Container(
                           width: double.infinity,
-                          height: 48,
+                          height: 48.sp,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
+                              horizontal: 16.w, vertical: 16.h),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
@@ -144,11 +143,11 @@ class _MessageModalState extends State<MessageModal> {
                             keyboardType: TextInputType.number,
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: const Color(0xFF18181C)),
                             decoration: InputDecoration(
                               hintText: context.localeString("type_price_sum"),
-                              contentPadding: EdgeInsets.only(bottom: 10),
+                              contentPadding: EdgeInsets.only(bottom: 10.h),
                               hintStyle: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
@@ -158,7 +157,7 @@ class _MessageModalState extends State<MessageModal> {
                           ),
                         ),
                         SizedBox(
-                          height: 12,
+                          height: 12.h,
                         ),
                         InkWell(
                           onTap: () {
@@ -177,26 +176,26 @@ class _MessageModalState extends State<MessageModal> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 12),
+                        SizedBox(height: 12.h),
                         BlocBuilder<MessageTemplateBloc, MessageTemplateState>(
                           builder: (context, state) {
                             if (state is MessageTemplateListLoadedState) {
                               return Row(
                                 children: state.response.map((e) {
                                   return Padding(
-                                    padding: EdgeInsets.only(right: 8),
+                                    padding: EdgeInsets.only(right: 8.w),
                                     child: InkWell(
                                       onTap: () {
                                         controller?.text = e.description ?? "";
                                       },
                                       child: SizedBox(
-                                        width: 102,
-                                        height: 98,
+                                        width: 102.w,
+                                        height: 98.h,
                                         child: DottedBorder(
                                           color: const Color(0xFF858DA3),
-                                          radius: Radius.circular(5),
+                                          radius: Radius.circular(5.sp),
                                           child: Padding(
-                                            padding: EdgeInsets.all(8),
+                                            padding: EdgeInsets.all(8.sp),
                                             child: Text(
                                               e.description ?? "",
                                             ),
@@ -214,16 +213,16 @@ class _MessageModalState extends State<MessageModal> {
                         SizedBox(height: 95),
                         Container(
                           width: double.infinity,
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          height: 46,
+                          margin: EdgeInsets.symmetric(horizontal: 16.w),
+                          height: 46.h,
                           decoration: BoxDecoration(
                             color: const Color(0xFF1C4FD1),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.sp),
                           ),
                           child: TextButton(
                             onPressed: () {
                               if ((controller?.text.isNotEmpty ?? false) && ( priceController?.text.isNotEmpty ?? false)) {
-                                _bloc?.add(CreateOffer(
+                                _bloc.add(CreateOffer(
                                     id: widget.applicationId,
                                     description: controller?.text,
                                     offerPrice: priceController?.text));

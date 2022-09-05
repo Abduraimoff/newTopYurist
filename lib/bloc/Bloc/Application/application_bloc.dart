@@ -20,6 +20,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc() : super(ApplicationInitial()) {
     on<GetRequestsList>((event, emit) async{
       try{
+        emit(ApplicationLoading());
         final response = await repository.getUserRequestsList();
         data = response;
         emit(UserRequestsListSuccessState(response));

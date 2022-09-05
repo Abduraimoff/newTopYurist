@@ -8,6 +8,12 @@ class ApplicationInitial extends ApplicationState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+  class ApplicationLoading extends ApplicationState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}
 
 class ApplicationErrorState extends ApplicationState{
   final String error;

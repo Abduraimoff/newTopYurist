@@ -292,6 +292,7 @@ class _DiplomPhotoEidget extends StatefulWidget {
 
 class __DiplomPhotoEidgetState extends State<_DiplomPhotoEidget> {
   bool isImageLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(

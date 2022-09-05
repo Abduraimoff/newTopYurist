@@ -169,8 +169,9 @@ class UserHomeTabbar extends StatelessWidget {
 }
 
 class UserHomeEmptyPage extends StatelessWidget {
+  final ApplicationBloc? bloc;
   const UserHomeEmptyPage({
-    Key? key,
+    Key? key, this.bloc
   }) : super(key: key);
 
   @override
@@ -204,7 +205,7 @@ class UserHomeEmptyPage extends StatelessWidget {
               child: BaseButton(
                   title: 'create_request',
                   onPressed: () {
-                    Navigator.of(context).pushNamed(CreateNewRequest.routeName);
+                    Navigator.of(context).pushNamed(CreateNewRequest.routeName).then((value) => bloc?.add(GetRequestsList()));
                   },
                   isLoading: false)),
         ],

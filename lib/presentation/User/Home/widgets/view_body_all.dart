@@ -53,7 +53,7 @@ class _ViewBodyState extends State<ViewBody> {
           allData = state.response;
         }
         return (data?.isEmpty ?? false)
-            ? const UserHomeEmptyPage()
+            ?  UserHomeEmptyPage(bloc: widget.bloc,)
             :  Expanded(
           child: Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -120,33 +120,35 @@ class _ViewBodyState extends State<ViewBody> {
                               ),
                             ),
                     Container(
-                      color: AppColors.white,
-                      child: DropdownButton<String>(
+                      width: 25.w,
+                      child: PopupMenuButton<String>(
 
                         icon: const Icon(Icons.more_horiz,
                             color: Colors.grey),
                         elevation: 0,
-                        style: const TextStyle(color: Colors.deepPurple),
-                        underline: const SizedBox(),
-                        onChanged: (String? newValue) {
+
+
+                        onSelected: (String? newValue) {
                           if(newValue == "del"){
                             widget.bloc?.add(ApplicationDeleteEvent(data?[i].id));
                           } else if(newValue == "resume"){
                             widget.bloc?.add(ApplicationResume(data?[i].id??""));
                           }
                         },
-                        items: data?[i].state == "PUBLISHED" ? firstList
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: LocaleText(value),
-                          );
-                        }).toList() : secondList.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: LocaleText(value),
-                          );
-                        }).toList(),
+                        itemBuilder: (context){
+                      return data?[i].state == "PUBLISHED" ? firstList
+                          .map<PopupMenuItem<String>>((String value) {
+                        return PopupMenuItem<String>(
+                          value: value,
+                          child: LocaleText(value),
+                        );
+                      }).toList() : secondList.map<PopupMenuItem<String>>((String value) {
+                        return PopupMenuItem<String>(
+                          value: value,
+                          child: LocaleText(value),
+                        );
+                      }).toList();
+                        }
                       ),
                     ),
 
