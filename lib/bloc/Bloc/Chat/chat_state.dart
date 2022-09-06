@@ -23,9 +23,22 @@ class SentMessageSuccessState extends ChatState{
   List<Object?> get props => [];
 
 }
-class ChatLoadedSuccessState extends ChatState{
+class ChatLoadedSuccess extends ChatState{
+  final ChatResponse response;
+
+  const ChatLoadedSuccess(this.response);
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [response];
+
+}
+
+class ChatMessageLoadedSuccess extends ChatState{
+  final ChatMessageResponse response;
+
+  const ChatMessageLoadedSuccess(this.response);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [response];
 
 }

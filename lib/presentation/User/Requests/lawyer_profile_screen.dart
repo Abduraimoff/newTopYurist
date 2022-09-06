@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_yurist/bloc/Offer/offer_bloc.dart';
 import 'package:top_yurist/presentation/widgets/profileImage.dart';
 
 import '../../../data/Models/offers/offer_list_response.dart';
@@ -16,6 +18,7 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+  final OfferBloc _offerBloc = OfferBloc();
   Datum? data;
   @override
   void didChangeDependencies() {
@@ -66,52 +69,53 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 40),
-            const Text(
-              'Номер телефона: +99894 000 22 00',
+             Text(
+              '${context.localeString("phone_number")}: ${data?.lawyerPhoneNumber ?? "Phone number is hidden"}',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Почта: exemple@gmail.com',
+
+
+             Text(
+              '${context.localeString("experience")}: ${data?.workExperience} лет',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Стаж: 5 лет',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Colors.grey,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Решеных запросов: 12',
+             Text(
+              '${context.localeString("solved_request")}: ${data?.doneApplicationCount ?? 0}',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Colors.grey,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'В системе: 2 года',
+             SizedBox(height: 8.h),
+             Text(
+              '${context.localeString("in_system")}: ${data?.inSystemYears ?? 0} года',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: Colors.grey,
               ),
             ),
-            const SizedBox(height: 20),
+             SizedBox(height: 20.h),
             Row(
               children: [
-                Container(
+                BlocListener<OfferBloc, OfferState>(
+                  bloc: _offerBloc,
+  listener: (context, state) {
+if(state is SelectLawyerState){
+  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("You successfully selected the lawyer")));
+}
+  },
+  child: Container(
                   height: 44,
                   width: 233,
                   decoration: BoxDecoration(
@@ -119,31 +123,34 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     color: const Color(0xFF1C4FD1),
                   ),
                   child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Выбрать юриста',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    onPressed: () {
+                      _offerBloc.add(SelectLawyerEvent(data?.id));
+                    },
+                    child:  LocaleText(
+                      'select_lawyer',
+                      style: TextStyle(fontSize: 16.sp, color: Colors.white),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+),
+                 SizedBox(width: 10.w),
                  SmallButton(icon: SvgPicture.asset("assets/svg/message.svg"),),
-                const SizedBox(width: 10),
+                 SizedBox(width: 10.w),
                  SmallButton(icon: SvgPicture.asset("assets/svg/call.svg")),
               ],
             ),
             const SizedBox(height: 40),
-            const Text(
-              'Отзывы (2)',
+             Text(
+              '${context.localeString("reviews")} (${data?.reviewCount ?? 0})',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
+                fontSize: 16.sp,
               ),
             ),
-            const SizedBox(height: 12),
+             SizedBox(height: 12.h),
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding:  EdgeInsets.all(16.0.sp),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -153,8 +160,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         Row(
                           children: [
                             Container(
-                              height: 32,
-                              width: 32,
+                              height: 32.h,
+                              width: 32.w,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.grey[300],
@@ -166,7 +173,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8),
+                             SizedBox(width: 8.w),
                             const Text(
                               'Альбина Юлдашева',
                               style: TextStyle(

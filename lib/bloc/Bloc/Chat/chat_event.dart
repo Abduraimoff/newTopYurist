@@ -9,6 +9,15 @@ class GetChatsEvent extends ChatEvent{
   List<Object?> get props => [];
 
 }
+class GetChatsMessageEvent extends ChatEvent{
+  final String? chatId;
+
+  const GetChatsMessageEvent(this.chatId);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [chatId];
+
+}
 
 class SendMessageEvent extends ChatEvent{
   final String? lawyerId;

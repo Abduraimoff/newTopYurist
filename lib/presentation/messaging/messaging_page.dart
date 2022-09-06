@@ -2,55 +2,68 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 import 'package:intl/intl.dart';
+import 'package:top_yurist/bloc/Bloc/Chat/chat_bloc.dart';
 import 'package:top_yurist/bloc/messagin_bloc/messaging_bloc.dart';
+import 'package:top_yurist/data/Models/chat/chat_message_response.dart';
 import 'package:top_yurist/data/Models/message_option/message_option.dart';
 import 'package:top_yurist/presentation/messaging/create_review.dart';
+import 'package:top_yurist/presentation/widgets/profileImage.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
+import '../../data/Models/chat/chat_response.dart';
 import '../../data/Models/message/message.dart';
+import '../../utils/config.dart';
 
 class MessagingPage extends StatelessWidget {
-  const MessagingPage({Key? key, required this.userId}) : super(key: key);
-  final int userId;
+  const MessagingPage({Key? key, required this.chatId, this.fullName, this.imageUrl}) : super(key: key);
+  final String? chatId;
+  final String? fullName;
+  final String? imageUrl;
+ 
+  
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MessagingBloc(),
-      child: Scaffold(
-        body: _BodyWidget(
-          userId: userId,
-        ),
+    return Scaffold(
+      body: _BodyWidget(
+        chatId: chatId,
+        fullName: fullName,
+        imageUrl: imageUrl,
       ),
     );
   }
 }
 
 class _BodyWidget extends StatelessWidget {
-  const _BodyWidget({Key? key, required this.userId}) : super(key: key);
-  final int userId;
+  const _BodyWidget({Key? key, required this.chatId, this.imageUrl, this.fullName}) : super(key: key);
+  final String? chatId;
+  final String? fullName;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MessagingBloc, MessagingState>(
+    return BlocProvider<ChatBloc>(
+  create: (context) => ChatBloc()..add(GetChatsMessageEvent(chatId)),
+  child: BlocBuilder<ChatBloc, ChatState>(
       builder: (context, state) {
-        if (state is MessagingInitial) {
-          context.read<MessagingBloc>().add(const InitEvent(userId: 1));
+        if (state is ChatInitial) {
+          
           return const Center(
             child: CircularProgressIndicator.adaptive(),
           );
-        } else if (state is MessagingErrorState) {
+        } else if (state is ChatErrorState) {
           return const _ErrorWidget();
-        } else {
+        } else if(state is ChatMessageLoadedSuccess){
           return Column(
             children: [
               SizedBox(height: MediaQuery.of(context).padding.top),
-              const _AppBarWidget(),
-              const Expanded(child: _MessageAreaWidget()),
+               _AppBarWidget(fullName: fullName, imageUrl: imageUrl,),
+               Expanded(child: _MessageAreaWidget(data: state.response,)),
               SizedBox(height: 10.h),
               const _OptionsWidget(),
               SizedBox(height: 10.h),
@@ -58,19 +71,21 @@ class _BodyWidget extends StatelessWidget {
             ],
           );
         }
+        return const Center(child: CupertinoActivityIndicator());
       },
-    );
+    ),
+);
   }
 }
 
 class _AppBarWidget extends StatelessWidget {
-  const _AppBarWidget({Key? key}) : super(key: key);
+  final String? fullName;
+  final String? imageUrl;
+  const _AppBarWidget({Key? key, this.fullName, this.imageUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MessagingBloc, MessagingState>(
-        builder: (context, state) {
-      return Padding(
+    return Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: [
@@ -87,15 +102,13 @@ class _AppBarWidget extends StatelessWidget {
             SizedBox(width: 18.w),
             CircleAvatar(
               radius: 16.h,
-              backgroundImage: AssetImage(
-                (state as MessagingLoaded).user.profilePhoto ?? "",
-              ),
+              child: ProfileImage(imageUrl: imageUrl,),
             ),
             SizedBox(width: 12.w),
             Expanded(
               child: Text(
-                state.user.fullName ?? '',
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                fullName ?? '',
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: AppColors.black),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -113,37 +126,39 @@ class _AppBarWidget extends StatelessWidget {
           ],
         ),
       );
-    });
+
   }
 }
 
 class _MessageAreaWidget extends StatelessWidget {
-  const _MessageAreaWidget({Key? key}) : super(key: key);
+  final ChatMessageResponse? data;
+  const _MessageAreaWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MessagingBloc, MessagingState>(
-      builder: (context, state) {
-        return Padding(
+    return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: GroupedListView<Message, DateTime>(
-            elements: (state as MessagingLoaded).messages,
+          child: GroupedListView<MessageDatum, String>(
+            elements: data!.data!,
             padding: EdgeInsets.zero,
-            groupBy: (element) => DateTime(
-                element.time.year, element.time.month, element.time.day),
+            groupBy: (element) => DateFormat("dd.MM.yyyy", 'en').format(
+                DateTime.fromMicrosecondsSinceEpoch(
+                    (element.createdAt ?? 0000000000000) * 1000)),
             groupHeaderBuilder: (element) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 15.h),
                 Text(
-                  DateFormat('dd.MM.yyyy').format(element.time),
+                  DateFormat("dd.MM.yyyy", 'en').format(
+                      DateTime.fromMicrosecondsSinceEpoch(
+                          (element.createdAt ?? 0000000000000) * 1000)),
                   style:
                       TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 15.h),
               ],
             ),
-            itemBuilder: (context, Message element) =>
+            itemBuilder: (context, MessageDatum element) =>
                 _MessageItemWidget(message: element),
             separator: SizedBox(height: 10.h),
             useStickyGroupSeparators: true,
@@ -151,38 +166,53 @@ class _MessageAreaWidget extends StatelessWidget {
             order: GroupedListOrder.ASC,
           ),
         );
-      },
-    );
+
   }
 }
 
-class _MessageItemWidget extends StatelessWidget {
+class _MessageItemWidget extends StatefulWidget {
   const _MessageItemWidget({Key? key, required this.message}) : super(key: key);
-  final Message message;
+  final MessageDatum message;
 
+  @override
+  State<_MessageItemWidget> createState() => _MessageItemWidgetState();
+}
+
+class _MessageItemWidgetState extends State<_MessageItemWidget> {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  String? userId;
+
+  @override
+  void didChangeDependencies() async{
+    userId = await _storage.read(key: Config.userId);
+    print(userId);
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment:
-          message.isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+          widget.message.senderId == userId ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
-          color: (message.isSentByMe ? AppColors.blue : AppColors.grey)
+          color: ( widget.message.senderId == userId ? AppColors.blue : AppColors.grey)
               .withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
           children: [
             Text(
-              message.content,
+              widget.message.text ?? "",
               style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
             ),
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                DateFormat('hh:mm').format(message.time),
+                DateFormat("dd.MM.yyyy", 'en').format(
+                    DateTime.fromMicrosecondsSinceEpoch(
+                        (widget.message.createdAt ?? 0000000000000) * 1000)),
                 style: TextStyle(
                   color: AppColors.grey,
                   fontSize: 12.sp,

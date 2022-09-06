@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/bloc/Bloc/Lawyer/HomeList/selected_services_list_bloc.dart';
 
@@ -23,6 +24,7 @@ class ServiceScreen extends StatefulWidget {
 class _ServiceScreenState extends State<ServiceScreen> {
   final SelectedServicesListBloc _bloc = SelectedServicesListBloc();
   List<RegionsResponse>? data;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   @override
   void initState() {
     _bloc.add(GetSelectedServicesEvent());
@@ -62,7 +64,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     borderRadius: BorderRadius.circular(8),
                     color: AppColors.primary.withOpacity(0.1)),
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async{
+
                     Navigator.of(context).pushNamed(SelectCategory.routeName, arguments: _bloc).then((value) => _bloc.add(GetSelectedServicesEvent()) );
                   },
                   child:  LocaleText(

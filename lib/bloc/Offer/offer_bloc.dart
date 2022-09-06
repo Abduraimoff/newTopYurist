@@ -35,5 +35,14 @@ class OfferBloc extends Bloc<OfferEvent, OfferState> {
       }
 
     });
+    on<SelectLawyerEvent>((event, emit) async{
+      try{
+        final Response response = await repository.selectLawyer(id: event.id,);
+        emit(SelectLawyerState());
+      }on DioError catch(e){
+        emit(OfferErrorState());
+      }
+
+    });
   }
 }

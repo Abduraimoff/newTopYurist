@@ -164,7 +164,7 @@ class _UploadedServiceDetailState extends State<UploadedServiceDetail> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: TextButton(
-              onPressed: lawyerStatus == null ? (){
+              onPressed: lawyerStatus != null ? (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => const VerificationPage()));
               } : () {
                 showModalBottomSheet(
