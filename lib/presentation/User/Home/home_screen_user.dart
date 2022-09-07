@@ -22,7 +22,6 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     const CreateRequestScreen(),
-
     const ChatsPage(),
     const FavouritesScreen(),
     const UserProfilePage(),

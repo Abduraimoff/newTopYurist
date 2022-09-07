@@ -23,3 +23,12 @@ class CreateOffer extends OfferEvent{
   List<Object?> get props => [id, description, offerPrice];
 
 }
+class SelectLawyerEvent extends OfferEvent{
+  final String? id;
+
+  const SelectLawyerEvent(this.id);
+
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw [id];}

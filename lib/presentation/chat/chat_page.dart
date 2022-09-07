@@ -3,54 +3,67 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:top_yurist/bloc/chat_cubit/chat_cubit.dart';
+import 'package:top_yurist/bloc/Bloc/Chat/chat_bloc.dart';
 import 'package:top_yurist/data/Models/chat/chat.dart';
 import 'package:top_yurist/presentation/messaging/messaging_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../../data/Models/chat/chat_response.dart';
+
 class ChatsPage extends StatelessWidget {
-  const ChatsPage({Key? key}) : super(key: key);
+  const ChatsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ChatCubit(),
-      child: BlocBuilder<ChatCubit, ChatState>(builder: (context, state) {
-        return SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    LocaleText(
-                      'chats',
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                  ],
-                ),
+    return BlocProvider<ChatBloc>(
+      create: (context) => ChatBloc()..add(GetChatsEvent()),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  LocaleText(
+                    'chats',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline2,
+                  ),
+                ],
               ),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (state is ChatInitial) {
-                      return const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      );
-                    } else if (state is Chatloaded && state.chats.isEmpty) {
-                      return const _ChatEmptyWidget();
-                    } else if (state is Chatloaded && state.chats.isNotEmpty) {
-                      return const _BodyWidget();
-                    } else {
-                      return const _ErrorWidget();
-                    }
-                  },
-                ),
-              )
-            ],
-          ),
-        );
-      }),
+            ),
+            BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                return Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (state is ChatInitial) {
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      } else if (state is ChatLoadedSuccess && (state.response
+                          .data?.isEmpty ?? true)) {
+                        return const _ChatEmptyWidget();
+                      } else if (state is ChatLoadedSuccess) {
+                        return _BodyWidget(data: state.response.data,);
+                      } else {
+                        return const _ErrorWidget();
+                      }
+                      return const Text("error");
+                    },
+                  ),
+                );
+
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -87,28 +100,37 @@ class _ChatEmptyWidget extends StatelessWidget {
   }
 }
 
-class _BodyWidget extends StatelessWidget {
-  const _BodyWidget({Key? key}) : super(key: key);
+class _BodyWidget extends StatefulWidget {
+  final List<ChatDatum>? data;
+
+  const _BodyWidget({Key? key, this.data}) : super(key: key);
+
+  @override
+  State<_BodyWidget> createState() => _BodyWidgetState();
+}
+
+class _BodyWidgetState extends State<_BodyWidget> {
+  final List<String> chatState = ["new", "in_process", "finished"];
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatCubit, ChatState>(
-      builder: (context, state) {
-        int selectedIndex = (state as Chatloaded).selectedType;
-        return Column(
-          children: [
-            SizedBox(height: 20.h),
-            SizedBox(
-              height: 40.h,
-              child: ListView.separated(
-                padding: EdgeInsets.only(left: 16.w),
-                itemBuilder: (context, index) => Stack(
+    return Column(
+      children: [
+        SizedBox(height: 20.h),
+        SizedBox(
+          height: 40.h,
+          child: ListView.separated(
+            padding: EdgeInsets.only(left: 16.w),
+            itemBuilder: (context, index) =>
+                Stack(
                   children: [
                     SizedBox(
                       height: 40.h,
                       child: Chip(
                         padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        label: Center(child: LocaleText(state.types[index])),
+                        label: Center(child: LocaleText(
+                            chatState[index])),
                         backgroundColor: selectedIndex == index
                             ? AppColors.blue
                             : AppColors.grey.withOpacity(0.1),
@@ -127,48 +149,48 @@ class _BodyWidget extends StatelessWidget {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(20.h),
                           onTap: () {
-                            context.read<ChatCubit>().changeType(index);
+                            setState(() {
+                              selectedIndex = index;
+                            });
                           },
                         ),
                       ),
                     )
                   ],
                 ),
-                separatorBuilder: (context, index) => SizedBox(width: 12.w),
-                itemCount: state.types.length,
-                scrollDirection: Axis.horizontal,
-              ),
+            separatorBuilder: (context, index) => SizedBox(width: 12.w),
+            itemCount: chatState.length,
+            scrollDirection: Axis.horizontal,
+          ),
+        ),
+        SizedBox(height: 20.h),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(left: 16.w),
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 0, bottom: 15.h),
+                  child: const Divider(height: 0),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return _ChatWidget(
+                  chat: widget.data?[index],
+                );
+              },
+              itemCount: (widget.data?.length ?? 0) + 1,
             ),
-            SizedBox(height: 20.h),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 16.w),
-                child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(top: 0, bottom: 15.h),
-                      child: const Divider(height: 0),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return _ChatWidget(
-                      chat: (state).chats[index],
-                    );
-                  },
-                  itemCount: (state).chats.length + 1,
-                ),
-              ),
-            )
-          ],
-        );
-      },
+          ),
+        )
+      ],
     );
   }
 }
 
 class _ChatWidget extends StatelessWidget {
   const _ChatWidget({Key? key, required this.chat}) : super(key: key);
-  final Chat chat;
+  final ChatDatum? chat;
 
   @override
   Widget build(BuildContext context) {
@@ -182,32 +204,61 @@ class _ChatWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      chat.user.fullName ?? '',
-                      style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.w500),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          chat?.dialogUserName ?? "no name",
+                          style: TextStyle(
+                              fontSize: 16.sp, fontWeight: FontWeight.w500),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                            DateFormat("hh:MM", 'en').format(
+                                DateTime.fromMicrosecondsSinceEpoch(
+                                    (chat?.createdAt ?? 0000000000000) * 1000)),
+                            style: TextStyle(
+                              color: AppColors.grey,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(height: 8.h),
-                    Text(
-                      chat.lastMessage.content,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          chat?.lastMessage ?? "no message",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.grey,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Container(
+                          height: 16.h,
+                          width: 16.h,
+                          decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
+                          child: Center(child: Text(chat!.unreadCount.toString(), style:  TextStyle(color: AppColors.white, fontSize: 10.sp, ),)),
+                        )
+                      ],
                     ),
                     SizedBox(height: 12.h),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
+                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
                       decoration: BoxDecoration(
                         color: AppColors.blue.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(50.h),
                       ),
-                      child: Text(
-                        'В прцессе',
+                      child: LocaleText(
+                        chat?.state?? "",
                         style: TextStyle(
                           color: AppColors.blue,
                           fontSize: 12.sp,
@@ -218,17 +269,7 @@ class _ChatWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  DateFormat('hh:mm').format(chat.lastMessage.time).toString(),
-                  style: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              )
+
             ],
           ),
         ),
@@ -239,7 +280,7 @@ class _ChatWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MessagingPage(userId: 0),
+                  builder: (context) => MessagingPage(chatId: chat?.id, fullName: chat?.dialogUserName, imageUrl: chat?.dialogUserPhoto,),
                 ),
               );
             }),

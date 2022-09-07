@@ -33,4 +33,17 @@ class OfferRepository{
       rethrow;
     }
   }
+  Future<Response> selectLawyer({String? id } ) async{
+    try{
+      final Response response = await ApiRequest().doPatchRequest(slug: "/api/offer/select_lawyer", queryParameters: {
+        "offer_id": id
+      }, options: Options(headers: {
+        "Authorization": await _storage.read(key: Config.accessToken),
+      }), );
+      print(response.data);
+      return response;
+    }catch(e){
+      rethrow;
+    }
+  }
 }

@@ -9,15 +9,24 @@ class GetChatsEvent extends ChatEvent{
   List<Object?> get props => [];
 
 }
+class GetChatsMessageEvent extends ChatEvent{
+  final String? chatId;
 
-class SendMessageEvent extends ChatEvent{
-  final String? lawyerId;
-  final String? customerId;
-  final String? message;
-
-  const SendMessageEvent({this.lawyerId, this.customerId, this.message});
+  const GetChatsMessageEvent(this.chatId);
   @override
   // TODO: implement props
-  List<Object?> get props => [lawyerId, customerId, message];
+  List<Object?> get props => [chatId];
+
+}
+
+class SendMessageEvent extends ChatEvent{
+  final String? chatId;
+  final String? message;
+  final String? messageType;
+
+  const SendMessageEvent({this.chatId, this.message, this.messageType});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [chatId, messageType, message];
 
 }

@@ -5,4 +5,5 @@ class Config{
   static const String refreshToken = "refresh_token";
   static const String userType = "user_type";
   static const String lawyerStatus = "lawyer_status";
+  static const String userId = "user_ID";
 }

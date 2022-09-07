@@ -31,3 +31,9 @@ class OfferSuccessfullySend extends OfferState{
   List<Object?> get props => [];
 
 }
+class SelectLawyerState extends OfferState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}
