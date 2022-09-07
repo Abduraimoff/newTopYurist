@@ -12,10 +12,12 @@ class ChatMessageResponse {
   ChatMessageResponse({
     this.total,
     this.data,
+    this.userId
   });
 
   final int? total;
   final List<MessageDatum>? data;
+  late String? userId;
 
   factory ChatMessageResponse.fromJson(Map<String, dynamic> json) => ChatMessageResponse(
     total: json["total"],

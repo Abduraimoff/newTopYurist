@@ -61,6 +61,8 @@ class AuthRepository{
         await storage.write(key: Config.accessToken, value: "Bearer ${data.credentials?.accessToken}");
         await storage.write(key: Config.refreshToken, value: data.credentials?.refreshToken);
         await storage.write(key: Config.userType, value: data.data?.userType);
+        await storage.write(key: Config.userId, value: response.data["id"]);
+
 
         return data;
       }

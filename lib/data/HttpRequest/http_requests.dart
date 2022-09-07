@@ -34,7 +34,6 @@ class ApiRequest{
 
         await _storage.write(key: Config.accessToken, value: response.data["access_token"]);
         await _storage.write(key: Config.refreshToken, value: response.data["refresh_token"]);
-        await _storage.write(key: Config.userId, value: response.data["id"]);
 
       }else{
 

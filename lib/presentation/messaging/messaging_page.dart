@@ -39,20 +39,34 @@ class MessagingPage extends StatelessWidget {
   }
 }
 
-class _BodyWidget extends StatelessWidget {
-  const _BodyWidget({Key? key, required this.chatId, this.imageUrl, this.fullName}) : super(key: key);
+class _BodyWidget extends StatefulWidget {
+   const _BodyWidget({Key? key, required this.chatId, this.imageUrl, this.fullName}) : super(key: key);
   final String? chatId;
   final String? fullName;
   final String? imageUrl;
 
   @override
+  State<_BodyWidget> createState() => _BodyWidgetState();
+}
+
+class _BodyWidgetState extends State<_BodyWidget> {
+
+
+
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<ChatBloc>(
-  create: (context) => ChatBloc()..add(GetChatsMessageEvent(chatId)),
-  child: BlocBuilder<ChatBloc, ChatState>(
+  create: (context) => ChatBloc()..add(GetChatsMessageEvent(widget.chatId)),
+  child: BlocConsumer<ChatBloc, ChatState>(
+    listener: (context, state){
+      if(state is MessageSendSuccess) {
+
+      }
+    },
       builder: (context, state) {
         if (state is ChatInitial) {
-          
+
           return const Center(
             child: CircularProgressIndicator.adaptive(),
           );
@@ -60,14 +74,15 @@ class _BodyWidget extends StatelessWidget {
           return const _ErrorWidget();
         } else if(state is ChatMessageLoadedSuccess){
           return Column(
+
             children: [
               SizedBox(height: MediaQuery.of(context).padding.top),
-               _AppBarWidget(fullName: fullName, imageUrl: imageUrl,),
+               _AppBarWidget(fullName: widget.fullName, imageUrl: widget.imageUrl,),
                Expanded(child: _MessageAreaWidget(data: state.response,)),
               SizedBox(height: 10.h),
               const _OptionsWidget(),
               SizedBox(height: 10.h),
-              const _MessageFielsWidget(),
+               _MessageFielsWidget(chatId: widget.chatId,),
             ],
           );
         }
@@ -130,9 +145,11 @@ class _AppBarWidget extends StatelessWidget {
   }
 }
 
-class _MessageAreaWidget extends StatelessWidget {
+class _MessageAreaWidget extends StatelessWidget  {
   final ChatMessageResponse? data;
-  const _MessageAreaWidget({Key? key, required this.data}) : super(key: key);
+
+
+  const _MessageAreaWidget({super.key, this.data,});
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +176,9 @@ class _MessageAreaWidget extends StatelessWidget {
               ],
             ),
             itemBuilder: (context, MessageDatum element) =>
-                _MessageItemWidget(message: element),
+                Align(
+                    alignment: data?.userId == element.senderId ? Alignment.centerRight : Alignment.centerLeft,
+                    child: _MessageItemWidget(message: element, userId: data?.userId,)),
             separator: SizedBox(height: 10.h),
             useStickyGroupSeparators: true,
             floatingHeader: true,
@@ -170,49 +189,41 @@ class _MessageAreaWidget extends StatelessWidget {
   }
 }
 
-class _MessageItemWidget extends StatefulWidget {
-  const _MessageItemWidget({Key? key, required this.message}) : super(key: key);
+class _MessageItemWidget extends StatelessWidget {
   final MessageDatum message;
+  final String? userId;
 
-  @override
-  State<_MessageItemWidget> createState() => _MessageItemWidgetState();
-}
+  const _MessageItemWidget({super.key, required this.message, required this.userId});
 
-class _MessageItemWidgetState extends State<_MessageItemWidget> {
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  String? userId;
 
-  @override
-  void didChangeDependencies() async{
-    userId = await _storage.read(key: Config.userId);
-    print(userId);
-    super.didChangeDependencies();
-  }
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment:
-          widget.message.senderId == userId ? Alignment.centerRight : Alignment.centerLeft,
+         message.senderId == userId ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
-          color: ( widget.message.senderId == userId ? AppColors.blue : AppColors.grey)
+          color: ( message.senderId == userId ? AppColors.blue : AppColors.grey)
               .withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
           children: [
-            Text(
-              widget.message.text ?? "",
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+            Align(
+              alignment: message.senderId == userId ? Alignment.centerLeft : Alignment.centerRight,
+              child: Text(
+                message.text ?? "",
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+              ),
             ),
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
                 DateFormat("dd.MM.yyyy", 'en').format(
                     DateTime.fromMicrosecondsSinceEpoch(
-                        (widget.message.createdAt ?? 0000000000000) * 1000)),
+                        (message.createdAt ?? 0000000000000) * 1000)),
                 style: TextStyle(
                   color: AppColors.grey,
                   fontSize: 12.sp,
@@ -289,8 +300,9 @@ class _OptionsWidget extends StatelessWidget {
 }
 
 class _MessageFielsWidget extends StatelessWidget {
-  const _MessageFielsWidget({Key? key}) : super(key: key);
-
+  final String? chatId;
+   _MessageFielsWidget({Key? key, this.chatId}) : super(key: key);
+final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -344,12 +356,13 @@ class _MessageFielsWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Expanded(
+                   Expanded(
                     child: SizedBox(
                       height: double.infinity,
                       child: Center(
                         child: TextField(
-                          decoration: InputDecoration(
+                          controller: _controller,
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                             isCollapsed: true,
                           ),
@@ -363,7 +376,14 @@ class _MessageFielsWidget extends StatelessWidget {
                       aspectRatio: 1,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(30.h),
-                        onTap: () {},
+                        onTap: () {
+                          BlocProvider.of<ChatBloc>(context).add(SendMessageEvent(
+                            message: _controller.text,
+                            messageType: "TEXT",
+                            chatId: chatId
+
+                          ));
+                        },
                         child: Center(
                           child: SvgPicture.asset(
                             AppIcons.microphone,

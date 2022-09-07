@@ -42,3 +42,9 @@ class ChatMessageLoadedSuccess extends ChatState{
   List<Object?> get props => [response];
 
 }
+class MessageSendSuccess extends ChatState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

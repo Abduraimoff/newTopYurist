@@ -31,4 +31,20 @@ class ChatRepository{
     }
 
   }
+  Future<Response> sendMessage({ String? message, String? chatId, String? messageType })async{
+    try{
+      final Response response = await ApiRequest().doPostRequest(slug: "/api/chat/create_message", options: Options(headers: {
+        "Authorization": await _storage.read(key: Config.accessToken)
+      }), queryParameters: {
+        "id": chatId,
+      }, data: {
+        "message_type": messageType,
+        "text": message
+      });
+      return response;
+    } catch(e){
+      rethrow;
+    }
+
+  }
 }
