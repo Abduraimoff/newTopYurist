@@ -255,7 +255,7 @@ class _ViewBodyState extends State<ViewBody> {
                                         },
                                         style: ElevatedButton
                                             .styleFrom(
-                                          elevation: 0, backgroundColor: const Color.fromRGBO(
+                                          elevation: 0, primary: const Color.fromRGBO(
                                               28, 79, 209, 0.1),
                                           shape:
                                           RoundedRectangleBorder(
