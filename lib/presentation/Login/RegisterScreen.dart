@@ -107,6 +107,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     value: "99",
                                     child: Text("99"),
                                   ),
+                                  DropdownMenuItem<String>(
+                                    value: "33",
+                                    child: Text("33"),
+                                  ),
                                 ],
                                 onChanged: (val) {
                                   setState(() {
@@ -185,8 +189,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   error == null;
                   isLoading = true;
                 });
-                context.read<AuthUserCubit>().getUserPhone(
-                    ("$phoneCode ") + _controller.text);
+                context
+                    .read<AuthUserCubit>()
+                    .getUserPhone(("$phoneCode ") + _controller.text);
 
                 _bloc.add(VerifyPhoneNumber(
                     userType: context.read<AuthUserCubit>().newUser.userType,

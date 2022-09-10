@@ -134,7 +134,7 @@ class UserInfoWidget extends StatelessWidget {
       if (state is ProfileErrorState) {
         return Text('Error');
       }
-      state as UserState;
+      state as ProfileLoadedState;
       return AnimatedSize(
         duration: const Duration(milliseconds: 300),
         alignment: Alignment.topCenter,
@@ -330,7 +330,7 @@ class _UserTypeSwitherWidgetState extends State<_UserTypeSwitherWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
       final profilecubit = context.read<ProfileCubit>();
-      state as UserState;
+      state as ProfileLoadedState;
       bool islawyer = state.user.userType == UserType.lawyer;
       return Container(
         padding: EdgeInsets.all(2.h),
@@ -498,7 +498,7 @@ class _ItemsWidget extends StatelessWidget {
 
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
-        state as UserState;
+        state as ProfileLoadedState;
         return Column(
           children: [
             Container(

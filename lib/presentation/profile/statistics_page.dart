@@ -44,7 +44,7 @@ class StatisticsPage extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
-            state as UserState;
+            state as ProfileLoadedState;
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: SingleChildScrollView(

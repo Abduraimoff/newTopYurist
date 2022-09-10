@@ -33,7 +33,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _fioController = TextEditingController();
     _phoneController = TextEditingController();
     final state = context.read<ProfileCubit>().state;
-    state as UserState;
+    state as ProfileLoadedState;
     _fioController.text = state.user.fullName ?? '';
     _phoneController.text = state.user.username ?? '';
     super.initState();
@@ -93,7 +93,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     final state = context.read<ProfileCubit>().state;
-    state as UserState;
+    state as ProfileLoadedState;
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),

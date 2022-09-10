@@ -20,7 +20,7 @@ class ReviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final reviewCubit = context.watch<ReviewCubit>();
     return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
-      state as UserState;
+      state as ProfileLoadedState;
       return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.h),
@@ -44,29 +44,31 @@ class ReviewWidget extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 16.h,
-                        backgroundImage:
-                            AssetImage(review.user.profilePhoto ?? ''),
-                        onBackgroundImageError: (exception, stackTrace) =>
+                        foregroundImage:
+                            NetworkImage(review.ownerProfilePhoto ?? ''),
+                        onForegroundImageError: (exception, stackTrace) =>
                             const AssetImage('assets/images/userError.png'),
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        review.user.fullName ?? '',
+                        review.ownerFullName ?? '',
                         style: TextStyle(
                             fontSize: 14.sp, fontWeight: FontWeight.w400),
                       )
                     ],
                   ),
                   Chip(
-                    label: LocaleText(
-                        review.isResolved ? 'resolved' : 'not_resolved'),
+                    label: LocaleText(review.isAccepted == true
+                        ? 'resolved'
+                        : 'not_resolved'),
                     labelStyle: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color:
-                          review.isResolved ? AppColors.green : AppColors.red,
+                      color: review.isAccepted == true
+                          ? AppColors.green
+                          : AppColors.red,
                     ),
-                    backgroundColor: review.isResolved
+                    backgroundColor: review.isAccepted == true
                         ? AppColors.green.withOpacity(0.1)
                         : AppColors.red.withOpacity(0.1),
                   )
@@ -75,7 +77,7 @@ class ReviewWidget extends StatelessWidget {
             ),
             SizedBox(height: 4.h),
             Text(
-              review.title,
+              review.stateReason ?? '',
               style: TextStyle(
                 color: const Color(0xFF858DA3),
                 fontSize: 14.sp,
@@ -86,7 +88,9 @@ class ReviewWidget extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                DateFormat('dd.MM.yyyy').format(review.time),
+                (review.createdAt == null)
+                    ? ""
+                    : DateFormat('dd.MM.yyyy').format(review.createdAt!),
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
               ),
             ),
@@ -107,12 +111,12 @@ class ReviewWidget extends StatelessWidget {
                       ),
                     ),
                     CupertinoSwitch(
-                      value: review.isShowOnProfile!,
+                      value: review.isAccepted!,
                       onChanged: (value) {
-                        reviewCubit.editReviewShowProfile(
-                          id: review.id,
-                          isShowOnProfile: value,
-                        );
+                        // reviewCubit.editReviewShowProfile(
+                        //   id: review.id,
+                        //   isShowOnProfile: value,
+                        // );
                       },
                       activeColor: AppColors.blue,
                     )
@@ -123,15 +127,17 @@ class ReviewWidget extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                      backgroundImage:
-                          AssetImage(review.lawyer?.profilePhoto ?? ""),
-                      radius: 16.h,
-                      onBackgroundImageError: (exception, stackTrace) =>
-                          const AssetImage('assets/images/userError.png')),
+                    foregroundImage:
+                        NetworkImage(review.lawerProfilePhoto ?? ""),
+                    radius: 16.h,
+                    onForegroundImageError: (exception, stackTrace) =>
+                        const AssetImage('assets/images/userError.png'),
+                    backgroundColor: Colors.grey,
+                  ),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
-                      review.lawyer?.fullName ?? "",
+                      review.lawerFullName ?? "",
                       style: TextStyle(
                           fontSize: 14.sp, fontWeight: FontWeight.w400),
                       maxLines: 1,

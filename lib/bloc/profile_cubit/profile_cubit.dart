@@ -18,7 +18,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       if (user == null) {
         emit(const ProfileErrorState('user null'));
       } else {
-        emit(UserState(user: user));
+        emit(ProfileLoadedState(user: user));
       }
     } catch (e) {
       emit(ProfileErrorState(e.toString()));
@@ -26,14 +26,15 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> changeUserType(UserType? userType) async {
-    final newState = (state as UserState).user.copyWith(userType: userType);
-    emit(UserState(user: newState));
+    final newState =
+        (state as ProfileLoadedState).user.copyWith(userType: userType);
+    emit(ProfileLoadedState(user: newState));
   }
 
   Future<void> editUser(User user) async {
     try {
       await _request.editUser(user);
-      emit(UserState(user: user));
+      emit(ProfileLoadedState(user: user));
     } catch (e) {
       print("edit user error $e");
     }

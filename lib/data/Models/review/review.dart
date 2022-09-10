@@ -1,64 +1,77 @@
-import 'package:top_yurist/data/Models/user/user.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class Review {
-  final int id;
-  final User user;
-  final bool isResolved;
-  final String title;
-  final DateTime time;
-  final bool? isShowOnProfile;
-  final User? lawyer;
+import 'package:top_yurist/data/parser/parser.dart';
 
-  Review({
+part 'review.g.dart';
+
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class Review extends Equatable {
+  final String id;
+  final String? ownerFullName;
+  final String? ownerProfilePhoto;
+  final String? lawerFullName;
+  final String? lawerProfilePhoto;
+  @JsonKey(fromJson: isProblemAccepted, name: 'state')
+  final bool? isAccepted;
+  @JsonKey(fromJson: dateTimeParcer)
+  final DateTime? createdAt;
+  final String? stateReason;
+  final String ownerId;
+  final String lawyerId;
+  const Review({
     required this.id,
-    required this.user,
-    required this.isResolved,
-    required this.title,
-    required this.time,
-    this.isShowOnProfile,
-    this.lawyer,
+    required this.ownerFullName,
+    required this.ownerProfilePhoto,
+    required this.lawerFullName,
+    required this.lawerProfilePhoto,
+    required this.isAccepted,
+    required this.createdAt,
+    required this.stateReason,
+    required this.ownerId,
+    required this.lawyerId,
   });
 
+  factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
+  Map<String, dynamic> toJson() => _$ReviewToJson(this);
+
   Review copyWith({
-    int? id,
-    User? user,
-    bool? isResolved,
-    String? title,
-    DateTime? time,
-    bool? isShowOnProfile,
-    User? lawyer,
+    String? id,
+    String? ownerFullName,
+    String? ownerProfilePhoto,
+    String? lawerFullName,
+    String? lawerProfilePhoto,
+    bool? isAccepted,
+    DateTime? createdAt,
+    String? stateReason,
+    String? ownerId,
+    String? lawyerId,
   }) {
     return Review(
       id: id ?? this.id,
-      user: user ?? this.user,
-      isResolved: isResolved ?? this.isResolved,
-      title: title ?? this.title,
-      time: time ?? this.time,
-      isShowOnProfile: isShowOnProfile ?? this.isShowOnProfile,
-      lawyer: lawyer ?? this.lawyer,
+      ownerFullName: ownerFullName ?? this.ownerFullName,
+      ownerProfilePhoto: ownerProfilePhoto ?? this.ownerProfilePhoto,
+      lawerFullName: lawerFullName ?? this.lawerFullName,
+      lawerProfilePhoto: lawerProfilePhoto ?? this.lawerProfilePhoto,
+      isAccepted: isAccepted ?? this.isAccepted,
+      createdAt: createdAt ?? this.createdAt,
+      stateReason: stateReason ?? this.stateReason,
+      ownerId: ownerId ?? this.ownerId,
+      lawyerId: lawyerId ?? this.lawyerId,
     );
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Review &&
-        other.id == id &&
-        other.user == user &&
-        other.isResolved == isResolved &&
-        other.title == title &&
-        other.time == time &&
-        other.isShowOnProfile == isShowOnProfile;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        user.hashCode ^
-        isResolved.hashCode ^
-        title.hashCode ^
-        time.hashCode ^
-        isShowOnProfile.hashCode;
-  }
+  List<Object?> get props => [
+        id,
+        ownerFullName,
+        ownerProfilePhoto,
+        lawerFullName,
+        lawerProfilePhoto,
+        isAccepted,
+        createdAt,
+        stateReason,
+        ownerId,
+        lawyerId,
+      ];
 }

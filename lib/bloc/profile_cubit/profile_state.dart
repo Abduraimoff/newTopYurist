@@ -9,8 +9,8 @@ abstract class ProfileState extends Equatable {
 
 class ProfileInitial extends ProfileState {}
 
-class UserState extends ProfileState {
-  const UserState({required this.user});
+class ProfileLoadedState extends ProfileState {
+  const ProfileLoadedState({required this.user});
 
   final User user;
 
