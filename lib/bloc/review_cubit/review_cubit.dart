@@ -27,7 +27,7 @@ class ReviewCubit extends Cubit<ReviewState> {
           acceptedReivews: acceptedReivews,
           rejectedRreviews: rejectedRreviews));
     } catch (e) {
-      print(e);
+      emit(ReviewErrorState('Something went wrong'));
     }
   }
 

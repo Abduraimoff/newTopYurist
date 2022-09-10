@@ -61,7 +61,7 @@ class ReviewsPage extends StatelessWidget {
                     } else if (state is ReviewErrorState) {
                       return Center(child: Text(state.errorText));
                     }
-                    return const Center(child: Text('Somesing went wrong'));
+                    return const Center(child: Text('Something went wrong'));
                   },
                 ),
               ),
