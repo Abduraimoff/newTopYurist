@@ -60,7 +60,7 @@ class _SwitchLanguagePageState extends State<SwitchLanguagePage> {
               child: Material(
             color: Colors.transparent,
             child: InkWell(onTap: () async {
-              await profileRepository.changeLanguage(languageCode);
+              // await profileRepository.changeLanguage(languageCode);
               setState(() {
                 Locales.change(context, languageCode);
               });

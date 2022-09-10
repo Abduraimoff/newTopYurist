@@ -92,6 +92,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     "+998",
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
+
+                                  DropdownMenuItem<String>(
+                                    value: "33",
+                                    child: Text("33"),
+                                  ),
+
                                   DropdownButton<String>(
                                     style: Theme.of(context).textTheme.bodyText1,
                                     hint: const Text("_ _"),
@@ -124,6 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     },
                                     value: phoneCode,
                                   )
+
                                 ],
                               )
                             ],
@@ -228,6 +235,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
+
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SizedBox(
+          height: 48.h,
+          width: double.infinity,
+          child: FloatingActionButton(
+            onPressed: () {
+              if (phoneCode == null) {
+                setState(() {
+                  error = context.localeString("error_phone_code");
+                });
+              } else if (_controller.text.length <= 7) {
+                setState(() {
+                  error = context.localeString("error_phone_number");
+                });
+              } else {
+                setState(() {
+                  error == null;
+                  isLoading = true;
+                });
+                context
+                    .read<AuthUserCubit>()
+                    .getUserPhone(("$phoneCode ") + _controller.text);
 
         // SizedBox(
         //   width: double.infinity,

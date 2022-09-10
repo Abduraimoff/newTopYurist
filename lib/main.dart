@@ -42,12 +42,11 @@ void main() async {
   ]);
 
   Widget defaultHomeScreen = const LoginScreen();
-    if(await storage.read(key: Config.userType) == "lawyer"){
-      defaultHomeScreen =  const HomeScreen();
-    } else if(await storage.read(key: Config.userType) == "customer"){
-      defaultHomeScreen = const HomeScreenUser();
-    }
-
+  if (await storage.read(key: Config.userType) == "lawyer") {
+    defaultHomeScreen = const HomeScreen();
+  } else if (await storage.read(key: Config.userType) == "customer") {
+    defaultHomeScreen = const HomeScreenUser();
+  }
 
   runApp(MyApp(
     defaultHome: defaultHomeScreen,
@@ -64,8 +63,13 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => AuthUserCubit(), lazy: false),
+
+          BlocProvider(
+              create: (context) => UserOfferFilterCubit(), lazy: false),
+
           BlocProvider(create: (context) => UserOfferFilterCubit(), lazy: false),
           BlocProvider(create: (context) => UserTypeCubit()),
+
         ],
         child: BlocBuilder<UserTypeCubit, UserTypeState>(
   builder: (context, state) {
@@ -84,10 +88,7 @@ class MyApp extends StatelessWidget {
                         const HomeScreenUser(),
                     RegisterScreen.registerScreen: (context) =>
                         BlocProvider<AuthBloc>(
-                          create: (
-                            context
-                          ) =>
-                              AuthBloc(),
+                          create: (context) => AuthBloc(),
                           child: const RegisterScreen(),
                         ),
                     ConfirmationScreen.routeName: (context) =>
@@ -111,13 +112,14 @@ class MyApp extends StatelessWidget {
                     LawyerChatScreen.routeName: (context) =>
                         const LawyerChatScreen(),
                     FilterByCity.routeName: (context) => const FilterByCity(),
-                    UploadedServiceDetail.routeName: (context) =>
-                         const UploadedServiceDetail(),
+                    UploadedServiceDetail.routeName: (context) => const UploadedServiceDetail(),
                     CreateTemplateScreen.routeName: (context) =>
                         const CreateTemplateScreen(),
                     ChatScreen.routeName: (context) => const ChatScreen(),
-                    UserFilterOffer.routeName: (context) => const UserFilterOffer(),
-                    CreateNewTemplate.routeName:(context) => const CreateNewTemplate()
+                    UserFilterOffer.routeName: (context) =>
+                        const UserFilterOffer(),
+                    CreateNewTemplate.routeName: (context) =>
+                        const CreateNewTemplate()
                   },
                 ));
   },
