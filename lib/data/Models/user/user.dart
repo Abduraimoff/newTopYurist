@@ -5,7 +5,7 @@ import 'package:top_yurist/data/parser/parser.dart';
 
 part 'user.g.dart';
 
-enum UserType { lawyer, notLawyer }
+enum UserType {lawyer, notLawyer }
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class User extends Equatable {

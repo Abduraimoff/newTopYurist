@@ -5,6 +5,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:top_yurist/bloc/Cubit/UserType/user_type_cubit.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/presentation/Login/login_screen.dart';
@@ -326,6 +327,7 @@ class _UserTypeSwitherWidget extends StatefulWidget {
 }
 
 class _UserTypeSwitherWidgetState extends State<_UserTypeSwitherWidget> {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
@@ -373,8 +375,12 @@ class _UserTypeSwitherWidgetState extends State<_UserTypeSwitherWidget> {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () =>
-                            profilecubit.changeUserType(UserType.notLawyer),
+                        onTap: ()async{
+                          profilecubit.changeUserType(UserType.notLawyer);
+                          context.read<UserTypeCubit>().changeType("customer");
+                          await _storage.write(key: Config.userType, value: "customer");
+                        }
+                            ,
                         borderRadius: BorderRadius.circular(100),
                         child: Center(
                           child: LocaleText(
@@ -390,8 +396,11 @@ class _UserTypeSwitherWidgetState extends State<_UserTypeSwitherWidget> {
                     ),
                     Expanded(
                       child: InkWell(
-                        onTap: () =>
-                            profilecubit.changeUserType(UserType.lawyer),
+                        onTap: ()async{profilecubit.changeUserType(UserType.lawyer);
+                          context.read<UserTypeCubit>().changeType("lawyer");
+                          await _storage.write(key: Config.userType, value: "lawyer");
+                          }
+                            ,
                         borderRadius: BorderRadius.circular(100),
                         child: Center(
                           child: LocaleText(

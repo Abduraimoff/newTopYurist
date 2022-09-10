@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -40,12 +41,10 @@ void main() async {
     "en",
     "uz",
   ]);
-
+  final String? userType = await storage.read(key: Config.userType);
   Widget defaultHomeScreen = const LoginScreen();
-    if(await storage.read(key: Config.userType) == "lawyer"){
-      defaultHomeScreen =  const HomeScreen();
-    } else if(await storage.read(key: Config.userType) == "customer"){
-      defaultHomeScreen = const HomeScreenUser();
+    if(await storage.read(key: Config.accessToken) !=  null){
+      defaultHomeScreen =   HomeScreen(userType: userType,);
     }
 
 

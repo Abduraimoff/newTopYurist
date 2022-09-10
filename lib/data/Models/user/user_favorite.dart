@@ -65,7 +65,7 @@ class UserFavoriteDatum {
     workExperience: json["work_experience"],
     description: json["description"],
     regionId: json["region_id"],
-    regionTitle:  Title.fromJson(json["region_title"]),
+    regionTitle: json["region_title"] == null ? null : Title.fromJson(json["region_title"]),
   );
 
   Map<String, dynamic> toJson() => {
