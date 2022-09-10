@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../bloc/Bloc/Application/application_bloc.dart';
 import '../../../../data/Models/user/user_home_request_list.dart';
@@ -169,7 +170,7 @@ class _ViewBodyState extends State<ViewBody> {
                           MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (data?[i].createdAt ?? "").toString(),
+                              (DateFormat("dd.MM.yyyy", 'en').format(DateTime.fromMicrosecondsSinceEpoch((data?[i].createdAt ?? 0000000000000) * 1000))).toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .headline3,
@@ -254,9 +255,7 @@ class _ViewBodyState extends State<ViewBody> {
                                         },
                                         style: ElevatedButton
                                             .styleFrom(
-                                          elevation: 0,
-                                          primary:
-                                          const Color.fromRGBO(
+                                          elevation: 0, backgroundColor: const Color.fromRGBO(
                                               28, 79, 209, 0.1),
                                           shape:
                                           RoundedRectangleBorder(

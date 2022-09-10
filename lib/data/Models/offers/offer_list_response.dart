@@ -49,6 +49,7 @@ class Datum {
     this.reviewCount,
     this.workExperience,
     this.inSystemYears,
+    this.lawyerDescription
   });
 
   final String? id;
@@ -70,6 +71,7 @@ class Datum {
   final int? reviewCount;
   final int? workExperience;
   final int? inSystemYears;
+  final String? lawyerDescription;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
@@ -91,6 +93,7 @@ class Datum {
     reviewCount: json["review_count"],
     workExperience: json["work_experience"],
     inSystemYears: json["in_system_years"],
+    lawyerDescription: json["lawyer_description"]
   );
 
   Map<String, dynamic> toJson() => {

@@ -32,3 +32,22 @@ class SelectLawyerEvent extends OfferEvent{
   @override
   // TODO: implement props
   List<Object?> get props => throw [id];}
+
+class FavouriteEvent extends OfferEvent{
+  final String? id;
+
+  const FavouriteEvent(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}
+class UnFavouriteEvent extends OfferEvent{
+  final String? id;
+
+  const UnFavouriteEvent(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
+
+}

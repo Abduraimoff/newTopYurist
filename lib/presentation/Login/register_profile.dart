@@ -65,6 +65,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       appBar: BaseAppBar(
         title: LocaleText(
@@ -244,47 +245,50 @@ class _RegisterProfileState extends State<RegisterProfile> {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SizedBox(
-          height: 48.h,
-          width: double.infinity,
-          child: BlocProvider(
+      floatingActionButton: Visibility(
+        visible: !keyboardIsOpen,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SizedBox(
+            height: 48.h,
+            width: double.infinity,
+            child: BlocProvider(
   create: (context) => AuthUserCubit(),
   child: BlocBuilder<AuthUserCubit, AuthUserState>(
   builder: (context, state) {
     if(state is CollectUserData){
-      agreement = state.newUser.agreement;
+        agreement = state.newUser.agreement;
     }
     return FloatingActionButton(
-      onPressed: () async{
-        fullName = "${_nameController.text} ${_sureNameController.text}";
-        context.read<AuthUserCubit>().getUserAgreement(true);
-        context.read<AuthUserCubit>().getFullName(fullName??'');
+        onPressed: () async{
+          fullName = "${_nameController.text} ${_sureNameController.text}";
+          context.read<AuthUserCubit>().getUserAgreement(true);
+          context.read<AuthUserCubit>().getFullName(fullName??'');
 
-        if(_nameController.text.length < 3){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your name should be at least 3 symbol')));
-        } else if(_sureNameController.text.length < 3){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your surname should be at least 3 symbol')));
-        } else{
-          Navigator.of(context).pushNamed(SelectRegion.routeName);
-        }
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      backgroundColor: AppColors.primary,
-      child: LocaleText(
-        "next",
-        style: Theme.of(context)
-            .textTheme
-            .headline3
-            ?.copyWith(color: AppColors.white),
-      ),
+          if(_nameController.text.length < 3){
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your name should be at least 3 symbol')));
+          } else if(_sureNameController.text.length < 3){
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your surname should be at least 3 symbol')));
+          } else{
+            Navigator.of(context).pushNamed(SelectRegion.routeName);
+          }
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        backgroundColor: AppColors.primary,
+        child: LocaleText(
+          "next",
+          style: Theme.of(context)
+              .textTheme
+              .headline3
+              ?.copyWith(color: AppColors.white),
+        ),
     );
   },
 ),
 ),
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

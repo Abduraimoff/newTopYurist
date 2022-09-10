@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/Bloc/Application/Cubit/user_offer_filter_cubit.dart';
 import 'package:top_yurist/bloc/Bloc/Application/Cubit/user_offer_filter_cubit.dart';
 import 'package:top_yurist/bloc/Offer/offer_bloc.dart';
@@ -122,7 +123,17 @@ class DefaultTabView extends StatelessWidget {
           "size": 100,
           "sort_by": context.read<UserOfferFilterCubit>().filter
         })),
-      child: BlocBuilder<OfferBloc, OfferState>(
+      child: BlocConsumer<OfferBloc, OfferState>(
+        listener: (context, state){
+          if(state is FavouriteState){
+            BlocProvider.of<OfferBloc>(context).add(GetOffers({
+              "application_id": id,
+              "page": 1,
+              "size": 100,
+              "sort_by": context.read<UserOfferFilterCubit>().filter
+            }));
+          }
+        },
         builder: (context, state) {
           if (state is OfferSuccessState) {
             return (state.response.data?.isEmpty ?? true)
@@ -186,12 +197,13 @@ class DefaultTabView extends StatelessWidget {
                                     ],
                                   ),
                                   (state.response.data?[i].isFavorite ?? false)
-                                      ? const Icon(
-                                          Icons.favorite,
-                                          color: AppColors.red,
-                                        )
-                                      : const Icon(Icons.favorite_outline,
-                                          color: Colors.grey)
+                                      ? IconButton(onPressed: (){
+                                    BlocProvider.of<OfferBloc>(context).add(UnFavouriteEvent(state.response.data?[i].lawyerId));
+                                  },icon: SvgPicture.asset("assets/svg/heart.svg"),)
+                                      : IconButton(onPressed: (){
+
+                                        BlocProvider.of<OfferBloc>(context).add(FavouriteEvent(state.response.data?[i].lawyerId));
+                                  },icon: SvgPicture.asset("assets/svg/heart_empty.svg"),)
                                 ],
                               ),
                               SizedBox(height: 8.h),

@@ -4,7 +4,9 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:top_yurist/bloc/Offer/offer_bloc.dart';
+import 'package:top_yurist/presentation/messaging/messaging_page.dart';
 import 'package:top_yurist/presentation/widgets/profileImage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/Models/offers/offer_list_response.dart';
 import '../../../utils/colors.dart';
@@ -20,6 +22,13 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final OfferBloc _offerBloc = OfferBloc();
   Datum? data;
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
   @override
   void didChangeDependencies() {
    data = ModalRoute.of(context)?.settings.arguments as Datum;
@@ -56,11 +65,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ],
         ),
         centerTitle: false,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.favorite_outline, color: Colors.grey),
-          )
+        actions:  [
+          (data?.isFavorite ?? false)
+              ? IconButton(onPressed: (){
+            BlocProvider.of<OfferBloc>(context).add(UnFavouriteEvent(data?.lawyerId));
+          },icon: SvgPicture.asset("assets/svg/heart.svg"),)
+              : IconButton(onPressed: (){
+
+            BlocProvider.of<OfferBloc>(context).add(FavouriteEvent(data?.lawyerId));
+          },icon: SvgPicture.asset("assets/svg/heart_empty.svg"),)
         ],
       ),
       body: Padding(
@@ -134,12 +147,24 @@ if(state is SelectLawyerState){
                 ),
 ),
                  SizedBox(width: 10.w),
-                 SmallButton(icon: SvgPicture.asset("assets/svg/message.svg"),),
+                 SmallButton(icon: SvgPicture.asset("assets/svg/message.svg"), onPressed: (){
+                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => MessagingPage(chatId: data?.chatId, fullName: data?.lawyerFullName, imageUrl: data?.lawyerProfilePhoto,)));
+                 },),
                  SizedBox(width: 10.w),
-                 SmallButton(icon: SvgPicture.asset("assets/svg/call.svg")),
+                 SmallButton(icon: SvgPicture.asset("assets/svg/call.svg"), onPressed:()async{
+                   await _makePhoneCall(data?.lawyerPhoneNumber?? "+998901111111");
+                 },),
               ],
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 20.h,),
+             LocaleText("message", style: Theme.of(context).textTheme.headline3,),
+             SizedBox(height: 8.h,),
+             Text(data?.description ?? "",style: Theme.of(context).textTheme.headline5,),
+             SizedBox(height: 20.h,),
+             LocaleText("about_activity", style: Theme.of(context).textTheme.headline3,),
+             SizedBox(height: 8.h,),
+             Text(data?.lawyerDescription ?? ""),
+             SizedBox(height: 40.h),
              Text(
               '${context.localeString("reviews")} (${data?.reviewCount ?? 0})',
               style: TextStyle(
@@ -229,22 +254,27 @@ if(state is SelectLawyerState){
 
 class SmallButton extends StatelessWidget {
   final Widget icon;
+  final VoidCallback onPressed;
   const SmallButton({
     Key? key,
     required this.icon,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 44,
-      width: 44,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Color.fromRGBO(28, 79, 209, 0.1),
-      ),
-      child: Center(
-        child: icon,
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        height: 44,
+        width: 44,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: const Color.fromRGBO(28, 79, 209, 0.1),
+        ),
+        child: Center(
+          child: icon,
+        ),
       ),
     );
   }
