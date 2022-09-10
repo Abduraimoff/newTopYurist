@@ -4,6 +4,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/bloc/Bloc/Application/Cubit/user_offer_filter_cubit.dart';
 import 'package:top_yurist/bloc/Bloc/Auth/auth_bloc.dart';
+import 'package:top_yurist/bloc/Cubit/UserType/user_type_cubit.dart';
 import 'package:top_yurist/bloc/profile_cubit/profile_cubit.dart';
 import 'package:top_yurist/presentation/Home/home_screen.dart';
 import 'package:top_yurist/presentation/Login/RegisterScreen.dart';
@@ -64,8 +65,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => ProfileCubit()),
           BlocProvider(create: (context) => AuthUserCubit(), lazy: false),
           BlocProvider(create: (context) => UserOfferFilterCubit(), lazy: false),
+          BlocProvider(create: (context) => UserTypeCubit()),
         ],
-        child: LocaleBuilder(
+        child: BlocBuilder<UserTypeCubit, UserTypeState>(
+  builder: (context, state) {
+    if(state is UserTypeChanged){}
+    return LocaleBuilder(
             builder: (locale) => MaterialApp(
                   debugShowCheckedModeBanner: false,
                   title: 'Top Yurist',
@@ -107,13 +112,15 @@ class MyApp extends StatelessWidget {
                         const LawyerChatScreen(),
                     FilterByCity.routeName: (context) => const FilterByCity(),
                     UploadedServiceDetail.routeName: (context) =>
-                         UploadedServiceDetail(),
+                         const UploadedServiceDetail(),
                     CreateTemplateScreen.routeName: (context) =>
                         const CreateTemplateScreen(),
                     ChatScreen.routeName: (context) => const ChatScreen(),
                     UserFilterOffer.routeName: (context) => const UserFilterOffer(),
                     CreateNewTemplate.routeName:(context) => const CreateNewTemplate()
                   },
-                )));
+                ));
+  },
+));
   }
 }

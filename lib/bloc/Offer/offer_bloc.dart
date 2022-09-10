@@ -44,5 +44,23 @@ class OfferBloc extends Bloc<OfferEvent, OfferState> {
       }
 
     });
+    on<FavouriteEvent>((event, emit) async{
+      try{
+        final Response response = await repository.favourite(id: event.id,);
+        emit(FavouriteState());
+      }on DioError catch(e){
+        emit(OfferErrorState());
+      }
+
+    });
+    on<UnFavouriteEvent>((event, emit) async{
+      try{
+        final Response response = await repository.unfavourite(id: event.id,);
+        emit(FavouriteState());
+      }on DioError catch(e){
+        emit(OfferErrorState());
+      }
+
+    });
   }
 }

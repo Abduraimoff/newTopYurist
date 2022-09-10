@@ -35,7 +35,7 @@ class UserHomeRequestListResponse {
   final bool? deleted;
   final String? state;
   final String? ownerId;
-  final int? lawyerId;
+  final String? lawyerId;
   final String? problemTypeId;
   final String? description;
   final List<String>? photos;

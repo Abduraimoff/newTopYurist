@@ -178,7 +178,7 @@ class _MessageAreaWidget extends StatelessWidget  {
             itemBuilder: (context, MessageDatum element) =>
                 Align(
                     alignment: data?.userId == element.senderId ? Alignment.centerRight : Alignment.centerLeft,
-                    child: _MessageItemWidget(message: element, userId: data?.userId,)),
+                    child:  _MessageItemWidget(message: element, userId: data?.userId,)),
             separator: SizedBox(height: 10.h),
             useStickyGroupSeparators: true,
             floatingHeader: true,
@@ -213,10 +213,10 @@ class _MessageItemWidget extends StatelessWidget {
           children: [
             Align(
               alignment: message.senderId == userId ? Alignment.centerLeft : Alignment.centerRight,
-              child: Text(
+              child: message.messageType == "TEXT" ? Text(
                 message.text ?? "",
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
-              ),
+              ) : Image.network(message.photo),
             ),
             Align(
               alignment: Alignment.bottomRight,
@@ -237,7 +237,21 @@ class _MessageItemWidget extends StatelessWidget {
     );
   }
 }
+class _MessagePhotoItem extends StatelessWidget{
+  final String? imageUrl;
+  final int? date;
 
+  const _MessagePhotoItem({super.key, this.imageUrl, this.date});
+  @override
+  Widget build(BuildContext context) {
+    return Container(height: 193.h, width: 154,
+    padding: EdgeInsets.all(9.sp),
+    color: const Color(0xFFE8EDFA),
+      child: Image.network(imageUrl??""),
+    );
+  }
+
+}
 class _OptionsWidget extends StatelessWidget {
   const _OptionsWidget({Key? key}) : super(key: key);
 

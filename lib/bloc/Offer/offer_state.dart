@@ -37,3 +37,9 @@ class SelectLawyerState extends OfferState{
   List<Object?> get props => [];
 
 }
+class FavouriteState extends OfferState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

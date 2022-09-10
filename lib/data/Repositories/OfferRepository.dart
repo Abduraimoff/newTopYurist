@@ -46,4 +46,30 @@ class OfferRepository{
       rethrow;
     }
   }
+  Future<Response> favourite({String? id } ) async{
+    try{
+      final Response response = await ApiRequest().doPatchRequest(slug: "/api/user/favorite/add", queryParameters: {
+        "id": id
+      }, options: Options(headers: {
+        "Authorization": await _storage.read(key: Config.accessToken),
+      }), );
+      print(response.data);
+      return response;
+    }catch(e){
+      rethrow;
+    }
+  }
+  Future<Response> unfavourite({String? id } ) async{
+    try{
+      final Response response = await ApiRequest().doPatchRequest(slug: "/api/user/favorite/remove", queryParameters: {
+        "id": id
+      }, options: Options(headers: {
+        "Authorization": await _storage.read(key: Config.accessToken),
+      }), );
+      print(response.data);
+      return response;
+    }catch(e){
+      rethrow;
+    }
+  }
 }

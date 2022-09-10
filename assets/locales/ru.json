@@ -93,7 +93,9 @@
   "finished": "Выполненные",
   "IN_PROGRESS": "В прцессе",
   "FINISHED": "Законченный",
-  "ACTIVE": "Активный"
+  "ACTIVE": "Активный",
+  "message": "Сообщение",
+  "about_activity": "О деятельности"
 
 
 
