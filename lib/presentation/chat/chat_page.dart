@@ -4,7 +4,7 @@ import 'package:flutter_locales/flutter_locales.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:top_yurist/bloc/Bloc/Chat/chat_bloc.dart';
-import 'package:top_yurist/data/Models/chat/chat.dart';
+import 'package:top_yurist/bloc/Cubit/ChatFilter/chat_filter_cubit.dart';
 import 'package:top_yurist/presentation/messaging/messaging_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 
@@ -15,9 +15,16 @@ class ChatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ChatBloc>(
-      create: (context) => ChatBloc()..add(GetChatsEvent()),
-      child: SafeArea(
+    return MultiBlocProvider(
+  providers: [
+    BlocProvider<ChatBloc>(
+      create: (context) => ChatBloc()..add(const GetChatsEvent('')),
+),
+    BlocProvider<ChatFilterCubit>(
+      create: (context) => ChatFilterCubit(),
+    ),
+  ],
+  child: SafeArea(
         child: Column(
           children: [
             Padding(
@@ -27,10 +34,7 @@ class ChatsPage extends StatelessWidget {
                 children: [
                   LocaleText(
                     'chats',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline2,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                 ],
               ),
@@ -44,27 +48,24 @@ class ChatsPage extends StatelessWidget {
                         return const Center(
                           child: CircularProgressIndicator.adaptive(),
                         );
-                      } else if (state is ChatLoadedSuccess && (state.response
-                          .data?.isEmpty ?? true)) {
-                        return const _ChatEmptyWidget();
                       } else if (state is ChatLoadedSuccess) {
-                        return _BodyWidget(data: state.response.data,);
+                        return _BodyWidget(
+                          data: state.response.data,
+                        );
                       } else {
                         return const _ErrorWidget();
                       }
-                      return const Text("error");
+
                     },
                   ),
                 );
 
-                return const Center(
-                    child: CircularProgressIndicator.adaptive());
               },
             )
           ],
         ),
       ),
-    );
+);
   }
 }
 
@@ -74,9 +75,10 @@ class _ChatEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30.w),
+      padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 50.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           LocaleText(
             'empty',
@@ -103,15 +105,28 @@ class _ChatEmptyWidget extends StatelessWidget {
 class _BodyWidget extends StatefulWidget {
   final List<ChatDatum>? data;
 
-  const _BodyWidget({Key? key, this.data}) : super(key: key);
+
+  const _BodyWidget({Key? key, this.data,})
+      : super(key: key);
 
   @override
   State<_BodyWidget> createState() => _BodyWidgetState();
 }
 
 class _BodyWidgetState extends State<_BodyWidget> {
-  final List<String> chatState = ["new", "in_process", "finished"];
-  int selectedIndex = 0;
+  final List<String> chatState = ["all", "new", "in_process", "finished"];
+
+  String takeState(int index) {
+    if (index == 0) {
+      return '';
+    } else if (index == 1) {
+      return "ACTIVE";
+    } else if (index == 2) {
+      return "IN_PROGRESS";
+    } else {
+      return "FINISHED";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,67 +137,65 @@ class _BodyWidgetState extends State<_BodyWidget> {
           height: 40.h,
           child: ListView.separated(
             padding: EdgeInsets.only(left: 16.w),
-            itemBuilder: (context, index) =>
-                Stack(
-                  children: [
-                    SizedBox(
-                      height: 40.h,
-                      child: Chip(
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        label: Center(child: LocaleText(
-                            chatState[index])),
-                        backgroundColor: selectedIndex == index
-                            ? AppColors.blue
-                            : AppColors.grey.withOpacity(0.1),
-                        labelStyle: TextStyle(
-                          color: selectedIndex == index
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+            itemBuilder: (context, index) => Stack(
+              children: [
+                SizedBox(
+                  height: 40.h,
+                  child: Chip(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    label: Center(child: LocaleText(chatState[index])),
+                    backgroundColor: context.read<ChatFilterCubit>().index == index
+                        ? AppColors.blue
+                        : AppColors.grey.withOpacity(0.1),
+                    labelStyle: TextStyle(
+                      color: context.read<ChatFilterCubit>().index == index ? Colors.white : Colors.black,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
                     ),
-                    Positioned.fill(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(20.h),
-                          onTap: () {
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                          },
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
+                Positioned.fill(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(20.h),
+                      onTap: () {
+                        context.read<ChatFilterCubit>().changeIndex(index);
+                        BlocProvider.of<ChatBloc>(context)
+                            .add(GetChatsEvent(takeState(index)));
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
             separatorBuilder: (context, index) => SizedBox(width: 12.w),
             itemCount: chatState.length,
             scrollDirection: Axis.horizontal,
           ),
         ),
         SizedBox(height: 20.h),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: 16.w),
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(top: 0, bottom: 15.h),
-                  child: const Divider(height: 0),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return _ChatWidget(
-                  chat: widget.data?[index],
-                );
-              },
-              itemCount: (widget.data?.length ?? 0) + 1,
-            ),
-          ),
-        )
+        (widget.data?.isEmpty ?? true)
+            ? const Center(child: _ChatEmptyWidget())
+            : Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 0, bottom: 15.h),
+                        child: const Divider(height: 0),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return _ChatWidget(
+                        chat: widget.data?[index],
+                      );
+                    },
+                    itemCount: (widget.data?.length ?? 0) + 1,
+                  ),
+                ),
+              )
       ],
     );
   }
@@ -244,21 +257,29 @@ class _ChatWidget extends StatelessWidget {
                         Container(
                           height: 16.h,
                           width: 16.h,
-                          decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
-                          child: Center(child: Text(chat!.unreadCount.toString(), style:  TextStyle(color: AppColors.white, fontSize: 10.sp, ),)),
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: AppColors.primary),
+                          child: Center(
+                              child: Text(
+                            chat!.unreadCount.toString(),
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 10.sp,
+                            ),
+                          )),
                         )
                       ],
                     ),
                     SizedBox(height: 12.h),
                     Container(
                       padding:
-                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
+                          EdgeInsets.symmetric(horizontal: 14.w, vertical: 3.h),
                       decoration: BoxDecoration(
                         color: AppColors.blue.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(50.h),
                       ),
                       child: LocaleText(
-                        chat?.state?? "",
+                        chat?.state ?? "",
                         style: TextStyle(
                           color: AppColors.blue,
                           fontSize: 12.sp,
@@ -269,7 +290,6 @@ class _ChatWidget extends StatelessWidget {
                   ],
                 ),
               ),
-
             ],
           ),
         ),
@@ -280,7 +300,11 @@ class _ChatWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MessagingPage(chatId: chat?.id, fullName: chat?.dialogUserName, imageUrl: chat?.dialogUserPhoto,),
+                  builder: (context) => MessagingPage(
+                    chatId: chat?.id,
+                    fullName: chat?.dialogUserName,
+                    imageUrl: chat?.dialogUserPhoto,
+                  ),
                 ),
               );
             }),

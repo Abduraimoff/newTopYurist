@@ -33,6 +33,7 @@ dependencies:
   build_runner: ^2.2.0
   shared_preferences: ^2.0.15
   cached_network_image: ^3.2.1
+  image_downloader: ^0.31.0
 
 
 dev_dependencies:

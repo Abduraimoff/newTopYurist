@@ -35,6 +35,8 @@
 	<string>PrivacyCameraUsageDescription</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>PrivacyPhotoLibraryUsageDescription</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    	<string>PrivacyAddPhotoLibraryUsageDescription</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -19,8 +19,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   ChatBloc() : super(ChatInitial()) {
     on<GetChatsEvent>((event, emit) async{
+      emit(ChatInitial());
       try{
-        final Response response = await _repository.getChat();
+        final Response response = await _repository.getChat(state: event.state);
         emit(ChatLoadedSuccess(ChatResponse.fromJson(response.data)));
       } on DioError catch(e){
         emit(ChatErrorState(e));
@@ -41,6 +42,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try{
         final Response response = await _repository.sendMessage(chatId: event.chatId, message: event.message, messageType: event.messageType);
         emit(MessageSendSuccess());
+      } on DioError catch(e){
+        emit(ChatErrorState(e));
+      }
+    });
+    on<SendPhotoEvent>((event, emit) async{
+      try{
+        final Response response = await _repository.sendPhoto(chatId: event.chatId, data: event.data);
+        emit(PhotoSendSuccess());
       } on DioError catch(e){
         emit(ChatErrorState(e));
       }

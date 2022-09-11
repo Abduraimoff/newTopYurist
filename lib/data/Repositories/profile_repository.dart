@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/data/HttpRequest/dio_client.dart';
 import 'package:top_yurist/data/Models/auth/image_response.dart';
 import 'package:top_yurist/data/Models/faq/faq.dart';
+import 'package:top_yurist/data/Models/review/review.dart';
 import 'package:top_yurist/data/Models/user/user.dart';
 import 'package:top_yurist/data/Models/verify/verify.dart';
 import 'package:top_yurist/utils/config.dart';
@@ -103,5 +104,20 @@ class ProfileRepository {
     final verify = Verify.fromJson(responce.data);
 
     return verify;
+  }
+
+  Future<List<Review>> getCustomerReview(UserType type) async {
+    late String path;
+    if (type == UserType.notLawyer) {
+      path = '/api/profile/review/customer_page';
+    } else {
+      path = '/api/profile/review/lawyer_page';
+    }
+
+    final responce = await _request.get(path);
+    final list = responce.data['data'] as List;
+    final reviews = list.map((e) => Review.fromJson(e)).toList();
+
+    return reviews;
   }
 }

@@ -57,8 +57,10 @@
   "IN_PROGRESS": "В прцессе",
   "FINISHED": "Законченный",
   "ACTIVE": "Активный",
-  "message": "Сообщение",
-  "about_activity": "О деятельности"
+  "about_activity": "О деятельности",
+  "wrong_sms_code": "Не верный код потверждения.",
+
+
 
 
 

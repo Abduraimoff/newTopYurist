@@ -78,11 +78,11 @@ class AuthRepository{
   }
 
 
-  Future<ImageResponse> uploadImage({File? image, String? category}) async {
+  Future<ImageResponse> uploadImage({required File? image, required String? category}) async {
     ImageResponse res = ImageResponse();
     var formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(image!.path),
-      "category": "test"
+      "category": category
     });
     try {
       final response = await ApiRequest().doPostRequest(

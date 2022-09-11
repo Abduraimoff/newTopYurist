@@ -1,23 +1,24 @@
+import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grouped_list/grouped_list.dart';
-
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:top_yurist/bloc/Bloc/Chat/chat_bloc.dart';
-import 'package:top_yurist/bloc/messagin_bloc/messaging_bloc.dart';
 import 'package:top_yurist/data/Models/chat/chat_message_response.dart';
 import 'package:top_yurist/data/Models/message_option/message_option.dart';
+import 'package:top_yurist/presentation/messaging/ImageScreen.dart';
 import 'package:top_yurist/presentation/messaging/create_review.dart';
 import 'package:top_yurist/presentation/widgets/profileImage.dart';
 import 'package:top_yurist/utils/colors.dart';
 import 'package:top_yurist/utils/icons.dart';
-import '../../data/Models/chat/chat_response.dart';
-import '../../data/Models/message/message.dart';
-import '../../utils/config.dart';
+import '../../bloc/Bloc/Auth/auth_bloc.dart';
+
 
 class MessagingPage extends StatelessWidget {
   const MessagingPage({Key? key, required this.chatId, this.fullName, this.imageUrl}) : super(key: key);
@@ -50,9 +51,6 @@ class _BodyWidget extends StatefulWidget {
 }
 
 class _BodyWidgetState extends State<_BodyWidget> {
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -202,8 +200,8 @@ class _MessageItemWidget extends StatelessWidget {
       alignment:
          message.senderId == userId ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
-        width: MediaQuery.of(context).size.width * 0.8,
+        padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 13.h),
+        width: message.messageType == "TEXT" ? MediaQuery.of(context).size.width * 0.8 : 154.w,
         decoration: BoxDecoration(
           color: ( message.senderId == userId ? AppColors.blue : AppColors.grey)
               .withOpacity(0.1),
@@ -216,7 +214,22 @@ class _MessageItemWidget extends StatelessWidget {
               child: message.messageType == "TEXT" ? Text(
                 message.text ?? "",
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
-              ) : Image.network(message.photo),
+              ) : InkWell(
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChatImage(imageUrl: message.photo, date: DateFormat("dd.MM.yyyy", 'en').format(
+                      DateTime.fromMicrosecondsSinceEpoch(
+                          (message.createdAt ?? 0000000000000) * 1000)), )));
+                },
+                child: Hero(
+                  tag: message.photo,
+                  child: CachedNetworkImage(imageUrl: message.photo ?? "",
+                    width: 136.w,
+                    height: 175.h,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => SvgPicture.asset("assets/svg/frame.svg", height: 17.h, width: 11.w, fit: BoxFit.cover,),
+                  ),
+                ),
+              ),
             ),
             Align(
               alignment: Alignment.bottomRight,
@@ -313,13 +326,52 @@ class _OptionsWidget extends StatelessWidget {
   }
 }
 
-class _MessageFielsWidget extends StatelessWidget {
+class _MessageFielsWidget extends StatefulWidget {
   final String? chatId;
-   _MessageFielsWidget({Key? key, this.chatId}) : super(key: key);
+   const _MessageFielsWidget({Key? key, this.chatId}) : super(key: key);
+
+  @override
+  State<_MessageFielsWidget> createState() => _MessageFielsWidgetState();
+}
+
+class _MessageFielsWidgetState extends State<_MessageFielsWidget> {
+  final ImagePicker _picker = ImagePicker();
+  final AuthBloc _bloc = AuthBloc();
+  String? imageUrl;
+
+  Future pickImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(
+          source: ImageSource.gallery, imageQuality: 30);
+      if (image == null) return;
+      final temporaryImage = File(image.path);
+
+      _bloc.add(UploadImageEvent(temporaryImage, "application"));
+    } on PlatformException catch (e) {
+      print("filed to pick image: $e");
+    }
+  }
+
 final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return BlocListener<AuthBloc, AuthState>(
+      bloc: _bloc,
+  listener: (context, state) {
+  if(state is UploadImageSuccessState){
+    imageUrl = state.response?.fullPath;
+    BlocProvider.of<ChatBloc>(context).add(SendPhotoEvent(
+       data: {
+         "message_type": "PHOTO",
+         "photo": imageUrl ?? '',
+         "caption": "Some text"
+       }, chatId: widget.chatId
+
+    ));
+  }
+  },
+  child: Container(
       height: MediaQuery.of(context).padding.bottom + 56.h,
       padding: EdgeInsets.only(
         left: 16.w,
@@ -352,7 +404,9 @@ final TextEditingController _controller = TextEditingController();
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        pickImage();
+                      },
                       borderRadius: BorderRadius.circular(50.h),
                     ),
                   ),
@@ -394,7 +448,7 @@ final TextEditingController _controller = TextEditingController();
                           BlocProvider.of<ChatBloc>(context).add(SendMessageEvent(
                             message: _controller.text,
                             messageType: "TEXT",
-                            chatId: chatId
+                            chatId: widget.chatId
 
                           ));
                         },
@@ -414,7 +468,8 @@ final TextEditingController _controller = TextEditingController();
           ),
         ],
       ),
-    );
+    ),
+);
   }
 }
 

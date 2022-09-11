@@ -48,7 +48,9 @@ class DioClient {
 
     if (refreshToken == null || JwtDecoder.isExpired(refreshToken)) {
       print('error reauth');
+      _tokenProvider.clearAllData();
       throw Exception('reauth');
+
     }
 
     try {
@@ -59,7 +61,9 @@ class DioClient {
       await _tokenProvider.saveAccessToken(accessToken);
       await _tokenProvider.saveRefreshToken(newRefreshToken);
     } catch (e) {
+
       throw Exception('reauth');
+
     }
   }
 

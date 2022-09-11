@@ -48,3 +48,10 @@ class MessageSendSuccess extends ChatState{
   List<Object?> get props => [];
 
 }
+
+class PhotoSendSuccess extends ChatState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

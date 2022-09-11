@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
+      appBar: AppBar(elevation: 0, backgroundColor: AppColors.scaffoldBackground,),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

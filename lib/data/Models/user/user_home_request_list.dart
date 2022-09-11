@@ -4,9 +4,13 @@
 
 import 'dart:convert';
 
-List<UserHomeRequestListResponse> userHomeRequestListResponseFromJson(List str) => str.map((x) => UserHomeRequestListResponse.fromJson(x)).toList();
+List<UserHomeRequestListResponse> userHomeRequestListResponseFromJson(
+        List str) =>
+    str.map((x) => UserHomeRequestListResponse.fromJson(x)).toList();
 
-String userHomeRequestListResponseToJson(List<UserHomeRequestListResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String userHomeRequestListResponseToJson(
+        List<UserHomeRequestListResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class UserHomeRequestListResponse {
   UserHomeRequestListResponse({
@@ -41,39 +45,40 @@ class UserHomeRequestListResponse {
   final List<String>? photos;
   final bool? privatePhone;
 
-  factory UserHomeRequestListResponse.fromJson(Map<String, dynamic> json) => UserHomeRequestListResponse(
-    isFavorite: json["is_favorite"],
-    problemType: ProblemType.fromJson(json["problem_type"]),
-    id: json["id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    updatedId: json["updated_id"],
-    deleted: json["deleted"],
-    state: json["state"],
-    ownerId: json["owner_id"],
-    lawyerId: json["lawyer_id"],
-    problemTypeId: json["problem_type_id"],
-    description: json["description"],
-    photos: List<String>.from(json["photos"].map((x) => x)),
-    privatePhone: json["private_phone"],
-  );
+  factory UserHomeRequestListResponse.fromJson(Map<String, dynamic> json) =>
+      UserHomeRequestListResponse(
+        isFavorite: json["is_favorite"],
+        problemType: ProblemType.fromJson(json["problem_type"]),
+        id: json["id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        updatedId: json["updated_id"],
+        deleted: json["deleted"],
+        state: json["state"],
+        ownerId: json["owner_id"],
+        lawyerId: json["lawyer_id"],
+        problemTypeId: json["problem_type_id"],
+        description: json["description"],
+        photos: List<String>.from(json["photos"].map((x) => x)),
+        privatePhone: json["private_phone"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "is_favorite": isFavorite,
-    "problem_type": problemType?.toJson(),
-    "id": id,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "updated_id": updatedId,
-    "deleted": deleted,
-    "state": state,
-    "owner_id": ownerId,
-    "lawyer_id": lawyerId,
-    "problem_type_id": problemTypeId,
-    "description": description,
-    "photos": List<dynamic>.from(photos!.map((x) => x)),
-    "private_phone": privatePhone,
-  };
+        "is_favorite": isFavorite,
+        "problem_type": problemType?.toJson(),
+        "id": id,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "updated_id": updatedId,
+        "deleted": deleted,
+        "state": state,
+        "owner_id": ownerId,
+        "lawyer_id": lawyerId,
+        "problem_type_id": problemTypeId,
+        "description": description,
+        "photos": List<dynamic>.from(photos!.map((x) => x)),
+        "private_phone": privatePhone,
+      };
 }
 
 class ProblemType {
@@ -90,16 +95,16 @@ class ProblemType {
   final String? uzUz;
 
   factory ProblemType.fromJson(Map<String, dynamic> json) => ProblemType(
-    usEn: json["us_en"],
-    ruRu: json["ru_ru"],
-    uzLat: json["uz_lat"],
-    uzUz: json["uz_uz"],
-  );
+        usEn: json["us_en"],
+        ruRu: json["ru_ru"],
+        uzLat: json["uz_lat"],
+        uzUz: json["uz_uz"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "us_en": usEn,
-    "ru_ru": ruRu,
-    "uz_lat": uzLat,
-    "uz_uz": uzUz,
-  };
+        "us_en": usEn,
+        "ru_ru": ruRu,
+        "uz_lat": uzLat,
+        "uz_uz": uzUz,
+      };
 }

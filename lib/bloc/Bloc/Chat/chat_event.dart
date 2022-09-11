@@ -4,9 +4,12 @@ abstract class ChatEvent extends Equatable {
   const ChatEvent();
 }
 class GetChatsEvent extends ChatEvent{
+  final String? state;
+
+  const GetChatsEvent(this.state);
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [state];
 
 }
 class GetChatsMessageEvent extends ChatEvent{
@@ -28,5 +31,16 @@ class SendMessageEvent extends ChatEvent{
   @override
   // TODO: implement props
   List<Object?> get props => [chatId, messageType, message];
+
+}
+
+class SendPhotoEvent extends ChatEvent{
+  final Map<String, String>? data;
+  final String? chatId;
+
+  const SendPhotoEvent({this.data, this.chatId});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [data, chatId];
 
 }

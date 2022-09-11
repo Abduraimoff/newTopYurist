@@ -26,4 +26,7 @@ class TokenProvider {
   Future<String?> getRefreshToken() async {
     return await _storage.read(key: TokenProviderKeys.refreshToken);
   }
+  Future clearAllData() async{
+    await _storage.deleteAll();
+  }
 }
