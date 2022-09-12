@@ -55,11 +55,9 @@ class ChatsPage extends StatelessWidget {
                       } else {
                         return const _ErrorWidget();
                       }
-
                     },
                   ),
                 );
-
               },
             )
           ],
