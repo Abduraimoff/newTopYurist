@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:top_yurist/data/data_provider/token_provider.dart';
 import 'package:top_yurist/utils/config.dart';
@@ -19,7 +20,7 @@ class DioClient {
 
   Future<void> _onError(DioError error, handler) async {
     print(error);
-    return handler.next(error);
+    return handler.next();
   }
 
   Future<void> _onRequest(
@@ -47,10 +48,9 @@ class DioClient {
     final refreshToken = await _tokenProvider.getRefreshToken();
 
     if (refreshToken == null || JwtDecoder.isExpired(refreshToken)) {
-      print('error reauth');
-      _tokenProvider.clearAllData();
-      throw Exception('reauth');
+      await _tokenProvider.clearAllData();
 
+      throw Exception('reauth');
     }
 
     try {
@@ -61,9 +61,7 @@ class DioClient {
       await _tokenProvider.saveAccessToken(accessToken);
       await _tokenProvider.saveRefreshToken(newRefreshToken);
     } catch (e) {
-
       throw Exception('reauth');
-
     }
   }
 
@@ -80,7 +78,7 @@ class DioClient {
     );
   }
 
-  Dio  getDio() {
+  Dio getDio() {
     return _dio;
   }
 }
