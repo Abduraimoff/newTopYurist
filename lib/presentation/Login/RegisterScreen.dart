@@ -101,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       hint: const Text("_ _"),
                                       icon: Padding(
                                         padding:
-                                            const EdgeInsets.only(left: 10),
+                                             EdgeInsets.only(left: 4.w),
                                         child: SvgPicture.asset(
                                             "assets/svg/icon_arrow-right.svg"),
                                       ),

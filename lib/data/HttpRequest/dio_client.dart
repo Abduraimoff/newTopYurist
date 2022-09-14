@@ -48,7 +48,7 @@ class DioClient {
     final refreshToken = await _tokenProvider.getRefreshToken();
 
     if (refreshToken == null || JwtDecoder.isExpired(refreshToken)) {
-      await _tokenProvider.clearAllData();
+      // await _tokenProvider.clearAllData();
 
       throw Exception('reauth');
     }

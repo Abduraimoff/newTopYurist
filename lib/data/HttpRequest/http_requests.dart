@@ -5,7 +5,7 @@ import 'package:top_yurist/data/HttpRequest/dio_client.dart';
 import 'package:top_yurist/utils/config.dart';
 
 class ApiRequest{
-  final Dio dio = DioClient().getDio();
+  final Dio dio = Dio();
   final _storage = const FlutterSecureStorage();
 
   // api(){
