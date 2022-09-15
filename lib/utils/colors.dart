@@ -8,9 +8,10 @@ class AppColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color green = Color(0xFF2CAD7F);
   static const Color red = Color(0xFFFD1E39);
-  static const Color scaffoldBackground = Color(0xFFFBFBFB);
+  static const Color scaffoldBackground = Color.fromRGBO(251, 251, 251, 1);
   static const Color primary = Color(0xFF1C4FD1);
   static const Color lightGrey = Color(0xEFF0F2FF);
   static const Color hotToddy = Color(0xFFAD7A2C);
   static const Color dividerColor = Color.fromRGBO(217, 217, 217, 1);
+  static const Color backIconColor = Color(0xFF858DA3);
 }

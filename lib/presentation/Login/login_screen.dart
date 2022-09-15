@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   context.read<AuthUserCubit>().getUserType("lawyer");
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: const Color.fromRGBO(133, 141, 163, 0.1),
+                  backgroundColor: const Color.fromRGBO(133, 141, 163, 0.1),
                   elevation: 0,
                 ),
                 child: LocaleText(

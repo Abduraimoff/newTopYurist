@@ -94,7 +94,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
         appBar: AppBar(
           backgroundColor: AppColors.scaffoldBackground,
           elevation: 0,
-          iconTheme: const IconThemeData(color: AppColors.black),
+          iconTheme: const IconThemeData(color: AppColors.backIconColor),
         ),
         body: BlocListener<AuthBloc, AuthState>(
           bloc: _bloc,
@@ -128,8 +128,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    height: !keyboardIsOpen ? 134.h : 60.h,
+                    height: !keyboardIsOpen ?  115.h - AppBar().preferredSize.height : 70.h, duration: const Duration(milliseconds: 200),
                   ),
                   LocaleText(
                     "register",

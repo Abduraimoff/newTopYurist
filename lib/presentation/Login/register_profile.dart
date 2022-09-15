@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,13 @@ import 'package:top_yurist/bloc/Bloc/Auth/auth_bloc.dart';
 import 'package:top_yurist/presentation/Login/select_region.dart';
 import 'package:top_yurist/presentation/widgets/base_appbar.dart';
 import 'package:top_yurist/utils/colors.dart';
-import '../../bloc/Cubit/Auth/auth_user_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../bloc/Cubit/Auth/auth_user_cubit.dart';
 
 class RegisterProfile extends StatefulWidget {
   static const String routeName = "register_profile";
+
   const RegisterProfile({Key? key}) : super(key: key);
 
   @override
@@ -34,8 +36,6 @@ class _RegisterProfileState extends State<RegisterProfile> {
   String? fullName;
   bool? agreement = false;
   bool _isPhotoUploading = false;
-
-
 
   final Uri _url = Uri.parse('https://topyurist.uz');
 
@@ -57,20 +57,19 @@ class _RegisterProfileState extends State<RegisterProfile> {
       });
       _bloc.add(UploadImageEvent(temporaryImage, "user"));
     } on PlatformException catch (e) {
-      print("filed to pick image: $e");
+   rethrow;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
-    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
+
     return Scaffold(
       appBar: BaseAppBar(
         title: LocaleText(
-          'register',
-          style: Theme.of(context).textTheme.headline3,
+          'registration',
+          style: Theme.of(context).textTheme.headline2,
         ),
         appBar: AppBar(),
         centerTitle: true,
@@ -85,8 +84,12 @@ class _RegisterProfileState extends State<RegisterProfile> {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("`Your image successfully uploaded")));
           }
-          if(state is AuthErrorState){
-            showDialog(context: context, builder: (context) =>  AlertDialog(content: Text(state.error.toString()),));
+          if (state is AuthErrorState) {
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      content: Text(state.error.toString()),
+                    ));
           }
         },
         child: Padding(
@@ -97,7 +100,7 @@ class _RegisterProfileState extends State<RegisterProfile> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 66.h,
+                height: 13.h,
               ),
               CircleAvatar(
                 backgroundColor: AppColors.black.withOpacity(0.06),
@@ -120,15 +123,20 @@ class _RegisterProfileState extends State<RegisterProfile> {
               SizedBox(
                 height: 12.h,
               ),
-            _isPhotoUploading ? const Center(child: CupertinoActivityIndicator(color: AppColors.primary,)) :  TextButton(
-                  onPressed: pickImage,
-                  child: LocaleText(
-                    "add_photo",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline3
-                        ?.copyWith(color: AppColors.primary),
-                  )),
+              _isPhotoUploading
+                  ? const Center(
+                      child: CupertinoActivityIndicator(
+                      color: AppColors.primary,
+                    ))
+                  : TextButton(
+                      onPressed: pickImage,
+                      child: LocaleText(
+                        "add_photo",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3
+                            ?.copyWith(color: AppColors.primary),
+                      )),
               SizedBox(
                 height: 8.h,
               ),
@@ -136,24 +144,32 @@ class _RegisterProfileState extends State<RegisterProfile> {
                 height: 48.h,
                 child: TextField(
                   controller: _nameController,
-                  onChanged: (value){
+                  onChanged: (value) {
                     context.read<AuthUserCubit>().getFullName(value);
                   },
                   decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(8),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: AppColors.grey),
-                        borderRadius: BorderRadius.circular(
-                          8.0,
-                        ),
+                    hintStyle: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black.withOpacity(0.5)),
+                    contentPadding: EdgeInsets.all(14.sp),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                      borderRadius: BorderRadius.circular(
+                        8.0.sp,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: AppColors.grey),
-                        borderRadius: BorderRadius.circular(
-                          8.0,
-                        ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:  BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                      borderRadius: BorderRadius.circular(
+                        8.0.sp,
                       ),
-                      hintText: context.localeString('name')),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:  const BorderSide(color: AppColors.grey),
+                      borderRadius: BorderRadius.circular(
+                        8.0.sp,
+                      ),
+                    ),
+                    hintText: context.localeString('name'),
+                  ),
                 ),
               ),
               SizedBox(
@@ -164,11 +180,12 @@ class _RegisterProfileState extends State<RegisterProfile> {
                 child: TextField(
                   controller: _sureNameController,
                   decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(8),
+                      hintStyle: Theme.of(context).textTheme.headline5?.copyWith(color: AppColors.black.withOpacity(0.5)),
+                      contentPadding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                       border: OutlineInputBorder(
                         borderSide: const BorderSide(color: AppColors.grey),
                         borderRadius: BorderRadius.circular(
-                          8.0,
+                          8.0.sp,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -177,124 +194,123 @@ class _RegisterProfileState extends State<RegisterProfile> {
                           8.0,
                         ),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:  BorderSide(color: AppColors.grey.withOpacity(0.3)),
+                        borderRadius: BorderRadius.circular(
+                          8.0.sp,
+                        ),
+                      ),
                       hintText: context.localeString('name2')),
                 ),
               ),
               SizedBox(
                 height: 12.h,
               ),
-
-              Row(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Checkbox(value: agreement, onChanged: ( value){
-                    setState(() {
-                      agreement = value;
-                    });
-                  }, activeColor: AppColors.primary,),
-
-                  Expanded(
-                    child:
-
-                    RichText(
-                      maxLines: 2,
-                      text: TextSpan(
-                        children:  <TextSpan>[
-                          const TextSpan(text: 'Регистрируясь, вы принимаете ', style: TextStyle(fontSize: 14, color: Colors.black)),
-                          TextSpan(
-                              text: 'публичную оферту',
-                              style: const TextStyle(fontSize: 14, color: Colors.black,decoration: TextDecoration.underline),
-                            recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              // html.window.open("https://topyurist.uz", "Top yurist");
-                              _launchUrl;
-                            }),
-
-                        ],
-                      ),
-                    )
-                  ),
-
-
-                  // InkWell(
-                  //   onTap: (){
-                  //     showDialog(context: context, builder: (context) => AlertDialog(content: const Text('Are you confirm ?'),
-                  //     actions: [
-                  //       ElevatedButton(onPressed: (){
-                  //         agreement = true;
-                  //         context.read<AuthUserCubit>().getUserAgreement(true);
-                  //         Navigator.of(context).pop();
-                  //       }, child: const Text("no")),
-                  //       ElevatedButton(onPressed: (){
-                  //         agreement = false;
-                  //         context.read<AuthUserCubit>().getUserAgreement(true);
-                  //         Navigator.of(context).pop();
-                  //       }, child: const Text("ok")), ],
-                  //     ));
-                  //   },
-                  //   child: LocaleText("registration_offer_2", style: Theme.of(context)
-                  //       .textTheme
-                  //       .bodyText1
-                  //       ?.copyWith(
-                  //       decoration: TextDecoration.underline), overflow: TextOverflow.ellipsis,),
-                  // )
-
-                ],
-              )
             ],
           ),
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: !keyboardIsOpen,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SizedBox(
-            height: 48.h,
-            width: double.infinity,
-            child: BlocProvider(
-  create: (context) => AuthUserCubit(),
-  child: BlocBuilder<AuthUserCubit, AuthUserState>(
-  builder: (context, state) {
-    if(state is CollectUserData){
-        agreement = state.newUser.agreement;
-    }
-    return FloatingActionButton(
-        onPressed: () async{
-          fullName = "${_nameController.text} ${_sureNameController.text}";
-          context.read<AuthUserCubit>().getUserAgreement(true);
-          context.read<AuthUserCubit>().getFullName(fullName??'');
-
-          if(_nameController.text.length < 3){
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your name should be at least 3 symbol')));
-          } else if(_sureNameController.text.length < 3){
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Your surname should be at least 3 symbol')));
-          } else{
-            Navigator.of(context).pushNamed(SelectRegion.routeName);
-          }
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        backgroundColor: AppColors.primary,
-        child: LocaleText(
-          "next",
-          style: Theme.of(context)
-              .textTheme
-              .headline3
-              ?.copyWith(color: AppColors.white),
-        ),
-    );
-  },
-),
-),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 4.w),
+            child: Row(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Checkbox(
+                  value: agreement,
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        agreement = value;
+                      },
+                    );
+                  },
+                  splashRadius: 3.sp,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.sp)),
+                  activeColor: AppColors.primary,
+                ),
+                Expanded(
+                    child: RichText(
+                  maxLines: 2,
+                  text: TextSpan(
+                    children: <TextSpan>[
+                       TextSpan(
+                          text: context.localeString("agreement1"),
+                          style:  TextStyle(fontSize: 13, color: AppColors.black.withOpacity(0.5), fontWeight: FontWeight.w400)),
+                      TextSpan(
+                          text: context.localeString("agreement2"),
+                          style:  TextStyle(
+                              fontSize: 13, color: AppColors.black.withOpacity(0.5), fontWeight: FontWeight.w400,
+                              decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // html.window.open("https://topyurist.uz", "Top yurist");
+                              _launchUrl;
+                            }),
+                    ],
+                  ),
+                )),
+              ],
+            ),
           ),
-        ),
+          SizedBox(height: 14.h),
+          Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 16.w),
+            child: SizedBox(
+              height: 48.h,
+              width: double.infinity,
+              child: BlocProvider(
+                create: (context) => AuthUserCubit(),
+                child: BlocBuilder<AuthUserCubit, AuthUserState>(
+                  builder: (context, state) {
+                    if (state is CollectUserData) {
+                      agreement = state.newUser.agreement;
+                    }
+                    return FloatingActionButton(
+                      onPressed: () async {
+                        fullName =
+                            "${_nameController.text} ${_sureNameController.text}";
+                        context.read<AuthUserCubit>().getUserAgreement(true);
+                        context
+                            .read<AuthUserCubit>()
+                            .getFullName(fullName ?? '');
+
+                        if (_nameController.text.length < 3) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Your name should be at least 3 symbol')));
+                        } else if (_sureNameController.text.length < 3) {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text(
+                                  'Your surname should be at least 3 symbol')));
+                        } else {
+                          Navigator.of(context)
+                              .pushNamed(SelectRegion.routeName);
+                        }
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      backgroundColor: AppColors.primary,
+                      child: LocaleText(
+                        "next",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3
+                            ?.copyWith(color: AppColors.white),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
     );
   }
-
-
 }

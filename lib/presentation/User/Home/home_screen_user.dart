@@ -40,10 +40,12 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
+
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        elevation: 3,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
+            icon: const Icon(Icons.home_rounded),
             label: context.localeString("services"),
           ),
           BottomNavigationBarItem(

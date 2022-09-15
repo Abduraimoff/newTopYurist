@@ -53,7 +53,7 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
         return Padding(
                 padding: const EdgeInsets.only(
                   left: 16,
-                  top: 30,
+                  top: 10,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

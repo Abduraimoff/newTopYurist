@@ -18,7 +18,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: const IconThemeData(color: AppColors.grey),
+      iconTheme: const IconThemeData(color: AppColors.black),
       centerTitle: centerTitle ?? false,
       elevation: 0,
       leading: leading,

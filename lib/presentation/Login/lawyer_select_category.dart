@@ -48,7 +48,7 @@ class _LawyerSelectCategoryState extends State<LawyerSelectCategory> {
         appBar: AppBar(),
         title: LocaleText(
           "select_lawyer_category",
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w500),
         ),
       ),
       body: BlocBuilder<ProblemTypeBloc, ProblemTypeState>(
@@ -63,52 +63,62 @@ class _LawyerSelectCategoryState extends State<LawyerSelectCategory> {
                       return BlocBuilder<AuthUserCubit, AuthUserState>(
                         builder: (context, stateCubit) {
                           if (stateCubit is CollectUserData) {
-                            return ListTile(
-
-                              contentPadding: EdgeInsets.only(
-                                left: 16.w,
-                                right: 0
-                              ),
-
-                              title: Row(
-                                children: [
-                                  Container(
-                                    height: 18.h,
-                                    width: 18.h,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: stateCubit.newUser.problemTypes!
-                                            .contains(state.response[i].id)
-                                            ? AppColors.primary
-                                            : AppColors.grey),
-                                    child: stateCubit.newUser.problemTypes!
-                                        .contains(state.response[i].id)
-                                        ? const Center(
-                                      child: Icon(
-                                        Icons.check,
-                                        size: 10,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                        : null,
+                            return Column(
+                              children: [
+                                ListTile(
+                                  contentPadding: EdgeInsets.only(
+                                    left: 16.w,
+                                    right: 0
                                   ),
-                                  SizedBox(width: 15.w,),
-                                  Text(
-                                      state.response[i].title?.ruRu ?? ""),
-                                ],
-                              ),
-                              onTap: () {
-                                stateCubit.newUser.problemTypes!
-                                        .contains(state.response[i].id)
-                                    ? context
-                                        .read<AuthUserCubit>()
-                                        .deleteProblemType(
-                                            state.response[i].id.toString())
-                                    : context
-                                        .read<AuthUserCubit>()
-                                        .getProblemType(
-                                            state.response[i].id.toString());
-                              },
+                                  visualDensity: VisualDensity(vertical: -3.44),
+
+                                  title: Row(
+                                    children: [
+                                      Container(
+                                        height: 18.h,
+                                        width: 18.h,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: stateCubit.newUser.problemTypes!
+                                                .contains(state.response[i].id)
+                                                ? AppColors.primary
+                                                : AppColors.grey),
+                                        child: stateCubit.newUser.problemTypes!
+                                            .contains(state.response[i].id)
+                                            ? const Center(
+                                          child: Icon(
+                                            Icons.check,
+                                            size: 10,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                            : null,
+                                      ),
+                                      SizedBox(width: 15.w,),
+                                      Text(
+                                          state.response[i].title?.ruRu ?? ""),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    stateCubit.newUser.problemTypes!
+                                            .contains(state.response[i].id)
+                                        ? context
+                                            .read<AuthUserCubit>()
+                                            .deleteProblemType(
+                                                state.response[i].id.toString())
+                                        : context
+                                            .read<AuthUserCubit>()
+                                            .getProblemType(
+                                                state.response[i].id.toString());
+                                  },
+                                ),
+                                Padding(
+                                  padding:  EdgeInsets.only(left: 16.w),
+                                  child: const Divider(
+                                    color: Color(0xFFB7BACA),
+                                  ),
+                                ),
+                              ],
                             );
                           }
                           return const Center(
@@ -133,7 +143,7 @@ class _LawyerSelectCategoryState extends State<LawyerSelectCategory> {
                         });
                       },
                       style:
-                          ElevatedButton.styleFrom(primary: AppColors.primary),
+                          ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
                       child: _isLoading ? const Center(child: CupertinoActivityIndicator(color: AppColors.white,),) : LocaleText(
                         'save',
                         style: Theme.of(context)

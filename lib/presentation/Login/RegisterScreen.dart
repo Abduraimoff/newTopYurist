@@ -50,7 +50,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Navigator.of(context).pushNamed(ConfirmationScreen.routeName);
                 context.read<AuthUserCubit>().newUser.token =
                     state.response.token;
-                isLoading = false;
+                setState(() {
+                  isLoading = false;
+                });
               }
             },
             child: Padding(
@@ -62,14 +64,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AnimatedContainer(
-                        height: !keyboardIsOpen ?  134.h : 70.h, duration: const Duration(milliseconds: 200),
+                        height: !keyboardIsOpen ?  115.h - AppBar().preferredSize.height : 70.h, duration: const Duration(milliseconds: 200),
                       ),
                       LocaleText(
                         "register",
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       SizedBox(
-                        height: 8.h,
+                        height: 18.h,
                       ),
                        LocaleText('type_your_number',  style: Theme.of(context).textTheme.headline3?.copyWith(color: AppColors.black.withOpacity(0.5), fontWeight: FontWeight.w400),),
                       SizedBox(
@@ -80,8 +82,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Container(
                             height: 48.h,
                             width: 95.w,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 14),
+                            padding:  EdgeInsets.symmetric(
+                                horizontal: 12.w, vertical: 14.h),
                             decoration: BoxDecoration(
                                 color: AppColors.grey.withOpacity(0.10),
                                 borderRadius: BorderRadius.circular(8)),
@@ -101,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       hint: const Text("_ _"),
                                       icon: Padding(
                                         padding:
-                                             EdgeInsets.only(left: 4.w),
+                                             EdgeInsets.only(left: 0.w),
                                         child: SvgPicture.asset(
                                             "assets/svg/icon_arrow-right.svg"),
                                       ),
@@ -188,6 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           )),
                         ],
                       ),
+                      SizedBox(height: 16.h,),
                       Visibility(
                           visible: error != null ? true : false,
                           child: Text(
@@ -205,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
         floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding:  EdgeInsets.symmetric(horizontal: 16.w),
           child: SizedBox(
             height: 48.h,
             width: double.infinity,

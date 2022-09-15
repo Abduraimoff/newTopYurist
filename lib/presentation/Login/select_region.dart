@@ -41,8 +41,9 @@ class _SelectRegionState extends State<SelectRegion> {
         appBar: AppBar(),
         title: LocaleText(
           "select_region_title",
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w500, ),
         ),
+        centerTitle: true,
       ),
       body: BlocListener<AuthBloc, AuthState>(
         bloc: _authBloc,
@@ -67,7 +68,7 @@ class _SelectRegionState extends State<SelectRegion> {
                         user = stateCubit.newUser;
                       }
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 100),
+                        padding:  EdgeInsets.only(bottom: 100.h),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -102,7 +103,7 @@ class _SelectRegionState extends State<SelectRegion> {
                                                                   .regionId ==
                                                               e.id)
                                                       ? AppColors.primary
-                                                      : AppColors.grey),
+                                                      : AppColors.grey.withOpacity(0.2)),
                                               child: state.response.any(
                                                       (element) =>
                                                           context
@@ -136,7 +137,7 @@ class _SelectRegionState extends State<SelectRegion> {
                                         height: 10.h,
                                       ),
                                       const Divider(
-                                        color: AppColors.grey,
+                                        color: Color(0xFFB7BACA),
                                       ),
                                     ],
                                   ))
