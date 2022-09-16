@@ -4,7 +4,9 @@ part of 'yurist_favourites_list_bloc.dart';
 abstract class YuristFavEvent extends Equatable{}
 
 class GetYuristFavEvent extends YuristFavEvent{
+final BuildContext context;
 
+  GetYuristFavEvent(this.context);
   @override
   // TODO: implement props
   List<Object?> get props => [];

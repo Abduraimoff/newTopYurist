@@ -33,6 +33,9 @@ class PublishEvent extends ApplicationEvent{
 
 }
 class GetRequestsList extends ApplicationEvent{
+  final BuildContext context;
+
+  GetRequestsList(this.context);
   @override
   // TODO: implement props
   List<Object?> get props => [];

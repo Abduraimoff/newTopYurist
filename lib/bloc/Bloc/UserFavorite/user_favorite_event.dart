@@ -5,6 +5,9 @@ abstract class UserFavoriteEvent extends Equatable {
 }
 
 class GetUserFavoriteLawyers extends UserFavoriteEvent{
+  final BuildContext context;
+
+  const GetUserFavoriteLawyers(this.context);
   @override
   // TODO: implement props
   List<Object?> get props => [];

@@ -93,7 +93,7 @@ class _SelectCategoryState extends State<SelectCategory> {
                     child: TextButton(
                       onPressed: () {
                         BlocProvider.of<SelectedServicesListBloc>(context).add(AddServiceEvent(serviceList));
-                        servicesListBloc.add(GetSelectedServicesEvent());
+                        servicesListBloc.add(GetSelectedServicesEvent(context));
                         Navigator.of(context).maybePop();
                       },
                       child: const Text(

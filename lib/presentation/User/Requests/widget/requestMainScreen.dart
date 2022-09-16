@@ -35,7 +35,7 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
           selectedIndex = 0;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Your application successfully published")));
-          _bloc.add(GetRequestsList());
+          _bloc.add(GetRequestsList(context));
         } else if (state is ApplicationSuccessfullyDeleted){
           selectedIndex = 0;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -72,7 +72,7 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
                           onPressed: () {
                             Navigator.of(context)
                                 .pushNamed(CreateNewRequest.routeName)
-                                .then((value) => _bloc.add(GetRequestsList()));
+                                .then((value) => _bloc.add(GetRequestsList(context)));
                           },
                           child: LocaleText(
                             'create',
@@ -205,7 +205,7 @@ class UserHomeEmptyPage extends StatelessWidget {
               child: BaseButton(
                   title: 'create_request',
                   onPressed: () {
-                    Navigator.of(context).pushNamed(CreateNewRequest.routeName).then((value) => bloc?.add(GetRequestsList()));
+                    Navigator.of(context).pushNamed(CreateNewRequest.routeName).then((value) => bloc?.add(GetRequestsList(context)));
                   },
                   isLoading: false)),
         ],

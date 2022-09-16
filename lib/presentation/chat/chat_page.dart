@@ -18,7 +18,7 @@ class ChatsPage extends StatelessWidget {
     return MultiBlocProvider(
   providers: [
     BlocProvider<ChatBloc>(
-      create: (context) => ChatBloc()..add(const GetChatsEvent('')),
+      create: (context) => ChatBloc()..add( GetChatsEvent('', context)),
 ),
     BlocProvider<ChatFilterCubit>(
       create: (context) => ChatFilterCubit(),
@@ -160,7 +160,7 @@ class _BodyWidgetState extends State<_BodyWidget> {
                       onTap: () {
                         context.read<ChatFilterCubit>().changeIndex(index);
                         BlocProvider.of<ChatBloc>(context)
-                            .add(GetChatsEvent(takeState(index)));
+                            .add(GetChatsEvent(takeState(index), context));
                       },
                     ),
                   ),

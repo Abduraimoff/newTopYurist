@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_yurist/data/Models/chat/chat_response.dart';
 import 'package:top_yurist/data/Repositories/ChatRepository.dart';
+import 'package:top_yurist/presentation/Login/login_screen.dart';
 
 import '../../../data/Models/chat/chat_message_response.dart';
 import '../../../utils/config.dart';
@@ -24,6 +26,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         final Response response = await _repository.getChat(state: event.state);
         emit(ChatLoadedSuccess(ChatResponse.fromJson(response.data)));
       } on DioError catch(e){
+        if(e.response?.statusCode == 401){
+          Navigator.of(event.context).pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
+          await const FlutterSecureStorage().deleteAll();
+        }
         emit(ChatErrorState(e));
       }
     });

@@ -22,7 +22,7 @@ class _LawyerFavouritesState extends State<LawyerFavourites> {
 
   @override
   void initState() {
-    _bloc.add(GetYuristFavEvent());
+    _bloc.add(GetYuristFavEvent(context));
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class _LawyerFavouritesState extends State<LawyerFavourites> {
               if(state is YuristFavLoadedSuccess){
                 data = state.response;
               }else if (state is UnFavoriteSuccessState){
-                _bloc.add(GetYuristFavEvent());
+                _bloc.add(GetYuristFavEvent(context));
               }
               if(state is YuristFavErrorState){
                 return Center(child: Text(state.error ?? "Something went wrong"),);

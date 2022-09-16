@@ -27,7 +27,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   @override
   void initState() {
-    _bloc.add(GetSelectedServicesEvent());
+    _bloc.add(GetSelectedServicesEvent(context));
     super.initState();
   }
   
@@ -41,7 +41,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
           if (state is SelectedServicesListLoadedSuccess) {
             data = state.response;
           } else if(state is SuccessfullyRemovedState){
-            _bloc.add(GetSelectedServicesEvent());
+            _bloc.add(GetSelectedServicesEvent(context));
           }
 
         },
@@ -66,7 +66,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 child: TextButton(
                   onPressed: () async{
 
-                    Navigator.of(context).pushNamed(SelectCategory.routeName, arguments: _bloc).then((value) => _bloc.add(GetSelectedServicesEvent()) );
+                    Navigator.of(context).pushNamed(SelectCategory.routeName, arguments: _bloc).then((value) => _bloc.add(GetSelectedServicesEvent(context)) );
                   },
                   child:  LocaleText(
                     'select_category',

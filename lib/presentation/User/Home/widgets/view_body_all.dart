@@ -28,7 +28,7 @@ class _ViewBodyState extends State<ViewBody> {
   final List<String> secondList = ["look","del" ];
   @override
   void initState() {
-    widget.bloc?.add(GetRequestsList());
+    widget.bloc?.add(GetRequestsList(context));
     super.initState();
   }
   @override
@@ -38,7 +38,7 @@ class _ViewBodyState extends State<ViewBody> {
       bloc: widget.bloc,
       listener: (context, state){
         if(state is ApplicationSuccessfullyDeleted){
-          widget.bloc?.add(GetRequestsList());
+          widget.bloc?.add(GetRequestsList(context));
         }
 
       },
@@ -188,13 +188,13 @@ class _ViewBodyState extends State<ViewBody> {
                                       horizontal: 15.w,
                                       vertical: 2.h),
                                   child: Text(
-                                    data?[i].state ?? "status",
+                                    context.localeString(data?[i].state ?? "status"),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline6
                                         ?.copyWith(
-                                        color:
-                                        AppColors.hotToddy),
+                                        color:data?[i].state == "NEW" ?
+                                        AppColors.hotToddy: data?[i].state == "PUBLISHED" ? AppColors.green : AppColors.grey),
                                   ),
                                 ),
                               ),
@@ -255,7 +255,7 @@ class _ViewBodyState extends State<ViewBody> {
                                         },
                                         style: ElevatedButton
                                             .styleFrom(
-                                          elevation: 0, primary: const Color.fromRGBO(
+                                          elevation: 0, backgroundColor: const Color.fromRGBO(
                                               28, 79, 209, 0.1),
                                           shape:
                                           RoundedRectangleBorder(

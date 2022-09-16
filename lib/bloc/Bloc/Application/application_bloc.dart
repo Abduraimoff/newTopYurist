@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:top_yurist/data/Repositories/ApplicationRepository.dart';
+import 'package:top_yurist/presentation/Login/login_screen.dart';
 
 import '../../../data/Models/application/create_application_response.dart';
 import '../../../data/Models/application/publish_aplication.dart';
@@ -25,6 +28,10 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         data = response;
         emit(UserRequestsListSuccessState(response));
       }on DioError catch(e){
+        if(e.response?.statusCode == 401){
+          Navigator.of(event.context).pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
+          await const FlutterSecureStorage().deleteAll();
+        }
         if(e.response != null ){
           emit(ApplicationErrorState(e.response?.data["error"]));
         }

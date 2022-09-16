@@ -5,8 +5,9 @@ abstract class ChatEvent extends Equatable {
 }
 class GetChatsEvent extends ChatEvent{
   final String? state;
+  final BuildContext context;
 
-  const GetChatsEvent(this.state);
+  const GetChatsEvent(this.state, this.context);
   @override
   // TODO: implement props
   List<Object?> get props => [state];

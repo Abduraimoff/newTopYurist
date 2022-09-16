@@ -4,10 +4,12 @@ part of 'selected_services_list_bloc.dart';
 abstract class SelectedServicesListEvent extends Equatable{}
 
 class GetSelectedServicesEvent extends SelectedServicesListEvent{
+  final BuildContext context;
 
+  GetSelectedServicesEvent(this.context);
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [context];
 }
 
 class GetRemoveServiceEvent extends SelectedServicesListEvent{

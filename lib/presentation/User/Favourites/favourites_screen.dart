@@ -37,11 +37,11 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
             ),
             const SizedBox(height: 16),
             BlocProvider<UserFavoriteBloc>(
-              create: (context) => UserFavoriteBloc()..add(GetUserFavoriteLawyers()),
+              create: (context) => UserFavoriteBloc()..add(GetUserFavoriteLawyers(context)),
               child: BlocConsumer<UserFavoriteBloc, UserFavoriteState>(
                 listener: (context, state){
                   if(state is UnFavoriteSuccessState){
-                    BlocProvider.of<UserFavoriteBloc>(context).add(GetUserFavoriteLawyers());
+                    BlocProvider.of<UserFavoriteBloc>(context).add(GetUserFavoriteLawyers(context));
                   }
                 },
                 builder: (context, state) {
