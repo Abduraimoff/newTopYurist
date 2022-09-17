@@ -22,6 +22,8 @@ class RequestMainScreen extends StatefulWidget {
 class _RequestMainScreenState extends State<RequestMainScreen> {
   final ApplicationBloc _bloc = ApplicationBloc();
   int selectedIndex = 0;
+  List<UserHomeRequestListResponse>? data;
+  bool dataIsEmpty = true;
 
   static const List<String> titleList = ["all", "new", "published"];
 
@@ -36,43 +38,50 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Your application successfully published")));
           _bloc.add(GetRequestsList(context));
-        } else if (state is ApplicationSuccessfullyDeleted){
+        } else if (state is ApplicationSuccessfullyDeleted) {
           selectedIndex = 0;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Your application successfully deleted")));
-        } else if (state is ApplicationResume){
+        } else if (state is ApplicationResume) {
           selectedIndex = 0;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Your application successfully Resumed")));
         }
         if (state is ApplicationErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.error)));
+        }
+        if (state is UserRequestsListSuccessState) {
+          data = state.response;
+          dataIsEmpty = (data?.isEmpty ?? true);
         }
       },
       builder: (context, state) {
         return Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  top: 10,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        LocaleText(
-                          'requests',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline2
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        TextButton(
+          padding: const EdgeInsets.only(
+            left: 16,
+            top: 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  LocaleText(
+                    'requests',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  dataIsEmpty
+                      ? TextButton(
                           onPressed: () {
                             Navigator.of(context)
                                 .pushNamed(CreateNewRequest.routeName)
-                                .then((value) => _bloc.add(GetRequestsList(context)));
+                                .then((value) =>
+                                    _bloc.add(GetRequestsList(context)));
                           },
                           child: LocaleText(
                             'create',
@@ -81,26 +90,27 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
                                 .headline3
                                 ?.copyWith(color: AppColors.primary),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 19.h,
-                    ),
-                    SizedBox(
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
+              SizedBox(
+                height: dataIsEmpty ? 19.h : 122.h,
+              ),
+              dataIsEmpty
+                  ? SizedBox(
                       height: 40.h,
                       child: ListView.separated(
                         padding: EdgeInsets.only(left: 16.w),
                         itemBuilder: (context, index) => UserHomeTabbar(
                           title: titleList[index],
                           onPressed: () {
-
                             selectedIndex = index;
-                            if(index == 1){
+                            if (index == 1) {
                               _bloc.add(FilterEvent("NEW"));
-                            } else if(index == 2){
+                            } else if (index == 2) {
                               _bloc.add(FilterEvent("PUBLISHED"));
-                            } else if(index == 0){
+                            } else if (index == 0) {
                               _bloc.add(FilterEvent(""));
                             }
                           },
@@ -111,18 +121,18 @@ class _RequestMainScreenState extends State<RequestMainScreen> {
                         itemCount: 3,
                         scrollDirection: Axis.horizontal,
                       ),
-                    ),
-                     ViewBody(bloc: _bloc,),
-                  ],
-                ),
-              );
+                    )
+                  : const SizedBox.shrink(),
+              ViewBody(
+                bloc: _bloc,
+              ),
+            ],
+          ),
+        );
       },
     );
   }
 }
-
-
-
 
 class UserHomeTabbar extends StatelessWidget {
   final String title;
@@ -170,9 +180,7 @@ class UserHomeTabbar extends StatelessWidget {
 
 class UserHomeEmptyPage extends StatelessWidget {
   final ApplicationBloc? bloc;
-  const UserHomeEmptyPage({
-    Key? key, this.bloc
-  }) : super(key: key);
+  const UserHomeEmptyPage({Key? key, this.bloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -201,11 +209,13 @@ class UserHomeEmptyPage extends StatelessWidget {
           ),
           SizedBox(
               height: 46.h,
-              width: 343.w,
+              width: 260.w,
               child: BaseButton(
                   title: 'create_request',
                   onPressed: () {
-                    Navigator.of(context).pushNamed(CreateNewRequest.routeName).then((value) => bloc?.add(GetRequestsList(context)));
+                    Navigator.of(context)
+                        .pushNamed(CreateNewRequest.routeName)
+                        .then((value) => bloc?.add(GetRequestsList(context)));
                   },
                   isLoading: false)),
         ],

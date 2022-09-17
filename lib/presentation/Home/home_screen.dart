@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       body: BlocBuilder<UserTypeCubit, UserTypeState>(
         builder: (context, state) {
@@ -71,12 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
           return const Center(child: CupertinoActivityIndicator());
         },
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 50.h,
-        // color: Colors.green[200],
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
             bottomIcons.length,
             (index) {
@@ -101,7 +101,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             : AppColors.primary,
                       ),
                     ),
-                    // Text(bottomIcons[index]['title']),
+                    Text(
+                      bottomIcons[index]['title'],
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: _selectedIndex != index
+                                ? AppColors.grey
+                                : AppColors.primary,
+                          ),
+                    ),
                   ],
                 ),
               );
