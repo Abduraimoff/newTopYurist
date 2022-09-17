@@ -28,5 +28,6 @@ class MainTheme {
 
             indicator: BoxDecoration(borderRadius: BorderRadius.circular(52), color: AppColors.primary),),
       scaffoldBackgroundColor: AppColors.scaffoldBackground);
+      
 
 }

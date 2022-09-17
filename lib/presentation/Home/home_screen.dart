@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_yurist/bloc/Cubit/UserType/user_type_cubit.dart';
 import 'package:top_yurist/bloc/Cubit/UserType/user_type_cubit.dart';
 import 'package:top_yurist/presentation/Services/SeriviceScreen.dart';
 import 'package:top_yurist/presentation/chat/chat_page.dart';
 import 'package:top_yurist/utils/colors.dart';
 
+import '../../utils/bottom_nav_bar_icons.dart';
 import '../LawyerFavourites/lawyerFavourites.dart';
 import '../User/Favourites/favourites_screen.dart';
 import '../User/Requests/request_screen.dart';
@@ -24,10 +27,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
     const ServiceScreen(),
     const ChatsPage(),
@@ -40,9 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
+
   @override
   void didChangeDependencies() {
-   context.read<UserTypeCubit>().changeType(widget.userType);
+    context.read<UserTypeCubit>().changeType(widget.userType);
     super.didChangeDependencies();
   }
 
@@ -51,12 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocBuilder<UserTypeCubit, UserTypeState>(
         builder: (context, state) {
-          if(state is UserTypeChanged){
+          if (state is UserTypeChanged) {
             return Center(
               child: <Widget>[
-              state.userType == "lawyer" ?  const ServiceScreen() :   const CreateRequestScreen(),
+                state.userType == "lawyer"
+                    ? const ServiceScreen()
+                    : const CreateRequestScreen(),
                 const ChatsPage(),
-                state.userType == "lawyer" ?   const LawyerFavourites() :    const FavouritesScreen(),
+                state.userType == "lawyer"
+                    ? const LawyerFavourites()
+                    : const FavouritesScreen(),
                 const UserProfilePage(),
               ].elementAt(_selectedIndex),
             );
@@ -64,33 +71,43 @@ class _HomeScreenState extends State<HomeScreen> {
           return const Center(child: CupertinoActivityIndicator());
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: context.localeString("services"),
+      bottomNavigationBar: Container(
+        height: 50.h,
+        // color: Colors.green[200],
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(
+            bottomIcons.length,
+            (index) {
+              return Container(
+                width: 75.w,
+                height: 50.h,
+                padding: EdgeInsets.only(top: 5.h),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _onItemTapped(index);
+                      },
+                      child: SvgPicture.asset(
+                        _selectedIndex == index
+                            ? bottomIcons[index]['active']
+                            : bottomIcons[index]['inactive'],
+                        width: 24.w,
+                        height: 24.h,
+                        color: _selectedIndex != index
+                            ? AppColors.grey
+                            : AppColors.primary,
+                      ),
+                    ),
+                    // Text(bottomIcons[index]['title']),
+                  ],
+                ),
+              );
+            },
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: context.localeString("chats"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            label: context.localeString("favourites"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: context.localeString("setting"),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.grey,
-        unselectedLabelStyle: const TextStyle(
-            fontSize: 12, color: AppColors.grey, fontWeight: FontWeight.w400),
-        showUnselectedLabels: true,
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }
