@@ -127,6 +127,7 @@ class _AppBarWidget extends StatelessWidget {
             AppIcons.chevronLeft,
             height: 24.h,
             width: 24.h,
+            color: const Color(0xFF18181C),
           ),
         ),
         Column(
@@ -136,7 +137,7 @@ class _AppBarWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                color: Colors.black,
+                color: const Color(0xFF18181C),
               ),
             ),
             Text(
